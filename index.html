@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work With Clayton — AI Systems That Find Hidden Revenue</title>
+  <meta name="description" content="Clayton builds AI systems, agents, automations, dashboards, and full-stack software that find hidden revenue, replace manual work, and turn scattered company operations into compounding leverage. AI, e-commerce, trading, infrastructure, and ops — built end-to-end. Audit from $497.">
+  <meta property="og:title" content="Work With Clayton — AI Systems That Find Hidden Revenue">
+  <meta property="og:description" content="48-hour AI audit · 5-day build sprint · operator retainer. Built by the founder behind LoopholeMaxing, OrbitRoute, MMS Hub, and PeptiDex.">
+  <meta property="og:url" content="https://workwithclayton.com/">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       WORK WITH CLAYTON — Venturekit-style design
+       Light, minimal, professional.
+       Self-contained — does not inherit ../styles.css
+       ============================================ */
+
+    :root {
+      --bg:          #ffffff;
+      --bg-alt:      #fbfaf8;
+      --bg-alt2:     #f5f2ef;
+      --text:        #141414;
+      --text-muted:  #737373;
+      --text-warm:   #78716c;
+      --green:       #219f67;
+      --green-bright:#0bbe86;
+      --green-hover: #127c4c;
+      --green-fg:    #fafafa;
+      --green-soft:  #ecfdf5;
+      --green-tint:  #d0fbe6;
+      --border:      #edeced;
+      --border-strong:#e5e5e5;
+      --input:       #e5e5e5;
+
+      --radius-sm:   6px;
+      --radius-md:   8px;
+      --radius-lg:   12px;
+      --radius-xl:   16px;
+      --radius-pill: 9999px;
+
+      --shadow-sm:   0 1px 2px rgba(20,20,20,0.04);
+      --shadow-card: 0 0 30px -10px rgba(0,0,0,0.10);
+      --shadow-lg:   0 20px 48px -16px rgba(0,0,0,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.55; font-size: 16px; font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ============== HEADER ============== */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 16px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .logo span { color: var(--green); }
+    .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--text-muted);
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.cta-link {
+      background: var(--green); color: var(--green-fg);
+      padding: 8px 16px; border-radius: var(--radius-md);
+      font-weight: 600;
+    }
+    .nav-links a.cta-link:hover { background: var(--green-hover); color: var(--green-fg); }
+    @media (max-width: 720px) {
+      .header-inner { padding: 14px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.cta-link) { display: none; }
+    }
+
+    /* ============== CONTAINER ============== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    @media (max-width: 720px) { .container { padding: 0 20px; } }
+
+    /* ============== SECTION ============== */
+    section { padding: 96px 0; }
+    section.tight { padding: 64px 0; }
+    section.beige { background: var(--bg-alt); }
+    section.beige-dark { background: var(--bg-alt2); }
+    @media (max-width: 720px) { section { padding: 64px 0; } }
+
+    /* ============== HERO ============== */
+    .hero {
+      padding-top: 80px; padding-bottom: 80px;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 64px; align-items: center;
+    }
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--green-soft); color: var(--green-hover);
+      font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+      padding: 6px 14px; border-radius: var(--radius-pill);
+      margin-bottom: 28px;
+      border: 1px solid var(--green-tint);
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 0 4px rgba(33,159,103,0.15);
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 5.5vw, 64px);
+      font-weight: 700; letter-spacing: -0.025em; line-height: 1.05;
+      color: var(--text); margin-bottom: 24px;
+    }
+    .hero p.lead {
+      font-size: 19px; color: var(--text-muted); line-height: 1.55;
+      margin-bottom: 32px; max-width: 540px;
+    }
+
+    /* Pill input + button combo */
+    .hero-cta-pill {
+      display: flex; align-items: center;
+      background: var(--bg); border: 1px solid var(--border-strong);
+      border-radius: var(--radius-pill); padding: 6px;
+      box-shadow: var(--shadow-sm);
+      max-width: 480px; width: 100%; min-width: 0;
+      margin-bottom: 16px;
+    }
+    .hero-cta-pill input { min-width: 0; }
+    .hero-cta-pill input {
+      flex: 1; border: none; outline: none;
+      padding: 10px 18px; font-size: 15px;
+      background: transparent; color: var(--text);
+      font-family: inherit;
+    }
+    .hero-cta-pill input::placeholder { color: #a8a29e; }
+    .hero-cta-pill .btn-pill {
+      background: var(--green); color: var(--green-fg);
+      border: none; border-radius: var(--radius-pill);
+      padding: 10px 22px; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s ease;
+      font-family: inherit; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .hero-cta-pill .btn-pill:hover { background: var(--green-hover); }
+
+    .hero-cta-meta {
+      font-size: 13px; color: var(--text-muted);
+      display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
+    }
+    .hero-cta-meta span { display: inline-flex; align-items: center; gap: 6px; }
+    .hero-cta-meta .check { color: var(--green); font-weight: 600; }
+
+    /* ============== HERO VISUAL — Audit Scorecard Mockup ============== */
+    .hero-visual {
+      position: relative; width: 100%; max-width: 520px; margin-left: auto;
+    }
+    /* Main scorecard card */
+    .scorecard {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 24px; position: relative; z-index: 2;
+    }
+    .scorecard-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 14px; margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .scorecard-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .scorecard-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: var(--green-hover);
+      background: var(--green-soft); padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+    .scorecard-status .dot {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+    }
+    .scorecard-headline {
+      font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+      color: var(--text); margin-bottom: 14px; line-height: 1.4;
+    }
+    .scorecard-headline .green { color: var(--green); font-weight: 700; }
+
+    /* Lens rows */
+    .lens-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+    .lens-row {
+      display: grid; grid-template-columns: 1fr auto auto;
+      gap: 12px; align-items: center;
+      padding: 10px 12px; background: var(--bg-alt);
+      border-radius: var(--radius-md);
+    }
+    .lens-name { font-size: 12px; font-weight: 500; color: var(--text); }
+    .lens-bar {
+      width: 90px; height: 5px; background: var(--border);
+      border-radius: 999px; overflow: hidden; position: relative;
+    }
+    .lens-bar-fill {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      background: var(--green); border-radius: 999px;
+    }
+    .lens-score {
+      font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+      color: var(--text); min-width: 28px; text-align: right;
+    }
+    .lens-row.weak .lens-bar-fill { background: #f59e0b; }
+    .lens-row.weak .lens-score { color: #b45309; }
+
+    .scorecard-finding {
+      background: var(--green-soft); border-left: 3px solid var(--green);
+      border-radius: var(--radius-md); padding: 12px 14px;
+      font-size: 12px; line-height: 1.5; color: var(--text);
+    }
+    .scorecard-finding strong { color: var(--green-hover); font-weight: 700; }
+
+    /* Scorecard annotations row — sits below the scorecard, clean and aligned */
+    .scorecard-annotations {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 16px;
+    }
+    .sc-annot {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 12px; text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .sc-annot-val {
+      font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--text); line-height: 1.1; margin-bottom: 4px;
+    }
+    .sc-annot-val .green { color: var(--green); }
+    .sc-annot-lbl {
+      font-size: 11px; color: var(--text-muted); font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 960px) {
+      .hero-visual { margin: 0 auto; max-width: 500px; }
+    }
+    @media (max-width: 480px) {
+      .scorecard-annotations { grid-template-columns: 1fr 1fr; }
+      .sc-annot:nth-child(3) { grid-column: 1 / -1; }
+    }
+
+    /* ============== LOGOS / PROOF STRIP ============== */
+    .proof-strip {
+      padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .proof-strip-label {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      text-align: center; margin-bottom: 20px;
+    }
+    .proof-strip-items {
+      display: flex; justify-content: center; align-items: center;
+      gap: 56px; flex-wrap: wrap;
+    }
+    .proof-strip-items span {
+      font-size: 15px; font-weight: 600; color: var(--text-warm);
+      letter-spacing: -0.01em;
+    }
+    @media (max-width: 720px) {
+      .proof-strip-items { gap: 28px; }
+      .proof-strip-items span { font-size: 14px; }
+    }
+
+    /* ============== SECTION HEADER ============== */
+    .section-eyebrow {
+      font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+      color: var(--green); margin-bottom: 14px;
+    }
+    .section-h2 {
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 700; letter-spacing: -0.025em; line-height: 1.1;
+      color: var(--text); margin-bottom: 20px; max-width: 720px;
+    }
+    .section-sub {
+      font-size: 18px; color: var(--text-muted); line-height: 1.55;
+      max-width: 640px;
+    }
+    .section-header-center { text-align: center; }
+    .section-header-center .section-h2,
+    .section-header-center .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ============== TWO-COL ALTERNATING SECTION ============== */
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .two-col.reverse > div:first-child { order: 2; }
+    @media (max-width: 880px) {
+      .two-col { grid-template-columns: 1fr; gap: 48px; }
+      .two-col.reverse > div:first-child { order: 0; }
+    }
+    .two-col p { font-size: 17px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+    .text-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 15px; font-weight: 600; color: var(--text);
+      margin-top: 12px;
+      transition: color 0.15s ease;
+    }
+    .text-link:hover { color: var(--green); }
+    .text-link .arr { transition: transform 0.2s ease; }
+    .text-link:hover .arr { transform: translateX(3px); }
+
+    .feature-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 32px;
+      box-shadow: var(--shadow-card);
+    }
+    .feature-card.beige-on-white { background: var(--bg-alt); }
+
+    /* ============== OFFER CARDS ============== */
+    .offers-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 960px) { .offers-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; } }
+
+    .offer-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 32px;
+      display: flex; flex-direction: column;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .offer-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .offer-card.featured {
+      border: 1px solid var(--green); background: var(--bg);
+      box-shadow: 0 0 0 1px var(--green-tint), 0 24px 48px -16px rgba(33,159,103,0.18);
+    }
+    .offer-badge {
+      position: absolute; top: -10px; right: 20px;
+      background: var(--green); color: var(--green-fg);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      padding: 5px 12px; border-radius: var(--radius-pill);
+      text-transform: uppercase;
+    }
+    .offer-name {
+      font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+      color: var(--green); margin-bottom: 10px; text-transform: uppercase;
+    }
+    .offer-promise {
+      font-size: 19px; font-weight: 600; letter-spacing: -0.015em;
+      line-height: 1.3; color: var(--text); margin-bottom: 20px;
+    }
+    .offer-price {
+      display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;
+    }
+    .offer-price .amount {
+      font-size: 36px; font-weight: 700; letter-spacing: -0.025em;
+      color: var(--text); line-height: 1;
+    }
+    .offer-price .unit { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+    .offer-timeline {
+      font-size: 13px; color: var(--text-muted);
+      padding-bottom: 20px; margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .offer-includes-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .offer-includes { list-style: none; margin-bottom: 24px; }
+    .offer-includes li {
+      font-size: 14px; color: var(--text); line-height: 1.55;
+      padding-left: 24px; position: relative; margin-bottom: 10px;
+    }
+    .offer-includes li::before {
+      content: ""; position: absolute; left: 0; top: 7px;
+      width: 14px; height: 14px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23219f67' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-size: contain;
+    }
+    .offer-fitfor {
+      font-size: 13px; color: var(--text-warm); line-height: 1.55;
+      padding: 14px 16px; background: var(--bg-alt);
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+    }
+    .offer-fitfor strong {
+      display: block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .offer-cta { margin-top: auto; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      padding: 11px 22px; border-radius: var(--radius-md);
+      border: 1px solid transparent; cursor: pointer;
+      transition: all 0.15s ease; text-decoration: none;
+      white-space: nowrap; line-height: 1;
+    }
+    .btn-primary { background: var(--green); color: var(--green-fg); }
+    .btn-primary:hover { background: var(--green-hover); color: var(--green-fg); }
+    .btn-secondary {
+      background: var(--bg); color: var(--text);
+      border-color: var(--border-strong);
+    }
+    .btn-secondary:hover { border-color: var(--text); }
+    .btn-block { width: 100%; justify-content: center; }
+    .btn-lg { font-size: 16px; padding: 14px 28px; }
+
+    /* Rev-share mini card */
+    .revshare {
+      margin-top: 32px;
+      background: var(--bg-alt); border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-xl); padding: 28px;
+      display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
+    }
+    @media (max-width: 720px) { .revshare { grid-template-columns: 1fr; gap: 16px; } }
+    .revshare h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--text); }
+    .revshare p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+    /* ============== SYSTEMS GRID ============== */
+    .systems-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    @media (max-width: 960px) { .systems-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .systems-grid { grid-template-columns: 1fr; } }
+    .system-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px;
+      box-shadow: var(--shadow-sm); display: block;
+      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+    a.system-card:hover { box-shadow: var(--shadow-card); transform: translateY(-2px); border-color: var(--border-strong); }
+    .system-tag-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .system-tag {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: var(--radius-pill);
+    }
+    .system-tag.live { background: var(--green-soft); color: var(--green-hover); }
+    .system-tag.beta { background: #fef3c7; color: #b45309; }
+    .system-tag.research { background: #ede9fe; color: #6d28d9; }
+    .system-card h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 8px; }
+    .system-card p { font-size: 14px; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; }
+    .system-card .proves { font-size: 12px; color: var(--text-warm); margin-bottom: 14px; }
+    .system-card .proves strong { color: var(--text); font-weight: 600; }
+    .system-link {
+      font-size: 13px; font-weight: 600; color: var(--green);
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+
+    /* ============== PATTERNS ============== */
+    .patterns-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+    }
+    @media (max-width: 720px) { .patterns-grid { grid-template-columns: 1fr; } }
+    .pattern-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 28px;
+    }
+    .pattern-card .pattern-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: var(--radius-md);
+      background: var(--green-soft); color: var(--green-hover);
+      font-size: 13px; font-weight: 700; margin-bottom: 14px;
+    }
+    .pattern-card h4 { font-size: 18px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 10px; }
+    .pattern-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+    /* ============== PROCESS ============== */
+    .process-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    }
+    @media (max-width: 880px) { .process-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .process-grid { grid-template-columns: 1fr; } }
+    .process-step {
+      padding: 28px; background: var(--bg-alt); border-radius: var(--radius-lg);
+    }
+    .process-num {
+      font-size: 13px; font-weight: 700; color: var(--green);
+      letter-spacing: 0.02em; margin-bottom: 10px;
+    }
+    .process-step h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 8px; }
+    .process-step p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+    /* ============== STATS ============== */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    @media (max-width: 720px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    .stat-item {
+      padding: 32px 24px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    @media (max-width: 720px) {
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(1), .stat-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+    }
+    .stat-num { font-size: 36px; font-weight: 700; letter-spacing: -0.025em; color: var(--text); line-height: 1; margin-bottom: 8px; }
+    .stat-num .green { color: var(--green); }
+    .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+    /* ============== FAQ ============== */
+    .faq { max-width: 760px; margin: 0 auto; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+    }
+    .faq-item summary {
+      font-size: 17px; font-weight: 600; color: var(--text);
+      cursor: pointer; list-style: none;
+      display: flex; justify-content: space-between; align-items: center;
+      letter-spacing: -0.01em;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: ""; width: 18px; height: 18px; flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-size: contain;
+      transition: transform 0.2s ease; margin-left: 16px;
+    }
+    .faq-item[open] summary::after {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
+    }
+    .faq-item p { font-size: 15px; color: var(--text-muted); line-height: 1.65; margin-top: 16px; max-width: 680px; }
+    .faq-item p a { color: var(--green); font-weight: 500; }
+    .faq-item p a:hover { text-decoration: underline; }
+
+    /* ============== ABOUT ============== */
+    .about-grid {
+      display: grid; grid-template-columns: 180px 1fr;
+      gap: 40px; align-items: start;
+      max-width: 960px;
+    }
+    @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; gap: 24px; } }
+    .about-photo {
+      width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-lg);
+      object-fit: cover; box-shadow: var(--shadow-card);
+    }
+    @media (max-width: 720px) {
+      .about-photo { width: 120px; aspect-ratio: 1/1; border-radius: 50%; }
+    }
+    .about-content h3 {
+      font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .about-content p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+    .about-content p strong { color: var(--text); font-weight: 600; }
+
+    /* About — capabilities matrix */
+    .caps-section { margin-top: 40px; }
+    .caps-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 20px;
+    }
+    .caps-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    @media (max-width: 880px) { .caps-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .caps-grid { grid-template-columns: 1fr; } }
+    .cap-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .cap-card h5 {
+      font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+      color: var(--text); margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .cap-card h5::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+    }
+    .cap-card p { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+
+    /* About — receipts strip */
+    .receipts {
+      margin-top: 32px;
+      padding: 24px; background: var(--bg);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+    }
+    .receipts-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px;
+    }
+    .receipts-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .receipt-item {
+      font-size: 13px; color: var(--text-muted); line-height: 1.5;
+    }
+    .receipt-item strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; font-size: 14px; letter-spacing: -0.01em; }
+
+    /* ============== FINAL CTA ============== */
+    .final-cta {
+      background: var(--text); color: #fafafa;
+      border-radius: var(--radius-xl);
+      padding: 80px 48px; text-align: center;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .final-cta h2 {
+      font-size: clamp(32px, 4vw, 48px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 18px;
+      color: #fafafa;
+    }
+    .final-cta p {
+      font-size: 18px; color: #a3a3a3; line-height: 1.55;
+      max-width: 580px; margin: 0 auto 32px;
+    }
+    .final-cta-buttons { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .final-cta-contact {
+      margin-top: 20px; font-size: 14px; color: #a3a3a3;
+      display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+    }
+    .final-cta-contact a { color: #fafafa; font-weight: 500; }
+    .final-cta-contact a:hover { color: #fff; text-decoration: underline; }
+    .final-cta-contact .sep { color: #525252; }
+    .final-cta .btn-secondary {
+      background: transparent; color: #fafafa; border-color: #404040;
+    }
+    .final-cta .btn-secondary:hover { border-color: #fafafa; }
+    @media (max-width: 720px) { .final-cta { padding: 56px 24px; border-radius: var(--radius-lg); } }
+
+    /* ============== FOOTER ============== */
+    .footer {
+      padding: 48px 0 32px; border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: 14px; color: var(--text-muted);
+      transition: color 0.15s ease;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-tagline { font-size: 13px; color: var(--text-muted); }
+    .footer-tagline a { color: var(--text); font-weight: 500; }
+
+    /* Utility */
+    .green { color: var(--green); }
+    .center { text-align: center; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">Work With <span>Clayton</span></a>
+      <ul class="nav-links">
+        <li><a href="#offers">Offers</a></li>
+        <li><a href="#systems">Proof</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://loopholemaxing.com/">Other Creations</a></li>
+        <li><a href="intake/" class="cta-link">Start audit →</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-badge">
+            <span class="dot"></span>
+            <span>Taking on 3 new clients this quarter</span>
+          </div>
+          <h1>AI systems that find <span class="green">hidden revenue</span> and automate the work your team shouldn't be doing.</h1>
+          <p class="lead">Most businesses have three to five figures of monthly revenue they can't see — leaking through slow lead follow-up, manual workflows, missing data, broken handoffs between tools, AI use cases nobody owns, and abandoned customer touchpoints. I find it in 48 hours and ship the fix in 5 days.</p>
+
+          <form class="hero-cta-pill" onsubmit="event.preventDefault(); var e=this.querySelector('input').value; window.location.href='intake/'+(e?'?email='+encodeURIComponent(e):'');">
+            <input type="email" placeholder="Your business email" aria-label="Your business email">
+            <button type="submit" class="btn-pill">Start the $497 audit →</button>
+          </form>
+
+          <div class="hero-cta-meta">
+            <span><span class="check">✓</span> 48-hour delivery</span>
+            <span><span class="check">✓</span> Audit credit toward sprint</span>
+            <span><span class="check">✓</span> No retainer lock-in</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="hero-visual">
+            <!-- Main scorecard preview — the deliverable, not the founder -->
+            <div class="scorecard">
+              <div class="scorecard-header">
+                <span class="scorecard-title">Loophole Audit · Sample Scorecard</span>
+                <span class="scorecard-status"><span class="dot"></span>Delivered · 48 hrs</span>
+              </div>
+
+              <div class="scorecard-headline">5 leaks found. Top fix recovers an estimated <span class="green">$84K/yr</span> in revenue.</div>
+
+              <div class="lens-list">
+                <div class="lens-row weak">
+                  <span class="lens-name">Revenue Leaks</span>
+                  <span class="lens-bar"><span class="lens-bar-fill" style="width: 30%"></span></span>
+                  <span class="lens-score">3 / 10</span>
+                </div>
+                <div class="lens-row weak">
+                  <span class="lens-name">Workflow Bottlenecks</span>
+                  <span class="lens-bar"><span class="lens-bar-fill" style="width: 40%"></span></span>
+                  <span class="lens-score">4 / 10</span>
+                </div>
+                <div class="lens-row">
+                  <span class="lens-name">Data &amp; Reporting</span>
+                  <span class="lens-bar"><span class="lens-bar-fill" style="width: 60%"></span></span>
+                  <span class="lens-score">6 / 10</span>
+                </div>
+                <div class="lens-row weak">
+                  <span class="lens-name">Customer Experience</span>
+                  <span class="lens-bar"><span class="lens-bar-fill" style="width: 50%"></span></span>
+                  <span class="lens-score">5 / 10</span>
+                </div>
+                <div class="lens-row">
+                  <span class="lens-name">AI Leverage</span>
+                  <span class="lens-bar"><span class="lens-bar-fill" style="width: 20%"></span></span>
+                  <span class="lens-score">2 / 10</span>
+                </div>
+              </div>
+
+              <div class="scorecard-finding">
+                <strong>Recommended Sprint:</strong> Cart-recovery + post-purchase upsell system. 5 business days. <strong>$2,500.</strong> Audit credit applies.
+              </div>
+            </div>
+
+            <!-- Annotation row below scorecard — the proof, not floating clutter -->
+            <div class="scorecard-annotations">
+              <div class="sc-annot">
+                <div class="sc-annot-val"><span class="green">$84K</span> / yr</div>
+                <div class="sc-annot-lbl">Estimated annualized leak</div>
+              </div>
+              <div class="sc-annot">
+                <div class="sc-annot-val"><span class="green">5 days</span></div>
+                <div class="sc-annot-lbl">Sprint delivery</div>
+              </div>
+              <div class="sc-annot">
+                <div class="sc-annot-val"><span class="green">48 hrs</span></div>
+                <div class="sc-annot-lbl">Audit turnaround</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF STRIP -->
+  <div class="proof-strip">
+    <div class="container">
+      <div class="proof-strip-label">Systems I've built and shipped</div>
+      <div class="proof-strip-items">
+        <span>OrbitRoute</span>
+        <span>PeptiDex</span>
+        <span>MMS Hub</span>
+        <span>PNP</span>
+        <span>Universal Analyst Engine</span>
+        <span>Rumor Mill Bot</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE GAP -->
+  <section>
+    <div class="container">
+      <div class="section-header-center" style="margin-bottom: 56px;">
+        <div class="section-eyebrow">The Gap</div>
+        <h2 class="section-h2">Most companies don't have an AI problem. They have a leverage problem.</h2>
+        <p class="section-sub">Scattered tools, manual workflows, and data nobody acts on. The AI part is the easy fix once the leaks are mapped.</p>
+      </div>
+
+      <div class="systems-grid">
+        <div class="feature-card">
+          <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Revenue leaks they can't see</h4>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Slow lead follow-up, missed upsells, broken attribution, no post-purchase journey, refund patterns nobody reads, churn that compounds silently, AI use cases nobody owns, and abandoned customer touchpoints.</p>
+          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A 48-hour audit with a dollar figure next to every leak, ranked by speed-to-cash.</p>
+        </div>
+        <div class="feature-card">
+          <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Operations stuck on manual mode</h4>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Owners pasting between tools, VAs running ten checklists, ops people regenerating the same report every Monday.</p>
+          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A 5-day build that replaces one workflow end-to-end with a system the team actually uses.</p>
+        </div>
+        <div class="feature-card">
+          <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Data the team can't act on</h4>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Dashboards nobody opens, exports that don't match, KPIs that change definition every quarter.</p>
+          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A single source of truth — built on tools you already own — that surfaces decisions, not noise.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFERS -->
+  <section id="offers" class="beige">
+    <div class="container">
+      <div class="section-header-center" style="margin-bottom: 56px;">
+        <div class="section-eyebrow">How We Work Together</div>
+        <h2 class="section-h2">Three tiers. No retainers without proof first.</h2>
+        <p class="section-sub">Every engagement starts with the audit. The audit cost credits toward the sprint if you decide to move forward — so the diagnosis costs you nothing if you build with me.</p>
+      </div>
+
+      <div class="offers-grid">
+
+        <!-- AUDIT -->
+        <div class="offer-card">
+          <div class="offer-name">Loophole Audit</div>
+          <div class="offer-promise">A 48-hour diagnosis with a dollar figure on every fix.</div>
+          <div class="offer-price">
+            <span class="amount">$497</span>
+            <span class="unit">flat</span>
+          </div>
+          <div class="offer-timeline">48 hours from payment + intake</div>
+
+          <div class="offer-includes-label">What you get</div>
+          <ul class="offer-includes">
+            <li>5-lens audit: revenue leaks, workflow, data, CX, AI leverage</li>
+            <li>Scorecard with 1–10 ratings and rationale</li>
+            <li>Top 5 highest-leverage fixes, ranked, with dollar-impact estimates</li>
+            <li>Recommended 5-day build sprint, scoped and priced</li>
+            <li>Loom walkthrough so you actually understand the findings</li>
+          </ul>
+
+          <div class="offer-fitfor">
+            <strong>Best fit for</strong>
+            Owners with revenue, real workflows, and a sense that money is leaking. Not for pre-revenue or pure ideation.
+          </div>
+
+          <div class="offer-cta"><a href="intake/" class="btn btn-primary btn-block">Start the $497 audit →</a></div>
+        </div>
+
+        <!-- SPRINT -->
+        <div class="offer-card featured">
+          <div class="offer-badge">Most signed</div>
+          <div class="offer-name">Build Sprint</div>
+          <div class="offer-promise">One system, built in 5 days, replacing one specific leak.</div>
+          <div class="offer-price">
+            <span class="amount">$1.5k–$3.5k</span>
+            <span class="unit">fixed</span>
+          </div>
+          <div class="offer-timeline">5 business days · 1 revision included</div>
+
+          <div class="offer-includes-label">What you get</div>
+          <ul class="offer-includes">
+            <li>One end-to-end system — built, tested, handed off</li>
+            <li>Documentation your team can use without me</li>
+            <li>Code, prompts, or workflow you own outright</li>
+            <li>Loom walkthrough and training session</li>
+            <li>14 days of bug fixes on what I shipped</li>
+          </ul>
+
+          <div class="offer-fitfor">
+            <strong>Best fit for</strong>
+            Audited clients ready to act on a specific fix. New clients welcome but the audit usually goes first.
+          </div>
+
+          <div class="offer-cta"><a href="intake/?offer=sprint" class="btn btn-primary btn-block">Talk about a sprint →</a></div>
+        </div>
+
+        <!-- RETAINER -->
+        <div class="offer-card">
+          <div class="offer-name">Operator Retainer</div>
+          <div class="offer-promise">An AI operator embedded with your business, shipping every week.</div>
+          <div class="offer-price">
+            <span class="amount">$3k–$7.5k</span>
+            <span class="unit">/ month</span>
+          </div>
+          <div class="offer-timeline">Month-to-month · 30-day notice</div>
+
+          <div class="offer-includes-label">What you get</div>
+          <ul class="offer-includes">
+            <li>Weekly build queue you prioritize, I execute</li>
+            <li>3 tiers ($3k / $5k / $7.5k) with defined deliverable counts</li>
+            <li>1 BD response SLA on inbox, 3 BD on build kickoff</li>
+            <li>Monthly written report on shipped work + performance</li>
+            <li>Least-privilege access to systems we agree on</li>
+          </ul>
+
+          <div class="offer-fitfor">
+            <strong>Best fit for</strong>
+            Businesses with a continuous build queue, not a single project. Typically post-sprint.
+          </div>
+
+          <div class="offer-cta"><a href="intake/?offer=retainer" class="btn btn-secondary btn-block">Apply for a retainer →</a></div>
+        </div>
+      </div>
+
+      <div class="revshare">
+        <div>
+          <h4>Optional: revenue share addendum</h4>
+          <p>For sprints or retainers tied to a measurable revenue outcome. 3–7% of incremental revenue above a locked baseline, capped, with audit rights. Only when reporting is clean and attribution is real. After the audit — not before.</p>
+        </div>
+        <div><a href="intake/?topic=revshare" class="btn btn-secondary">Ask about it</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="tight">
+    <div class="container">
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-num"><span class="green">10+</span></div>
+          <div class="stat-label">Production systems shipped</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Live businesses operated</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">48hr</div>
+          <div class="stat-label">Audit turnaround</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">5 days</div>
+          <div class="stat-label">Build sprint delivery</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEMS / PROOF -->
+  <section id="systems">
+    <div class="container">
+      <div style="margin-bottom: 56px;">
+        <div class="section-eyebrow">Proof, Not Promises</div>
+        <h2 class="section-h2">Systems I've built and shipped.</h2>
+        <p class="section-sub">Every offer is built on top of patterns I've already proven in my own portfolio. These aren't slide-deck case studies — they're live URLs.</p>
+      </div>
+
+      <div class="systems-grid">
+
+        <a href="https://orbitroute.ai" class="system-card" target="_blank" rel="noopener">
+          <div class="system-tag-row"><span class="system-tag live">Live · Founder &amp; CEO</span></div>
+          <h4>OrbitRoute</h4>
+          <p>The software routing layer for orbital GPU networks — “Cloudflare for satellites.” Routes enterprise AI workloads to orbital compute capacity. <strong>10,657 satellites tracked, 17 ground stations, 12 autonomous AI engines, 5 patents filed</strong>, targeting a $39B market.</p>
+          <div class="proves"><strong>Proves:</strong> I can architect, file IP on, and ship deep-tech infrastructure SaaS as the founding operator.</div>
+          <span class="system-link">orbitroute.ai →</span>
+        </a>
+
+        <a href="https://thepeptidex.net" class="system-card" target="_blank" rel="noopener">
+          <div class="system-tag-row"><span class="system-tag live">Live</span></div>
+          <h4>PeptiDex</h4>
+          <p>Research-grade peptide intelligence search engine. Live database, structured data, real query layer.</p>
+          <div class="proves"><strong>Proves:</strong> I can build domain-specific knowledge engines real users search every day.</div>
+          <span class="system-link">thepeptidex.net →</span>
+        </a>
+
+        <a href="https://www.moneymakingsolutionsai.com" class="system-card" target="_blank" rel="noopener">
+          <div class="system-tag-row"><span class="system-tag beta">Paper Mode</span></div>
+          <h4>MMS Hub</h4>
+          <p>Multi-strategy autonomous trading research platform. Nine services, signal pipeline, paper-trading mode. Backtested, not forward-deployed.</p>
+          <div class="proves"><strong>Proves:</strong> I can engineer complex multi-service systems with honest scope boundaries.</div>
+          <span class="system-link">moneymakingsolutionsai.com →</span>
+        </a>
+
+        <div class="system-card">
+          <div class="system-tag-row"><span class="system-tag live">Live · CTO</span></div>
+          <h4>Practically Natty Peptides</h4>
+          <p>E-commerce brand I built and operate as <strong>CTO of a 5-person LLC</strong>. Designed and shipped the full stack: WooCommerce storefront, SliceWP affiliate engine, Resend transactional email, command center dashboard, and Postgres-backed analytics.</p>
+          <div class="proves"><strong>Proves:</strong> I take brands from zero to operational using the same stack I'd build for you.</div>
+          <span class="system-link">Link available on request</span>
+        </div>
+
+        <div class="system-card">
+          <div class="system-tag-row"><span class="system-tag live">Live</span></div>
+          <h4>Universal Analyst Engine</h4>
+          <p>4,655-LOC company intelligence engine. 9-table schema, public API, automated research pipeline. Used as the research brain behind multiple products.</p>
+          <div class="proves"><strong>Proves:</strong> I design databases, APIs, and research pipelines that scale.</div>
+          <span class="system-link">Demo on request</span>
+        </div>
+
+        <div class="system-card">
+          <div class="system-tag-row"><span class="system-tag research">Research</span></div>
+          <h4>Rumor Mill Bot</h4>
+          <p>News-driven trading signal system with Schwab broker integration. Backtested at <strong>+39.87% in one week</strong> (122 trades, 93.4% win rate, unfiltered variant). Honest framing: backtests, not forward-deployed P&amp;L.</p>
+          <div class="proves"><strong>Proves:</strong> I can build complex signal pipelines and broker integrations end-to-end.</div>
+          <span class="system-link">Methodology on request</span>
+        </div>
+
+        <a href="https://loopholemaxing.com/" class="system-card">
+          <div class="system-tag-row"><span class="system-tag live">Live · Founder</span></div>
+          <h4>LoopholeMaxing Ecosystem</h4>
+          <p>The umbrella that ties it all together — a static portfolio site (Loopholemaxing.com) plus a private operations dashboard (LoopholeMaxing Hub on Next.js 14 + FastAPI + Postgres) hosting BTC Brain, NBA Brain, PersonalVault, FORMIX, ULTRON, Tally Cams, and Agora. One control plane, many engines.</p>
+          <div class="proves"><strong>Proves:</strong> I design and operate full ecosystems — not isolated projects.</div>
+          <span class="system-link">See all creations →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PATTERNS -->
+  <section class="beige">
+    <div class="container">
+      <div style="margin-bottom: 56px;">
+        <div class="section-eyebrow">What I Actually Build</div>
+        <h2 class="section-h2">Four patterns I ship over and over.</h2>
+        <p class="section-sub">Every sprint and retainer maps to one of these. Not invented — patterns I've shipped enough times to know what works and what doesn't.</p>
+      </div>
+      <div class="patterns-grid">
+        <div class="pattern-card">
+          <div class="pattern-num">01</div>
+          <h4>Audit → Sprint pattern</h4>
+          <p>Find the leak, scope the smallest possible fix, ship it in 5 days. Used in every audit-to-sprint conversion. The discipline is saying no to the 4 other things that need fixing.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-num">02</div>
+          <h4>Static proof + live backend</h4>
+          <p>Fast, indexed marketing pages paired with a real backend doing the work. Cheap to host, fast to load, with serious infrastructure underneath. PeptiDex and OrbitRoute both use this.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-num">03</div>
+          <h4>Research brain pattern</h4>
+          <p>Knowledge engines specific to a domain — peptides, BTC, NBA, companies, news. Database schema, ingestion pipeline, API, search layer. Works for any industry with deep but scattered data.</p>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-num">04</div>
+          <h4>Founder control center</h4>
+          <p>One dashboard that replaces 5 tools. For founders running multiple revenue streams who waste hours per week switching contexts. The LoopholeMaxing Hub is my own version.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section>
+    <div class="container">
+      <div class="section-header-center" style="margin-bottom: 56px;">
+        <div class="section-eyebrow">How It Works</div>
+        <h2 class="section-h2">Audit → Diagnose → Build → Operate.</h2>
+      </div>
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="process-num">Step 01</div>
+          <h4>Audit</h4>
+          <p>Submit intake. I confirm payment. The 48-hour clock starts. I run the 5-lens audit on your real systems and data.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">Step 02</div>
+          <h4>Diagnose</h4>
+          <p>You get the scorecard, dollar-impact estimates, recommended sprint, and a Loom walkthrough. You decide what's worth building.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">Step 03</div>
+          <h4>Build</h4>
+          <p>5-day sprint on one system. Audit cost credits toward sprint price. One revision included. Bug fixes for 14 days post-delivery.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">Step 04</div>
+          <h4>Operate</h4>
+          <p>If we work well together, move to a retainer. I become your AI operator: weekly build queue you prioritize, I execute.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="beige">
+    <div class="container">
+      <div style="margin-bottom: 48px;">
+        <div class="section-eyebrow">Who You're Hiring</div>
+        <h2 class="section-h2">Clayton Camera.</h2>
+      </div>
+      <div class="about-grid">
+        <img src="assets/clayton.jpg" alt="Clayton Camera" class="about-photo" loading="lazy">
+        <div class="about-content">
+          <h3>Technical founder. Florida-based. Builds end-to-end across AI, software, e-commerce, automation, and operations.</h3>
+          <p>I'm a technical founder running multiple businesses simultaneously — <strong>Founder &amp; CEO</strong> of <strong>OrbitRoute</strong> (the software routing layer for orbital GPU networks: 10,657 satellites tracked, 17 ground stations, 12 autonomous AI engines, 5 patents filed); <strong>CTO</strong> of an active peptide e-commerce brand; and operator of the <strong>LoopholeMaxing ecosystem</strong> — a private control plane and portfolio that includes <strong>PeptiDex</strong> (research-grade peptide knowledge engine), <strong>MMS Hub</strong> (multi-strategy trading research platform), <strong>Universal Analyst Engine</strong> (4,655-LOC company intelligence engine, 9-table schema), <strong>Rumor Mill Bot</strong> (news-driven trading signal system with Schwab broker integration), <strong>Tallahassee Cam Intel</strong> (407-camera multi-source intelligence platform), <strong>ULTRON</strong> (local-first agent with human-in-the-loop safety, 30/30 attack tests green), and <strong>Agora</strong> (public-domain knowledge library). I write the code, design the schemas, build the dashboards, ship the integrations, file the IP, and run the operations. I don't outsource the parts that matter.</p>
+          <p>I work across the full stack: <strong>AI and agents</strong> (LLM-powered systems, prompt engineering, agentic workflows, RAG, custom GPTs, AI infrastructure), <strong>e-commerce and conversion</strong> (Shopify, WooCommerce, SliceWP, Klaviyo, Resend, post-purchase, affiliate engines), <strong>automation and integration</strong> (Zapier, Make, n8n, custom webhooks, API design, ETL), <strong>data and analytics</strong> (database schemas, dashboards, attribution, real-time monitoring), <strong>trading and quant systems</strong> (signal pipelines, backtesting, broker APIs, paper-to-live infrastructure), <strong>operations and dashboards</strong> (Next.js + FastAPI control planes, command centers, founder leverage tooling), and <strong>infrastructure</strong> (Railway, Vercel, AWS, Postgres, monitoring, deployment pipelines).</p>
+          <p>I sell what I actually build. The audit framework is the same one I use on my own projects every quarter. The sprint pattern is how I ship features in my own products. The retainer is the model I'd want if I were on the buying side. The breadth matters because most businesses don't have one isolated problem — they have a stack of related ones, and someone has to be able to see the whole picture before scoping the fix.</p>
+          <p>Based in <strong>Florida</strong>. Single-member LLC filing in progress. Available for clients globally, with strong preference for U.S. and U.S.-adjacent businesses. Taking on a small first cohort of external clients now — once slots are full, the next opening is the quarter after.</p>
+        </div>
+      </div>
+
+      <div class="caps-section">
+        <div class="caps-title">What I can build for you</div>
+        <div class="caps-grid">
+          <div class="cap-card">
+            <h5>AI agents &amp; workflows</h5>
+            <p>LLM-powered agents, prompt systems, RAG, custom GPTs, multi-step agentic workflows, AI infrastructure with human-in-the-loop guardrails.</p>
+          </div>
+          <div class="cap-card">
+            <h5>E-commerce systems</h5>
+            <p>Shopify, WooCommerce, SliceWP affiliate engines, Klaviyo/Resend flows, cart recovery, post-purchase journeys, subscription mechanics.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Automation &amp; integration</h5>
+            <p>Zapier, Make, n8n, custom webhooks, idempotent job queues, ETL pipelines, API design, third-party integration glue.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Dashboards &amp; control planes</h5>
+            <p>Next.js + FastAPI ops dashboards, command centers, founder leverage tooling, real-time monitoring, KPI surfaces.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Data &amp; analytics</h5>
+            <p>Database schema design, attribution systems, reporting, dashboards, data cleaning, structured ingestion pipelines.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Trading &amp; quant infra</h5>
+            <p>Signal pipelines, backtesting frameworks, broker API integrations (Schwab and others), paper-to-live infrastructure, risk controls.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Knowledge engines &amp; research</h5>
+            <p>Domain-specific search engines, content ingestion, structured data extraction, research-grade APIs, RAG-backed Q&amp;A.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Sales &amp; lead systems</h5>
+            <p>Lead capture, qualification, follow-up automation, CRM cleanup, outbound sequences, response-time compression.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Infrastructure &amp; DevOps</h5>
+            <p>Railway, Vercel, AWS, Postgres, Docker, deployment pipelines, monitoring, alerting, kill switches, log aggregation.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Content &amp; ops automation</h5>
+            <p>Generation pipelines, scheduling, distribution, SEO tooling, internal SOPs converted to one-click workflows.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Custom software</h5>
+            <p>Full-stack web apps, internal tools, APIs, mobile-responsive products, prototype-to-production with sane defaults.</p>
+          </div>
+          <div class="cap-card">
+            <h5>Strategy &amp; founder ops</h5>
+            <p>Audit frameworks, system design, scoping discipline, IP-aware methodology, founder-grade documentation that survives handoff.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="receipts">
+        <div class="receipts-label">Live receipts</div>
+        <div class="receipts-grid">
+          <div class="receipt-item"><strong>Founder &amp; CEO · OrbitRoute</strong>5 patents filed · 10,657 satellites · 12 AI engines</div>
+          <div class="receipt-item"><strong>CTO · active e-commerce brand</strong>Full stack: storefront, affiliates, email, analytics</div>
+          <div class="receipt-item"><strong>10+ production systems</strong>Shipped to Railway, Vercel, GitHub Pages</div>
+          <div class="receipt-item"><strong>+39.87% backtest</strong>Rumor Mill Bot · 122 trades · 93.4% win rate</div>
+          <div class="receipt-item"><strong>4,655 LOC</strong>Universal Analyst Engine · 9-table schema</div>
+          <div class="receipt-item"><strong>407 cameras · 5 domains · 90 entities</strong>Monitored 24/7 across Tally Cams + UAE</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-header-center" style="margin-bottom: 56px;">
+        <div class="section-eyebrow">Honest Answers</div>
+        <h2 class="section-h2">Questions I get on every first call.</h2>
+      </div>
+      <div class="faq">
+        <details class="faq-item">
+          <summary>Why $497? That seems low for what's included.</summary>
+          <p>Because the audit is the filter, not the product. The real revenue is in the sprint and retainer. $497 is engineered to filter tire-kickers without scaring serious buyers — the typical "AI audit" runs $2,000–$3,000 and many are vapor. If you can't justify $497 to find leaks in your business, we shouldn't work together yet.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How is this different from an AI agency?</summary>
+          <p>Three things. One: I run my own e-commerce brand, my own SaaS, my own routing API, my own trading research platform — I'm not selling a service I've never used. Two: every engagement starts with a paid audit, so I'm scoping against your real data. Three: I ship in 5 days, not 5 months. If you want a 30-page strategy deck, hire an agency. If you want a system live this week, hire me.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What if I don't have a clear AI problem to solve?</summary>
+          <p>That's exactly what the audit is for. Most buyers don't have an "AI problem" — they have a leverage problem, a workflow problem, or a data problem that AI happens to be the right tool for. The 5-lens audit finds the highest-leverage fixes whether they involve AI or not. I'll tell you what to <em>not</em> build with AI as often as I'll tell you what to build.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Who owns the code and the work product?</summary>
+          <p>You do, once you've paid in full. I retain the right to use anonymized methodology, scorecards, audit templates, and reusable code patterns — your data, your specific implementations, and your branded deliverables are yours. The contract spells this out cleanly.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do you offer revenue share?</summary>
+          <p>Sometimes. Only after we've worked together on at least a sprint, only when your reporting is clean enough to measure incremental revenue honestly, and only with a written addendum that locks the baseline at signing. 3–7% of incremental revenue, capped, 6–12 month term. It's the exception, not the default.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do you sign NDAs?</summary>
+          <p>Yes, mutual NDAs are standard before any deep-dive call. One-year confidentiality, standard carve-outs, Florida governing law. I'll send you one or sign yours.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What if my industry is regulated — healthcare, legal, finance?</summary>
+          <p>I work with vendors and operators adjacent to regulated industries (insurance agencies, healthcare suppliers, accounting firms) but I do not provide legal, medical, or financial advice and I don't touch protected health information. If your work product is the regulated thing itself, I'm probably not the right fit. The audit will tell us either way.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I see past client work?</summary>
+          <p>I'm intentionally honest: I'm taking on my first cohort of external clients now. My proof is the portfolio above — projects I've built, shipped, and operated myself. The first three clients to sign get a discounted sprint in exchange for being a case study. The audit itself tells you whether my pattern-matching translates to your business.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What's the refund policy on the audit?</summary>
+          <p>Full refund if I fail to deliver the audit and Loom within 5 business days of payment + completed intake. Otherwise non-refundable once the audit is delivered. Full terms in the audit agreement.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I actually pay?</summary>
+          <p>Right now: Zelle, wire transfer, or Venmo — your choice. After you submit intake, I review and send payment instructions by email. The audit clock starts when payment is confirmed. Card/Stripe checkout coming soon.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section>
+    <div class="container">
+      <div class="final-cta">
+        <h2>Find the leaks. Plug the biggest one this week.</h2>
+        <p>Start with a $497 audit. 48-hour turnaround. If you sign a sprint within 14 days, the audit cost credits toward the sprint price.</p>
+        <div class="final-cta-buttons">
+          <a href="intake/" class="btn btn-primary btn-lg">Start the $497 audit →</a>
+          <a href="mailto:clayton.camera@icloud.com?subject=Work%20With%20Clayton%20%E2%80%94%20question" class="btn btn-secondary btn-lg">Ask a question first</a>
+        </div>
+        <div class="final-cta-contact">
+          <span>Or reach me directly:</span>
+          <a href="tel:+14077668757">(407) 766-8757</a>
+          <span class="sep">·</span>
+          <a href="mailto:clayton.camera@icloud.com">clayton.camera@icloud.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-tagline">Built by <a href="https://loopholemaxing.com/">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
+        <div class="footer-links">
+          <a href="https://loopholemaxing.com/">All creations</a>
+          <a href="./">Work with Clayton</a>
+          <a href="intake/">Start audit</a>
+          <a href="tel:+14077668757">(407) 766-8757</a>
+          <a href="mailto:clayton.camera@icloud.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260616a" data-site="loopholemaxing"></script>
+</body>
+</html>
