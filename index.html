@@ -861,7 +861,9 @@
             Owners with revenue, real workflows, and a sense that money is leaking. Not for pre-revenue or pure ideation.
           </div>
 
-          <div class="offer-cta"><a href="intake/" class="btn btn-primary btn-block">Start the $497 audit →</a></div>
+          <div class="offer-cta"><a href="intake/" class="btn btn-primary btn-block">Start the $497 audit →</a>
+            <p style="margin-top:10px; font-size:12.5px; text-align:center;"><a data-stripe-audit href="#" target="_blank" rel="noopener" style="color: var(--green); font-weight:500;">Already submitted intake? Pay the $497 by card →</a></p>
+          </div>
         </div>
 
         <!-- SPRINT -->
@@ -1264,6 +1266,12 @@
     </div>
   </footer>
 
+  <script>
+    // Stripe Payment Link for the $497 audit — ONE line to swap (same pattern
+    // as WORK_WITH_URL on loopholemaxing.com).
+    var STRIPE_AUDIT_URL = 'https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b';
+    document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
+  </script>
   <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260616a" data-site="loopholemaxing"></script>
 </body>
 </html>

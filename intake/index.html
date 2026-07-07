@@ -340,13 +340,13 @@
         <span>Intake · Step 1 of 1</span>
       </div>
       <h1>Start your <span class="green">$497 Loophole Audit</span></h1>
-      <p class="lead">Fill this out so I can scope the audit accurately. I review every intake personally and reply within 24 hours with payment instructions. The 48-hour audit clock starts when payment is confirmed.</p>
+      <p class="lead">Fill this out so I can scope the audit accurately. I review every intake personally within 24 hours. Pay by card right after submitting to start the 48-hour clock immediately — or wait for my reply if you prefer Zelle, wire, or Venmo.</p>
     </div>
 
     <div class="stepper">
       <div class="step"><div class="step-num">1</div><div class="step-label">Submit intake</div></div>
       <div class="step"><div class="step-num">2</div><div class="step-label">Clayton reviews · 24 hrs</div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-label">Pay via Zelle / wire / Venmo</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-label">Pay by card · Zelle · wire</div></div>
       <div class="step"><div class="step-num">4</div><div class="step-label">Audit delivered · 48 hrs</div></div>
     </div>
 
@@ -597,7 +597,7 @@
         <div class="field">
           <label class="consent-label">
             <input type="checkbox" name="consent" required>
-            <span>I understand this is an intake submission, not a purchase. Clayton will review and reply with payment instructions within 24 hours. The audit clock starts when payment is confirmed via Zelle, wire, or Venmo.</span>
+            <span>I understand this is an intake submission, not a purchase. Clayton reviews every intake within 24 hours. The 48-hour audit clock starts when payment is confirmed — instantly if I pay by card after submitting, or on confirmation for Zelle, wire, or Venmo.</span>
           </label>
         </div>
       </div>
@@ -611,7 +611,7 @@
     <div class="success-banner" id="success">
       <div class="checkmark">✓</div>
       <h3>Intake received.</h3>
-      <p>Your email client should have opened with the intake summary. Send that email so I can review it. I'll confirm receipt and scope within 24 hours.</p>
+      <p>Your intake is in — it was sent to my CRM directly, and your email client should also have opened with a summary (send it if it did; belt and suspenders). I'll confirm scope within 24 hours.</p>
 
       <div class="pay-methods">
         <div class="pay-amount">
@@ -619,7 +619,8 @@
           <span class="pa-val"><span class="green">$497</span></span>
         </div>
 
-        <div class="pay-methods-label">Want to start the 48-hour clock now? Pay before I confirm.</div>
+        <a data-stripe-audit href="#" target="_blank" rel="noopener" class="btn btn-primary btn-block" style="margin-bottom:16px; text-align:center;">Pay $497 by card → starts the clock now</a>
+        <div class="pay-methods-label">Prefer no-fee transfers? These work too (clock starts when I confirm receipt):</div>
 
         <div class="pay-methods-row">
           <span class="pm-label">Zelle</span>
@@ -732,6 +733,24 @@
         lines.push('  ' + checkboxGroups[key].join(', '));
         lines.push('');
       });
+      // Durable capture: POST the intake to the HUB CRM first (fire-and-forget).
+      // The mailto below is the human-readable copy; this is the one that can't
+      // be lost to a missing mail client.
+      try {
+        fetch('https://hubapi.loopholemaxing.com/api/v1/leads/intake', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            business_name: form.company.value || form.name.value || 'Audit intake',
+            contact_name: form.name.value || '',
+            email: form.email.value,
+            phone: (form.phone && form.phone.value) || 'n/a',
+            current_website: (form.website && form.website.value) || null,
+            notes: 'WWC AUDIT INTAKE\n' + lines.join('\n')
+          })
+        }).catch(function () { /* mailto is the fallback */ });
+      } catch (err) { /* mailto is the fallback */ }
+
       var body = encodeURIComponent(lines.join('\n'));
       var subj = encodeURIComponent('Loophole Audit Intake — ' + (form.company.value || form.name.value || 'New submission'));
       var mailto = 'mailto:clayton.camera@icloud.com?subject=' + subj + '&body=' + body;
@@ -740,6 +759,11 @@
       document.getElementById('success').classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // ── Stripe Payment Link for the $497 audit. ONE line to swap (same
+    //    pattern as WORK_WITH_URL on loopholemaxing.com).
+    var STRIPE_AUDIT_URL = 'https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b';
+    document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
   </script>
 
   <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260616a" data-site="loopholemaxing"></script>
