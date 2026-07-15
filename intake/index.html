@@ -751,6 +751,10 @@
         }).catch(function () { /* mailto is the fallback */ });
       } catch (err) { /* mailto is the fallback */ }
 
+      try {
+        if (window.lmx && window.lmx.track) window.lmx.track('wwc_intake_submit', { company: form.company.value || '' });
+      } catch (err) { /* analytics is best-effort */ }
+
       var body = encodeURIComponent(lines.join('\n'));
       var subj = encodeURIComponent('Loophole Audit Intake — ' + (form.company.value || form.name.value || 'New submission'));
       var mailto = 'mailto:clayton.camera@icloud.com?subject=' + subj + '&body=' + body;
@@ -766,6 +770,6 @@
     document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
   </script>
 
-  <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260616a" data-site="loopholemaxing"></script>
+  <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260715a" data-site="workwithclayton"></script>
 </body>
 </html>
