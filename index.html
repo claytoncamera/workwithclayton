@@ -9,6 +9,73 @@
   <meta property="og:description" content="48-hour AI audit · 5-day build sprint · operator retainer. Built by the founder behind LoopholeMaxing, OrbitRoute, MMS Hub, and PeptiDex.">
   <meta property="og:url" content="https://workwithclayton.com/">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Work With Clayton">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Work With Clayton — AI Systems That Find Hidden Revenue">
+  <meta name="twitter:description" content="48-hour AI audit · 5-day build sprint · operator retainer. Built by Clayton Camera — founder behind LoopholeMaxing, OrbitRoute, and PeptiDex.">
+  <link rel="canonical" href="https://workwithclayton.com/">
+
+  <!-- ── Entity graph ─────────────────────────────────────────────────
+       This site is a SEPARATE domain but the SAME person. It references
+       the canonical Person @id hosted at loopholemaxing.com/clayton-camera/
+       so search engines merge the two properties into one entity rather
+       than treating them as unrelated. Do not mint a second Person @id
+       here — that would split the entity and waste the strongest signal
+       this domain has (it already ranks #1 for founder-name queries).
+       ────────────────────────────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://workwithclayton.com/#service",
+        "name": "Work With Clayton",
+        "url": "https://workwithclayton.com/",
+        "description": "AI systems, agents, automations, dashboards, and full-stack software that find hidden revenue and replace manual work. Fixed-fee audit, build sprint, or operator retainer.",
+        "founder": { "@id": "https://loopholemaxing.com/clayton-camera/#person" },
+        "provider": { "@id": "https://loopholemaxing.com/clayton-camera/#person" },
+        "areaServed": "US",
+        "availableLanguage": "en",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Orlando",
+          "addressRegion": "FL",
+          "addressCountry": "US"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://workwithclayton.com/#webpage",
+        "url": "https://workwithclayton.com/",
+        "name": "Work With Clayton — AI Systems That Find Hidden Revenue",
+        "about": { "@id": "https://loopholemaxing.com/clayton-camera/#person" },
+        "author": { "@id": "https://loopholemaxing.com/clayton-camera/#person" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://loopholemaxing.com/clayton-camera/#person",
+        "name": "Clayton Camera",
+        "givenName": "Clayton",
+        "familyName": "Camera",
+        "jobTitle": "Technical Founder & Systems Builder",
+        "url": "https://loopholemaxing.com/clayton-camera/",
+        "mainEntityOfPage": "https://loopholemaxing.com/clayton-camera/",
+        "description": "Technical founder who builds AI systems, autonomous agents, and full-stack software that find hidden revenue and automate operations.",
+        "sameAs": [
+          "https://github.com/claytoncamera",
+          "https://www.instagram.com/clayton_camera/",
+          "https://workwithclayton.com/",
+          "https://loopholemaxing.com/",
+          "https://www.orbitroute.ai",
+          "https://practicallynatty.com",
+          "https://www.thepeptidex.net",
+          "https://knockfiber.com"
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1254,8 +1321,12 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
-        <div class="footer-tagline">Built by <a href="https://loopholemaxing.com/">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
+        <!-- Anchor text is the exact name and it points at the canonical
+             person entity page — the strongest cross-domain signal this
+             site can send. Do not soften it to "here" or "the portfolio". -->
+        <div class="footer-tagline">Built by <a href="https://loopholemaxing.com/clayton-camera/">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
         <div class="footer-links">
+          <a href="https://loopholemaxing.com/clayton-camera/">About Clayton Camera</a>
           <a href="https://loopholemaxing.com/">All creations</a>
           <a href="./">Work with Clayton</a>
           <a href="intake/">Start audit</a>

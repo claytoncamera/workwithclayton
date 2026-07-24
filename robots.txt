@@ -1,0 +1,7 @@
+# workwithclayton.com — crawl policy
+# Everything here is public and meant to be indexed.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://workwithclayton.com/sitemap.xml
