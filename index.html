@@ -16,12 +16,21 @@
   <link rel="canonical" href="https://workwithclayton.com/">
 
   <!-- ── Entity graph ─────────────────────────────────────────────────
-       This site is a SEPARATE domain but the SAME person. It references
-       the canonical Person @id hosted at claytoncamera.com
-       so search engines merge the two properties into one entity rather
-       than treating them as unrelated. Do not mint a second Person @id
-       here — that would split the entity and waste the strongest signal
-       this domain has (it already ranks #1 for founder-name queries).
+       This site is a SEPARATE domain but the SAME person. It REFERENCES
+       the canonical Person @id hosted at claytoncamera.com so search
+       engines merge the two properties into one entity rather than
+       treating them as unrelated. Do not mint a second Person @id here —
+       that would split the entity and waste the strongest signal this
+       domain has (it already ranks #1 for founder-name queries).
+
+       And do not re-add the identity payload (givenName, image,
+       description, sameAs…). It lived here until 2026-07-28 and was a
+       standing drift hazard: the same facts existed in three repos, so
+       one profile URL changing meant a synchronized three-repo commit,
+       and any repo that missed it would state something different about
+       the same @id. The DEFINITION belongs to claytoncamera.com; every
+       new citation (Crunchbase, Gravatar, dev.to…) is now a ONE-file
+       edit there. Enforced by tests/seo-scan.sh.
        ────────────────────────────────────────────────────────────── -->
   <script type="application/ld+json">
   {
@@ -56,24 +65,9 @@
         "@type": "Person",
         "@id": "https://claytoncamera.com/#person",
         "name": "Clayton Camera",
-        "givenName": "Clayton",
-        "familyName": "Camera",
-        "jobTitle": "Technical Founder & Systems Builder",
         "url": "https://claytoncamera.com/",
-        "mainEntityOfPage": "https://claytoncamera.com/",
-        "image": "https://claytoncamera.com/assets/clayton-camera.jpg",
-        "description": "Technical founder who builds AI systems, autonomous agents, and full-stack software that find hidden revenue and automate operations.",
-        "sameAs": [
-          "https://www.linkedin.com/in/claytoncamera",
-          "https://github.com/claytoncamera",
-          "https://www.instagram.com/clayton_camera/",
-          "https://workwithclayton.com/",
-          "https://loopholemaxing.com/",
-          "https://www.orbitroute.ai",
-          "https://practicallynatty.com",
-          "https://www.thepeptidex.net",
-          "https://knockfiber.com"
-        ]
+        "jobTitle": "Technical Founder & Systems Builder",
+        "mainEntityOfPage": "https://claytoncamera.com/"
       }
     ]
   }

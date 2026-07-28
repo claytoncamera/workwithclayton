@@ -1,0 +1,19 @@
+name: SEO scan
+
+# This domain ranks #1 for founder-name queries and references the canonical
+# Person @id owned by claytoncamera.com. Both facts are invisible in the
+# rendered page and rot silently. This makes rot a red check.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  seo-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests/seo-scan.sh
+        run: bash tests/seo-scan.sh
