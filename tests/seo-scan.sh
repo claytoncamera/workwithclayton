@@ -153,6 +153,14 @@ grep -q '>Clayton Camera<' index.html \
   && ok "exact-match anchor text present" \
   || fail "exact-match anchor text 'Clayton Camera' is gone"
 
+# The byline on /intake/ said the name but pointed at loopholemaxing.com until
+# 2026-07-28 — exact-match anchor text spent on the wrong URL.
+if grep -q 'Built by <a href="https://claytoncamera.com/" rel="author"' intake/index.html; then
+  ok "/intake/ byline points at the entity with rel=author"
+else
+  fail "/intake/ byline no longer points at claytoncamera.com with rel=author"
+fi
+
 echo
 if [ "$FAILED" = "0" ]; then
   echo "ALL CHECKS PASSED"

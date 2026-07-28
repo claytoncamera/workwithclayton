@@ -655,7 +655,11 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-tagline">Built by <a href="https://loopholemaxing.com/" style="color: var(--text); font-weight: 500;">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
+      <!-- Exact-match anchor text must point at the person entity, not the
+           portfolio — an anchor that says the name and lands elsewhere spends
+           the strongest signal on the wrong URL. The separate "All creations"
+           link below still goes to loopholemaxing.com. -->
+      <div class="footer-tagline">Built by <a href="https://claytoncamera.com/" rel="author" style="color: var(--text); font-weight: 500;">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
       <div class="footer-links">
         <a href="https://loopholemaxing.com/">All creations</a>
         <a href="../">Work with Clayton</a>
