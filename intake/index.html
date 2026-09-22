@@ -146,11 +146,13 @@
     /* Stepper */
     .stepper {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 8px; margin-bottom: 32px; list-style: none;
+      gap: 6px; margin-bottom: 32px; list-style: none;
     }
+    /* 10px sides + a 6px gap give each 13px label one line at 4-up (151px) and
+       2-up on phones (154px at 390); narrower screens wrap after a separator. */
     .step {
       background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 14px;
+      border-radius: var(--radius-md); padding: 14px 10px;
       text-align: left;
     }
     .step-num {
@@ -160,6 +162,8 @@
       font-size: var(--fs-micro); font-weight: 700; margin-bottom: 8px;
     }
     .step-label { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+    /* When a label must wrap, it breaks after a separator, never inside "24 hrs". */
+    .step-label .nowrap { white-space: nowrap; }
     @media (max-width: 640px) { .stepper { grid-template-columns: repeat(2, 1fr); } }
 
     /* Form */
@@ -471,9 +475,9 @@
 
     <ol class="stepper">
       <li class="step"><div class="step-num">1</div><div class="step-label">Submit intake</div></li>
-      <li class="step"><div class="step-num">2</div><div class="step-label">Clayton reviews · 24 hrs</div></li>
-      <li class="step"><div class="step-num">3</div><div class="step-label">Pay by card · Zelle · wire</div></li>
-      <li class="step"><div class="step-num">4</div><div class="step-label">Audit delivered · 48 hrs</div></li>
+      <li class="step"><div class="step-num">2</div><div class="step-label">Clayton reviews · <span class="nowrap">24 hrs</span></div></li>
+      <li class="step"><div class="step-num">3</div><div class="step-label">Pay by card · <span class="nowrap">Zelle · wire</span></div></li>
+      <li class="step"><div class="step-num">4</div><div class="step-label">Audit delivered · <span class="nowrap">48 hrs</span></div></li>
     </ol>
 
     <form id="intake-form" autocomplete="on" novalidate>
@@ -734,7 +738,7 @@
       </div>
     </form>
 
-    <div class="success-banner" id="success" tabindex="-1" aria-labelledby="success-title">
+    <div class="success-banner" id="success" role="region" tabindex="-1" aria-labelledby="success-title">
       <div class="checkmark" aria-hidden="true">✓</div>
       <h2 id="success-title">Intake received.</h2>
       <p>Your intake is in — it was sent to my CRM directly, and your email client should also have opened with a summary (send it if it did; belt and suspenders). I'll confirm scope within 24 hours.</p>

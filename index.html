@@ -189,7 +189,7 @@
     .nav-toggle .i-close, .header.nav-open .nav-toggle .i-open { display: none; }
     .header.nav-open .nav-toggle .i-close { display: block; }
     @media (max-width: 720px) {
-      .header-inner { padding: 10px 20px; gap: 0 12px; flex-wrap: wrap; }
+      .header-inner { padding: 6px 20px; gap: 0 12px; flex-wrap: wrap; }
       .logo { line-height: 44px; }  /* 44px tap height, same row height */
       .header .cta-link { min-height: 44px; }
       .nav-toggle {
@@ -219,11 +219,11 @@
     }
     /* Keep logo + CTA + menu on one row down to 320px. */
     @media (max-width: 400px) {
-      .header-inner { padding: 10px 16px; gap: 0 10px; }
+      .header-inner { padding: 6px 16px; gap: 0 10px; }
       .header-actions { gap: 6px; }
     }
     @media (max-width: 359px) {
-      .header-inner { padding: 10px 12px; gap: 0 8px; }
+      .header-inner { padding: 6px 12px; gap: 0 8px; }
       .logo { font-size: 15px; }
       .header .cta-link { font-size: 13px; padding: 8px 12px; }
       .nav-toggle { width: 40px; }
@@ -552,14 +552,16 @@
       line-height: 1.3; color: var(--text); margin-bottom: 20px;
     }
     .offer-price {
-      display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; margin-bottom: 8px;
     }
     .offer-price .amount {
       font-size: 36px; font-weight: 700; letter-spacing: -0.025em;
-      color: var(--text); line-height: 1;
+      color: var(--text); line-height: 1; white-space: nowrap;
     }
     .offer-price .unit { font-size: 14px; color: var(--text-muted); font-weight: 500; }
     @media (max-width: 374px) { .offer-price .amount { font-size: 30px; } }
+    /* Narrow 3-up cards (961-1060px): a slightly smaller figure keeps "fixed" / "/ month" on the price line. */
+    @media (min-width: 961px) and (max-width: 1060px) { .offer-price .amount { font-size: 31px; } }
     .offer-timeline {
       font-size: 14px; color: var(--text-muted);
       padding-bottom: 20px; margin-bottom: 20px;
@@ -656,6 +658,24 @@
     .systems-grid > * { min-width: 0; }  /* long words (e.g. a/b/c/d lists) wrap instead of widening the track */
     .systems-grid > .system-card:last-child p,
     .systems-grid > .system-card:last-child .proves { max-width: 72ch; }
+    /* Desktop: the full-row last card uses its width, the story on the left and
+       what it proves on the right, split by a hairline. */
+    @media (min-width: 961px) {
+      .systems-grid > .system-card:last-child:nth-child(3n+1) {
+        display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+        grid-template-areas: "tag tag" "title title" "body proves" "body link";
+        grid-template-rows: auto auto auto 1fr; column-gap: 40px;
+      }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .system-tag-row { grid-area: tag; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > h3 { grid-area: title; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > p { grid-area: body; max-width: none; margin-bottom: 0; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .proves,
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .system-link {
+        max-width: none; margin: 0; padding-left: 28px; border-left: 1px solid var(--border-strong);
+      }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .proves { grid-area: proves; padding-top: 2px; padding-bottom: 14px; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .system-link { grid-area: link; align-self: stretch; align-items: flex-end; }
+    }
     .system-card {
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 24px;
@@ -911,22 +931,27 @@
     /* 44px hit area without changing the line box (the anchor markup is guard-asserted). */
     .footer-tagline a { color: var(--text); font-weight: 500; display: inline-block; padding-block: 12px; margin-block: -12px; }
     @media (max-width: 720px) {
-      .footer { padding-bottom: 88px; }  /* clears the back-to-top button */
+      .js .footer { padding-bottom: 88px; }  /* clears the back-to-top button */
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
       .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; width: 100%; }
     }
 
-    /* Back to top: phones only (desktop keeps the sticky nav for wayfinding). */
+    /* Back to top: phones only (desktop keeps the sticky nav for wayfinding).
+       The 1px light ring keeps its edge visible on dark surfaces; the script
+       hides it while the dark final-CTA card passes under it. */
     .to-top { display: none; }
     @media (max-width: 720px) {
       .to-top {
         position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom));
         width: 44px; height: 44px; border-radius: 50%; z-index: 90;
         display: flex; align-items: center; justify-content: center;
-        background: var(--text); color: #fff; box-shadow: var(--shadow-lg);
+        background: var(--text); color: #fff;
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.28), var(--shadow-lg);
         visibility: hidden; opacity: 0; transition: opacity 0.2s ease, visibility 0.2s ease;
       }
-      .to-top.is-visible, html:not(.js) .to-top { visibility: visible; opacity: 1; }
+      .to-top.is-visible { visibility: visible; opacity: 1; }
+      /* No JS: a plain link at the end of the footer instead of a floating button. */
+      html:not(.js) .to-top { position: static; visibility: visible; opacity: 1; margin-top: 16px; box-shadow: none; }
     }
 
     /* Utility */
@@ -1313,7 +1338,7 @@
     <div class="container">
       <div class="section-head">
         <div class="section-eyebrow">What I Actually Build</div>
-        <h2 class="section-h2">Four patterns I ship over and over.</h2>
+        <h2 class="section-h2">Four patterns <span class="nowrap">I ship</span> over and over.</h2>
         <p class="section-sub">Every sprint and retainer maps to one of these. Not invented — patterns I've shipped enough times to know what works and what doesn't.</p>
       </div>
       <div class="patterns-grid">
@@ -1346,7 +1371,7 @@
     <div class="container">
       <div class="section-header-center section-head">
         <div class="section-eyebrow">How It Works</div>
-        <h2 class="section-h2">Audit → Diagnose → Build → Operate.</h2>
+        <h2 class="section-h2"><span class="nowrap">Audit →</span> <span class="nowrap">Diagnose →</span> <span class="nowrap">Build →</span> Operate.</h2>
       </div>
       <div class="process-grid">
         <div class="process-step">
@@ -1549,10 +1574,10 @@
           <a href="mailto:clayton.camera@icloud.com">Email</a>
         </nav>
       </div>
+    <a href="#top" class="to-top" aria-label="Back to top"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
     </div>
   </footer>
 
-  <a href="#top" class="to-top" aria-label="Back to top"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
 
   <script>
     // Stripe Payment Link for the $497 audit — ONE line to swap (same pattern
@@ -1596,12 +1621,21 @@
         if (wide.addEventListener) wide.addEventListener('change', onWide); else if (wide.addListener) wide.addListener(onWide);
       }
 
-      // Back-to-top (phones): shown once the hero has scrolled out of view.
+      // Back-to-top (phones): shown once the hero has scrolled out of view,
+      // hidden while the dark final-CTA card is in the bottom strip of the
+      // screen where the button sits, so it never covers the $497 CTA.
       var toTop = document.querySelector('.to-top'), hero = document.querySelector('.hero');
+      var ctaCard = document.querySelector('.final-cta');
       if (toTop && hero && 'IntersectionObserver' in window) {
+        var pastHero = false, overCta = false;
+        var sync = function () { toTop.classList.toggle('is-visible', pastHero && !overCta); };
         new IntersectionObserver(function (entries) {
-          toTop.classList.toggle('is-visible', !entries[0].isIntersecting);
+          pastHero = !entries[entries.length - 1].isIntersecting; sync();
         }).observe(hero);
+        // Root = the bottom 12% of the viewport (>= the 60px + safe-area band the button uses).
+        if (ctaCard) new IntersectionObserver(function (entries) {
+          overCta = entries[entries.length - 1].isIntersecting; sync();
+        }, { rootMargin: '-88% 0px 0px 0px' }).observe(ctaCard);
       } else if (toTop) {
         toTop.classList.add('is-visible');
       }
