@@ -75,6 +75,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>document.documentElement.classList.add('js');</script>
   <style>
     /* ============================================
        WORK WITH CLAYTON — Venturekit-style design
@@ -140,30 +141,62 @@
     }
     .header-inner {
       max-width: 1200px; margin: 0 auto;
-      padding: 16px 32px;
+      padding: 9px 32px;
       display: flex; align-items: center; justify-content: space-between;
+      gap: 32px;
     }
     .logo {
       font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
       color: var(--text);
     }
     .logo span { color: var(--green-ink); }
+    .site-nav { margin-left: auto; }
     .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
     .nav-links a {
       font-size: 14px; font-weight: 500; color: var(--text-muted);
       transition: color 0.15s ease;
+      display: inline-flex; align-items: center; min-height: 40px;
     }
     .nav-links a:hover { color: var(--text); }
-    .nav-links a.cta-link {
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .header .cta-link {
+      display: inline-flex; align-items: center; min-height: 40px;
       background: var(--green-btn); color: var(--green-fg);
+      font-size: 14px; font-weight: 600;
       padding: 8px 16px; border-radius: var(--radius-md);
-      font-weight: 600;
+      transition: background 0.15s ease;
     }
-    .nav-links a.cta-link:hover { background: var(--green-btn-hover); color: var(--green-fg); }
+    .header .cta-link:hover { background: var(--green-btn-hover); color: var(--green-fg); }
+    .nav-toggle { display: none; }
+    .nav-toggle .i-close, .header.nav-open .nav-toggle .i-open { display: none; }
+    .header.nav-open .nav-toggle .i-close { display: block; }
     @media (max-width: 720px) {
-      .header-inner { padding: 14px 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a:not(.cta-link) { display: none; }
+      .header-inner { padding: 10px 20px; gap: 0 12px; flex-wrap: wrap; }
+      .header .cta-link { min-height: 44px; }
+      .nav-toggle {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 44px; height: 44px; padding: 0; cursor: pointer;
+        border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+        background: var(--bg); color: var(--text);
+      }
+      /* Phone menu: a dropdown panel under the sticky header. */
+      .js .site-nav {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-lg); padding: 4px 20px 12px;
+      }
+      .js .header.nav-open .site-nav { display: block; }
+      .js .site-nav .nav-links { flex-direction: column; align-items: stretch; gap: 0; }
+      .js .site-nav .nav-links a {
+        display: flex; min-height: 48px; font-size: 16px; color: var(--text);
+        border-bottom: 1px solid var(--border);
+      }
+      .js .site-nav .nav-links li:last-child a { border-bottom: none; }
+      /* No JS: the links stay visible as one wrapping row under the logo. */
+      html:not(.js) .nav-toggle { display: none; }
+      html:not(.js) .site-nav { order: 3; flex-basis: 100%; margin-left: 0; }
+      html:not(.js) .site-nav .nav-links { flex-direction: row; flex-wrap: wrap; gap: 0 18px; }
+      html:not(.js) .site-nav .nav-links a { min-height: 44px; font-size: 15px; }
     }
 
     /* ============== CONTAINER ============== */
@@ -755,13 +788,21 @@
   <header class="header">
     <div class="header-inner">
       <a href="/" class="logo">Work With <span>Clayton</span></a>
-      <ul class="nav-links">
-        <li><a href="#offers">Offers</a></li>
-        <li><a href="#systems">Proof</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="https://loopholemaxing.com/">Other Creations</a></li>
-        <li><a href="intake/" class="cta-link">Start audit →</a></li>
-      </ul>
+      <nav class="site-nav" id="primary-nav" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#offers">Offers</a></li>
+          <li><a href="#systems">Proof</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="https://loopholemaxing.com/">Other Creations</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="intake/" class="cta-link">Start audit →</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <svg class="i-open" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="i-close" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -1348,6 +1389,43 @@
     // as WORK_WITH_URL on loopholemaxing.com).
     var STRIPE_AUDIT_URL = 'https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b';
     document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
+  </script>
+  <script>
+    // Page UI only (no data, no tracking). Kept BEFORE the analytics tag:
+    // track.js falls back to the last <script> on the page to read data-site.
+    (function () {
+      // Phone menu (<= 720px): the header links collapse behind a toggle.
+      var header = document.querySelector('.header');
+      var toggle = header && header.querySelector('.nav-toggle');
+      if (toggle) {
+        var setOpen = function (open) {
+          header.classList.toggle('nav-open', open);
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        };
+        toggle.addEventListener('click', function (e) {
+          var open = !header.classList.contains('nav-open');
+          setOpen(open);
+          // Keyboard activation (detail 0): move focus into the menu.
+          if (open && e.detail === 0) { var first = header.querySelector('.site-nav a'); if (first) first.focus(); }
+        });
+        header.querySelectorAll('.site-nav a').forEach(function (a) {
+          a.addEventListener('click', function () { setOpen(false); });
+        });
+        document.addEventListener('keydown', function (e) {
+          if ((e.key === 'Escape' || e.key === 'Esc') && header.classList.contains('nav-open')) { setOpen(false); toggle.focus(); }
+        });
+        document.addEventListener('click', function (e) {
+          if (header.classList.contains('nav-open') && !header.contains(e.target)) setOpen(false);
+        });
+        header.addEventListener('focusout', function (e) {
+          if (e.relatedTarget && !header.contains(e.relatedTarget)) setOpen(false);
+        });
+        var wide = window.matchMedia('(min-width: 721px)');
+        var onWide = function () { if (wide.matches) setOpen(false); };
+        if (wide.addEventListener) wide.addEventListener('change', onWide); else if (wide.addListener) wide.addListener(onWide);
+      }
+    })();
   </script>
   <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260715a" data-site="workwithclayton"></script>
 </body>
