@@ -84,6 +84,16 @@
     }
     a { color: inherit; text-decoration: none; }
 
+    /* ACCESSIBILITY */
+    .skip-link {
+      position: absolute; left: 16px; top: -100px; z-index: 300;
+      background: var(--text); color: #fff; padding: 12px 16px;
+      border-radius: var(--radius-md); font-size: 15px; font-weight: 600;
+    }
+    .skip-link:focus { top: 12px; }
+    :focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+    main:focus, .success-banner:focus { outline: none; }
+
     /* HEADER */
     .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
     .header-inner { max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
@@ -119,7 +129,7 @@
     /* Stepper */
     .stepper {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 8px; margin-bottom: 32px;
+      gap: 8px; margin-bottom: 32px; list-style: none;
     }
     .step {
       background: var(--bg); border: 1px solid var(--border);
@@ -223,6 +233,10 @@
       background: var(--green-soft); border-color: var(--green); color: var(--green-hover);
     }
     .radio-row input[type="radio"] { accent-color: var(--green); margin: 0; }
+    /* Keyboard focus rings the whole pill (the native input itself has outline:none). */
+    .checkbox-group label:has(input:focus-visible),
+    .radio-row label:has(input:focus-visible),
+    .field .consent-label:has(input:focus-visible) { outline: 3px solid var(--green-ink); outline-offset: 2px; }
 
     /* Conditional */
     .conditional {
@@ -372,21 +386,32 @@
     .footer-links a { font-size: 13px; color: var(--text-muted); }
     .footer-links a:hover { color: var(--text); }
     .footer-tagline { font-size: 13px; color: var(--text-muted); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important; animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="header">
     <div class="header-inner">
       <a href="../" class="logo">Work With <span>Clayton</span></a>
-      <ul class="nav-links">
-        <li><a href="../">Back to overview</a></li>
-        <li><a href="https://loopholemaxing.com/">Other creations</a></li>
-      </ul>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="../">Back to overview</a></li>
+          <li><a href="https://loopholemaxing.com/">Other creations</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <div class="intake-wrap">
+  <main class="intake-wrap" id="main" tabindex="-1">
 
     <div class="intake-header">
       <div class="intake-badge">
@@ -396,41 +421,41 @@
       <p class="lead">Fill this out so I can scope the audit accurately. I review every intake personally within 24 hours. Pay by card right after submitting to start the 48-hour clock immediately — or wait for my reply if you prefer Zelle, wire, or Venmo.</p>
     </div>
 
-    <div class="stepper">
-      <div class="step"><div class="step-num">1</div><div class="step-label">Submit intake</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-label">Clayton reviews · 24 hrs</div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-label">Pay by card · Zelle · wire</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-label">Audit delivered · 48 hrs</div></div>
-    </div>
+    <ol class="stepper">
+      <li class="step"><div class="step-num">1</div><div class="step-label">Submit intake</div></li>
+      <li class="step"><div class="step-num">2</div><div class="step-label">Clayton reviews · 24 hrs</div></li>
+      <li class="step"><div class="step-num">3</div><div class="step-label">Pay by card · Zelle · wire</div></li>
+      <li class="step"><div class="step-num">4</div><div class="step-label">Audit delivered · 48 hrs</div></li>
+    </ol>
 
     <form id="intake-form" autocomplete="on" novalidate>
 
       <!-- 1: BUSINESS BASICS -->
       <div class="form-section">
-        <div class="form-section-title"><span class="num">1</span> Business basics</div>
+        <h2 class="form-section-title"><span class="num">1</span> Business basics</h2>
         <div class="field-grid-2">
           <div class="field">
-            <label>Your name <span class="req">*</span></label>
-            <input type="text" name="name" required autocomplete="name" placeholder="First Last">
+            <label for="f-name">Your name <span class="req">*</span></label>
+            <input type="text" name="name" id="f-name" required autocomplete="name" placeholder="First Last">
           </div>
           <div class="field">
-            <label>Best email <span class="req">*</span></label>
-            <input type="email" name="email" required autocomplete="email" placeholder="you@company.com">
+            <label for="f-email">Best email <span class="req">*</span></label>
+            <input type="email" name="email" id="f-email" required autocomplete="email" placeholder="you@company.com">
           </div>
         </div>
         <div class="field-grid-2">
           <div class="field">
-            <label>Company name <span class="req">*</span></label>
-            <input type="text" name="company" required autocomplete="organization" placeholder="Your business">
+            <label for="f-company">Company name <span class="req">*</span></label>
+            <input type="text" name="company" id="f-company" required autocomplete="organization" placeholder="Your business">
           </div>
           <div class="field">
-            <label>Company website <span class="req">*</span></label>
-            <input type="url" name="website" required autocomplete="url" placeholder="https://">
+            <label for="f-website">Company website <span class="req">*</span></label>
+            <input type="url" name="website" id="f-website" required autocomplete="url" placeholder="https://">
           </div>
         </div>
         <div class="field-grid-2">
           <div class="field">
-            <label>Industry <span class="req">*</span></label>
+            <label for="industry-select">Industry <span class="req">*</span></label>
             <select name="industry" id="industry-select" required>
               <option value="">Select one</option>
               <option value="ecommerce">E-commerce / DTC</option>
@@ -447,8 +472,8 @@
             </select>
           </div>
           <div class="field">
-            <label>Annual revenue range <span class="req">*</span></label>
-            <select name="revenue" required>
+            <label for="f-revenue">Annual revenue range <span class="req">*</span></label>
+            <select name="revenue" id="f-revenue" required>
               <option value="">Select one</option>
               <option value="pre">Pre-revenue</option>
               <option value="0-250k">Under $250K</option>
@@ -460,8 +485,8 @@
           </div>
         </div>
         <div class="field">
-          <label>Team size <span class="req">*</span></label>
-          <div class="radio-row">
+          <label id="lbl-team-size">Team size <span class="req">*</span></label>
+          <div class="radio-row" role="radiogroup" aria-labelledby="lbl-team-size">
             <label><input type="radio" name="team_size" value="1" required>Just me</label>
             <label><input type="radio" name="team_size" value="2-5">2–5</label>
             <label><input type="radio" name="team_size" value="6-15">6–15</label>
@@ -473,11 +498,11 @@
 
       <!-- 2: STACK -->
       <div class="form-section">
-        <div class="form-section-title"><span class="num">2</span> Your stack</div>
+        <h2 class="form-section-title"><span class="num">2</span> Your stack</h2>
         <div class="field">
-          <label>What tools and platforms do you use? <span class="req">*</span></label>
+          <label id="lbl-stack">What tools and platforms do you use? <span class="req">*</span></label>
           <p class="help" style="margin-bottom: 12px;">Check anything you actively use.</p>
-          <div class="checkbox-group">
+          <div class="checkbox-group" role="group" aria-labelledby="lbl-stack">
             <label><input type="checkbox" name="stack" value="shopify"> Shopify</label>
             <label><input type="checkbox" name="stack" value="woocommerce"> WooCommerce</label>
             <label><input type="checkbox" name="stack" value="wordpress"> WordPress</label>
@@ -503,49 +528,49 @@
           </div>
         </div>
         <div class="field">
-          <label>Anything else in your stack? <span class="opt">Optional</span></label>
-          <input type="text" name="stack_other" placeholder="e.g. SliceWP, Postscript, Recharge, Gorgias…">
+          <label for="f-stack-other">Anything else in your stack? <span class="opt">Optional</span></label>
+          <input type="text" name="stack_other" id="f-stack-other" placeholder="e.g. SliceWP, Postscript, Recharge, Gorgias…">
         </div>
       </div>
 
       <!-- 3: PROBLEMS -->
       <div class="form-section">
-        <div class="form-section-title"><span class="num">3</span> Top problems</div>
+        <h2 class="form-section-title"><span class="num">3</span> Top problems</h2>
         <div class="field">
-          <label>3 biggest problems you want solved <span class="req">*</span></label>
+          <label for="f-problem-1">3 biggest problems you want solved <span class="req">*</span></label>
           <p class="help" style="margin-bottom: 8px;">Be specific. "Slow lead follow-up" beats "marketing is hard."</p>
-          <textarea name="problem_1" required placeholder="Problem #1 — the one keeping you up at night"></textarea>
+          <textarea name="problem_1" id="f-problem-1" required placeholder="Problem #1 — the one keeping you up at night"></textarea>
         </div>
         <div class="field">
-          <textarea name="problem_2" placeholder="Problem #2 — the recurring time sink"></textarea>
+          <textarea name="problem_2" aria-label="Problem #2" placeholder="Problem #2 — the recurring time sink"></textarea>
         </div>
         <div class="field">
-          <textarea name="problem_3" placeholder="Problem #3 — the thing nobody on your team owns"></textarea>
+          <textarea name="problem_3" aria-label="Problem #3" placeholder="Problem #3 — the thing nobody on your team owns"></textarea>
         </div>
         <div class="field">
-          <label>Your #1 revenue goal in the next 90 days <span class="req">*</span></label>
-          <textarea name="revenue_goal" required placeholder="e.g. Add $25K/month from cart recovery; cut support response time in half; launch new product line"></textarea>
+          <label for="f-revenue-goal">Your #1 revenue goal in the next 90 days <span class="req">*</span></label>
+          <textarea name="revenue_goal" id="f-revenue-goal" required placeholder="e.g. Add $25K/month from cart recovery; cut support response time in half; launch new product line"></textarea>
         </div>
         <div class="field">
-          <label>Where do your leads come from? <span class="req">*</span></label>
-          <textarea name="lead_sources" required placeholder="Top 3 channels and rough mix (e.g. paid Meta 50%, organic SEO 30%, referrals 20%)"></textarea>
+          <label for="f-lead-sources">Where do your leads come from? <span class="req">*</span></label>
+          <textarea name="lead_sources" id="f-lead-sources" required placeholder="Top 3 channels and rough mix (e.g. paid Meta 50%, organic SEO 30%, referrals 20%)"></textarea>
         </div>
         <div class="field">
-          <label>Biggest manual time-sink in your week <span class="req">*</span></label>
-          <textarea name="time_sink" required placeholder="The recurring task that feels like it should be automated"></textarea>
+          <label for="f-time-sink">Biggest manual time-sink in your week <span class="req">*</span></label>
+          <textarea name="time_sink" id="f-time-sink" required placeholder="The recurring task that feels like it should be automated"></textarea>
         </div>
         <div class="field">
-          <label>What have you already tried that didn't work? <span class="opt">Optional</span></label>
-          <textarea name="failed_attempts" placeholder="Past consultants, agencies, tools, automations. Helps me avoid recommending things you've burned on."></textarea>
+          <label for="f-failed-attempts">What have you already tried that didn't work? <span class="opt">Optional</span></label>
+          <textarea name="failed_attempts" id="f-failed-attempts" placeholder="Past consultants, agencies, tools, automations. Helps me avoid recommending things you've burned on."></textarea>
         </div>
       </div>
 
       <!-- 4: ACCESS -->
       <div class="form-section">
-        <div class="form-section-title"><span class="num">4</span> Access willingness</div>
+        <h2 class="form-section-title" id="h-access"><span class="num">4</span> Access willingness</h2>
         <p class="help" style="margin-bottom: 12px;">For the audit I only need read-only access. Check what you're willing to share. Fewer just means the audit is less specific.</p>
         <div class="field">
-          <div class="checkbox-group">
+          <div class="checkbox-group" role="group" aria-labelledby="h-access">
             <label><input type="checkbox" name="access" value="analytics"> Read-only GA / analytics</label>
             <label><input type="checkbox" name="access" value="crm"> Read-only CRM export</label>
             <label><input type="checkbox" name="access" value="email"> Read-only email metrics</label>
@@ -559,78 +584,78 @@
 
       <!-- 5: INDUSTRY ADDENDA -->
       <div class="form-section">
-        <div class="form-section-title"><span class="num">5</span> Industry-specific</div>
+        <h2 class="form-section-title"><span class="num">5</span> Industry-specific</h2>
         <p class="help" style="margin-bottom: 12px;">These questions adjust based on the industry you selected above.</p>
 
         <div class="conditional" id="cond-ecommerce" data-for="ecommerce">
-          <div class="conditional-label">E-commerce / DTC</div>
+          <h3 class="conditional-label">E-commerce / DTC</h3>
           <div class="field-grid-2">
-            <div class="field"><label>Average order value <span class="opt">Optional</span></label><input type="text" name="ec_aov" placeholder="e.g. $87"></div>
-            <div class="field"><label>Repeat customer rate <span class="opt">Optional</span></label><input type="text" name="ec_repeat" placeholder="e.g. 28%"></div>
+            <div class="field"><label for="f-ec-aov">Average order value <span class="opt">Optional</span></label><input type="text" name="ec_aov" id="f-ec-aov" placeholder="e.g. $87"></div>
+            <div class="field"><label for="f-ec-repeat">Repeat customer rate <span class="opt">Optional</span></label><input type="text" name="ec_repeat" id="f-ec-repeat" placeholder="e.g. 28%"></div>
           </div>
           <div class="field-grid-2">
-            <div class="field"><label>Cart abandonment <span class="opt">Optional</span></label><input type="text" name="ec_cart" placeholder="e.g. 72% or 'no idea'"></div>
-            <div class="field"><label>SKUs in catalog <span class="opt">Optional</span></label><input type="text" name="ec_skus" placeholder="e.g. 24"></div>
+            <div class="field"><label for="f-ec-cart">Cart abandonment <span class="opt">Optional</span></label><input type="text" name="ec_cart" id="f-ec-cart" placeholder="e.g. 72% or 'no idea'"></div>
+            <div class="field"><label for="f-ec-skus">SKUs in catalog <span class="opt">Optional</span></label><input type="text" name="ec_skus" id="f-ec-skus" placeholder="e.g. 24"></div>
           </div>
-          <div class="field"><label>Best-performing channel right now <span class="opt">Optional</span></label><input type="text" name="ec_channel" placeholder="e.g. Meta retargeting"></div>
+          <div class="field"><label for="f-ec-channel">Best-performing channel right now <span class="opt">Optional</span></label><input type="text" name="ec_channel" id="f-ec-channel" placeholder="e.g. Meta retargeting"></div>
         </div>
 
         <div class="conditional" id="cond-services" data-for="services real_estate local_ht">
-          <div class="conditional-label">Services / local</div>
+          <h3 class="conditional-label">Services / local</h3>
           <div class="field-grid-2">
-            <div class="field"><label>Average job / ticket <span class="opt">Optional</span></label><input type="text" name="sv_avg" placeholder="e.g. $4,200"></div>
-            <div class="field"><label>Booked-to-quote ratio <span class="opt">Optional</span></label><input type="text" name="sv_close" placeholder="e.g. ~35%"></div>
+            <div class="field"><label for="f-sv-avg">Average job / ticket <span class="opt">Optional</span></label><input type="text" name="sv_avg" id="f-sv-avg" placeholder="e.g. $4,200"></div>
+            <div class="field"><label for="f-sv-close">Booked-to-quote ratio <span class="opt">Optional</span></label><input type="text" name="sv_close" id="f-sv-close" placeholder="e.g. ~35%"></div>
           </div>
           <div class="field-grid-2">
-            <div class="field"><label>Lead response time <span class="opt">Optional</span></label><input type="text" name="sv_response" placeholder="e.g. Same day"></div>
-            <div class="field"><label>Service area <span class="opt">Optional</span></label><input type="text" name="sv_area" placeholder="e.g. Tampa Bay metro"></div>
+            <div class="field"><label for="f-sv-response">Lead response time <span class="opt">Optional</span></label><input type="text" name="sv_response" id="f-sv-response" placeholder="e.g. Same day"></div>
+            <div class="field"><label for="f-sv-area">Service area <span class="opt">Optional</span></label><input type="text" name="sv_area" id="f-sv-area" placeholder="e.g. Tampa Bay metro"></div>
           </div>
-          <div class="field"><label>Crew / technician headcount <span class="opt">Optional</span></label><input type="text" name="sv_crew" placeholder="e.g. 6 techs + 2 dispatch"></div>
+          <div class="field"><label for="f-sv-crew">Crew / technician headcount <span class="opt">Optional</span></label><input type="text" name="sv_crew" id="f-sv-crew" placeholder="e.g. 6 techs + 2 dispatch"></div>
         </div>
 
         <div class="conditional" id="cond-saas" data-for="saas">
-          <div class="conditional-label">B2B SaaS</div>
+          <h3 class="conditional-label">B2B SaaS</h3>
           <div class="field-grid-2">
-            <div class="field"><label>MRR <span class="opt">Optional</span></label><input type="text" name="sa_mrr" placeholder="e.g. $32K"></div>
-            <div class="field"><label>Trial-to-paid <span class="opt">Optional</span></label><input type="text" name="sa_conv" placeholder="e.g. 8%"></div>
+            <div class="field"><label for="f-sa-mrr">MRR <span class="opt">Optional</span></label><input type="text" name="sa_mrr" id="f-sa-mrr" placeholder="e.g. $32K"></div>
+            <div class="field"><label for="f-sa-conv">Trial-to-paid <span class="opt">Optional</span></label><input type="text" name="sa_conv" id="f-sa-conv" placeholder="e.g. 8%"></div>
           </div>
           <div class="field-grid-2">
-            <div class="field"><label>Monthly churn <span class="opt">Optional</span></label><input type="text" name="sa_churn" placeholder="e.g. 4%"></div>
-            <div class="field"><label>Primary channel <span class="opt">Optional</span></label><input type="text" name="sa_channel" placeholder="e.g. Cold outbound + content"></div>
+            <div class="field"><label for="f-sa-churn">Monthly churn <span class="opt">Optional</span></label><input type="text" name="sa_churn" id="f-sa-churn" placeholder="e.g. 4%"></div>
+            <div class="field"><label for="f-sa-channel">Primary channel <span class="opt">Optional</span></label><input type="text" name="sa_channel" id="f-sa-channel" placeholder="e.g. Cold outbound + content"></div>
           </div>
-          <div class="field"><label>Ideal customer profile <span class="opt">Optional</span></label><input type="text" name="sa_icp" placeholder="e.g. Marketing managers at 10-50 person agencies"></div>
+          <div class="field"><label for="f-sa-icp">Ideal customer profile <span class="opt">Optional</span></label><input type="text" name="sa_icp" id="f-sa-icp" placeholder="e.g. Marketing managers at 10-50 person agencies"></div>
         </div>
 
         <div class="conditional" id="cond-agency" data-for="agency coaches recruiting prof_services">
-          <div class="conditional-label">Agency / consultancy / professional service</div>
+          <h3 class="conditional-label">Agency / consultancy / professional service</h3>
           <div class="field-grid-2">
-            <div class="field"><label>Average retainer <span class="opt">Optional</span></label><input type="text" name="ag_retainer" placeholder="e.g. $4,500/mo"></div>
-            <div class="field"><label>Active clients <span class="opt">Optional</span></label><input type="text" name="ag_clients" placeholder="e.g. 12 active"></div>
+            <div class="field"><label for="f-ag-retainer">Average retainer <span class="opt">Optional</span></label><input type="text" name="ag_retainer" id="f-ag-retainer" placeholder="e.g. $4,500/mo"></div>
+            <div class="field"><label for="f-ag-clients">Active clients <span class="opt">Optional</span></label><input type="text" name="ag_clients" id="f-ag-clients" placeholder="e.g. 12 active"></div>
           </div>
           <div class="field-grid-2">
-            <div class="field"><label>Average tenure <span class="opt">Optional</span></label><input type="text" name="ag_tenure" placeholder="e.g. 9 months"></div>
-            <div class="field"><label>How leads find you <span class="opt">Optional</span></label><input type="text" name="ag_leads" placeholder="e.g. Referrals + LinkedIn"></div>
+            <div class="field"><label for="f-ag-tenure">Average tenure <span class="opt">Optional</span></label><input type="text" name="ag_tenure" id="f-ag-tenure" placeholder="e.g. 9 months"></div>
+            <div class="field"><label for="f-ag-leads">How leads find you <span class="opt">Optional</span></label><input type="text" name="ag_leads" id="f-ag-leads" placeholder="e.g. Referrals + LinkedIn"></div>
           </div>
-          <div class="field"><label>Service you wish you didn't deliver <span class="opt">Optional</span></label><input type="text" name="ag_drop" placeholder="The one with the worst margin"></div>
+          <div class="field"><label for="f-ag-drop">Service you wish you didn't deliver <span class="opt">Optional</span></label><input type="text" name="ag_drop" id="f-ag-drop" placeholder="The one with the worst margin"></div>
         </div>
       </div>
 
       <!-- 6: WRAP UP -->
       <div class="form-section">
-        <div class="form-section-title"><span class="num">6</span> Wrap up</div>
+        <h2 class="form-section-title"><span class="num">6</span> Wrap up</h2>
         <div class="field">
-          <label>Loom video URL <span class="opt">Optional but encouraged</span></label>
-          <input type="url" name="loom" placeholder="https://www.loom.com/share/...">
-          <p class="help">A 3–5 min walkthrough of your business and what you want fixed. I record one back. Loom is free at <a href="https://loom.com" target="_blank" rel="noopener" style="color: var(--green-ink);">loom.com</a>.</p>
+          <label for="f-loom">Loom video URL <span class="opt">Optional but encouraged</span></label>
+          <input type="url" name="loom" id="f-loom" aria-describedby="f-loom-help" placeholder="https://www.loom.com/share/...">
+          <p class="help" id="f-loom-help">A 3–5 min walkthrough of your business and what you want fixed. I record one back. Loom is free at <a href="https://loom.com" target="_blank" rel="noopener" style="color: var(--green-ink);">loom.com</a>.</p>
         </div>
         <div class="field-grid-2">
           <div class="field">
-            <label>Phone for follow-up <span class="opt">Optional</span></label>
-            <input type="tel" name="phone" autocomplete="tel" placeholder="(555) 555-5555">
+            <label for="f-phone">Phone for follow-up <span class="opt">Optional</span></label>
+            <input type="tel" name="phone" id="f-phone" autocomplete="tel" placeholder="(555) 555-5555">
           </div>
           <div class="field">
-            <label>How did you find this page?</label>
-            <select name="source">
+            <label for="f-source">How did you find this page?</label>
+            <select name="source" id="f-source">
               <option value="">Select one</option>
               <option value="google">Google search</option>
               <option value="linkedin">LinkedIn</option>
@@ -644,8 +669,8 @@
           </div>
         </div>
         <div class="field">
-          <label>Anything else I should know? <span class="opt">Optional</span></label>
-          <textarea name="notes" placeholder="Context, constraints, dealbreakers, regulatory stuff, timeline pressure — whatever helps me scope this accurately."></textarea>
+          <label for="f-notes">Anything else I should know? <span class="opt">Optional</span></label>
+          <textarea name="notes" id="f-notes" placeholder="Context, constraints, dealbreakers, regulatory stuff, timeline pressure — whatever helps me scope this accurately."></textarea>
         </div>
         <div class="field">
           <label class="consent-label">
@@ -661,9 +686,9 @@
       </div>
     </form>
 
-    <div class="success-banner" id="success">
+    <div class="success-banner" id="success" tabindex="-1" aria-labelledby="success-title">
       <div class="checkmark" aria-hidden="true">✓</div>
-      <h2>Intake received.</h2>
+      <h2 id="success-title">Intake received.</h2>
       <p>Your intake is in — it was sent to my CRM directly, and your email client should also have opened with a summary (send it if it did; belt and suspenders). I'll confirm scope within 24 hours.</p>
 
       <div class="pay-methods">
@@ -699,11 +724,11 @@
     <div class="contact-strip">
       <span><strong>Direct contact:</strong></span>
       <a href="tel:+14077668757">(407) 766-8757</a>
-      <span class="sep">·</span>
+      <span class="sep" aria-hidden="true">·</span>
       <a href="mailto:clayton.camera@icloud.com">clayton.camera@icloud.com</a>
     </div>
 
-  </div>
+  </main>
 
   <footer class="footer">
     <div class="footer-inner">
@@ -712,12 +737,12 @@
            the strongest signal on the wrong URL. The separate "All creations"
            link below still goes to loopholemaxing.com. -->
       <div class="footer-tagline">Built by <a href="https://claytoncamera.com/" rel="author" style="color: var(--text); font-weight: 500;">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
-      <div class="footer-links">
+      <nav class="footer-links" aria-label="Footer">
         <a href="https://loopholemaxing.com/">All creations</a>
         <a href="../">Work with Clayton</a>
         <a href="tel:+14077668757">(407) 766-8757</a>
         <a href="mailto:clayton.camera@icloud.com">Email</a>
-      </div>
+      </nav>
     </div>
   </footer>
 
@@ -825,6 +850,22 @@
     //    pattern as WORK_WITH_URL on loopholemaxing.com).
     var STRIPE_AUDIT_URL = 'https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b';
     document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
+  </script>
+
+  <script>
+    // After a submit the handler above shows #success; move focus onto it so
+    // keyboard and screen-reader users land on the confirmation. Deliberately
+    // outside the submit handler, which stays byte-identical. Kept BEFORE the
+    // analytics tag (track.js falls back to the last <script> for data-site).
+    (function () {
+      var success = document.getElementById('success');
+      if (!success || !window.MutationObserver) return;
+      new MutationObserver(function () {
+        if (success.classList.contains('show')) {
+          try { success.focus({ preventScroll: true }); } catch (err) { /* focus is best-effort */ }
+        }
+      }).observe(success, { attributes: true, attributeFilter: ['class'] });
+    })();
   </script>
 
   <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260715a" data-site="workwithclayton"></script>
