@@ -46,12 +46,17 @@
       --bg-alt:      #fbfaf8;
       --bg-alt2:     #f5f2ef;
       --text:        #141414;
-      --text-muted:  #737373;
-      --text-warm:   #78716c;
+      --text-muted:  #666666;
+      --text-warm:   #6f6964;
       --green:       #219f67;
       --green-bright:#0bbe86;
       --green-hover: #127c4c;
+      /* AA companions to the brand green: --green stays for large display
+         text, dots, bars and borders; small text and button fills use these. */
       --green-ink:   #127c4c;
+      --green-btn:   #15804f;
+      --green-btn-hover: #0f6b41;
+      --placeholder: #78716c;
       --green-fg:    #fafafa;
       --green-soft:  #ecfdf5;
       --green-tint:  #d0fbe6;
@@ -83,7 +88,7 @@
     .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
     .header-inner { max-width: 1200px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
     .logo { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
-    .logo span { color: var(--green); }
+    .logo span { color: var(--green-ink); }
     .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
     .nav-links a { font-size: 14px; font-weight: 500; color: var(--text-muted); }
     .nav-links a:hover { color: var(--text); }
@@ -142,7 +147,7 @@
     .form-section:last-of-type { margin-bottom: 0; }
     .form-section-title {
       font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
-      text-transform: uppercase; color: var(--green);
+      text-transform: uppercase; color: var(--green-ink);
       margin-bottom: 16px; padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 8px;
@@ -175,9 +180,9 @@
     .field textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
     .field input:focus, .field select:focus, .field textarea:focus {
       outline: none; border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(33,159,103,0.15);
+      box-shadow: 0 0 0 3px rgba(33,159,103,0.28);
     }
-    .field input::placeholder, .field textarea::placeholder { color: #a8a29e; }
+    .field input::placeholder, .field textarea::placeholder { color: var(--placeholder); }
     .field-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 600px) { .field-grid-2 { grid-template-columns: 1fr; gap: 0; } }
     @media (max-width: 600px) { .field-grid-2 .field { margin-bottom: 20px; } }
@@ -264,8 +269,8 @@
       transition: all 0.15s ease; text-decoration: none;
       white-space: nowrap; line-height: 1;
     }
-    .btn-primary { background: var(--green); color: var(--green-fg); }
-    .btn-primary:hover { background: var(--green-hover); color: var(--green-fg); }
+    .btn-primary { background: var(--green-btn); color: var(--green-fg); }
+    .btn-primary:hover { background: var(--green-btn-hover); color: var(--green-fg); }
     .btn-secondary {
       background: var(--bg); color: var(--text);
       border-color: var(--border-strong);
@@ -352,7 +357,7 @@
     }
     .contact-strip strong { color: var(--text); font-weight: 600; }
     .contact-strip a { color: var(--text); font-weight: 500; }
-    .contact-strip a:hover { color: var(--green); }
+    .contact-strip a:hover { color: var(--green-ink); }
     .contact-strip .sep { color: var(--border-strong); }
 
     /* FOOTER */
@@ -616,7 +621,7 @@
         <div class="field">
           <label>Loom video URL <span class="opt">Optional but encouraged</span></label>
           <input type="url" name="loom" placeholder="https://www.loom.com/share/...">
-          <p class="help">A 3–5 min walkthrough of your business and what you want fixed. I record one back. Loom is free at <a href="https://loom.com" target="_blank" rel="noopener" style="color: var(--green);">loom.com</a>.</p>
+          <p class="help">A 3–5 min walkthrough of your business and what you want fixed. I record one back. Loom is free at <a href="https://loom.com" target="_blank" rel="noopener" style="color: var(--green-ink);">loom.com</a>.</p>
         </div>
         <div class="field-grid-2">
           <div class="field">

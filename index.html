@@ -87,11 +87,17 @@
       --bg-alt:      #fbfaf8;
       --bg-alt2:     #f5f2ef;
       --text:        #141414;
-      --text-muted:  #737373;
-      --text-warm:   #78716c;
+      --text-muted:  #666666;
+      --text-warm:   #6f6964;
       --green:       #219f67;
       --green-bright:#0bbe86;
       --green-hover: #127c4c;
+      /* AA companions to the brand green: --green stays for large display
+         text, dots, bars and borders; small text and button fills use these. */
+      --green-ink:   #127c4c;
+      --green-btn:   #15804f;
+      --green-btn-hover: #0f6b41;
+      --placeholder: #78716c;
       --green-fg:    #fafafa;
       --green-soft:  #ecfdf5;
       --green-tint:  #d0fbe6;
@@ -141,7 +147,7 @@
       font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
       color: var(--text);
     }
-    .logo span { color: var(--green); }
+    .logo span { color: var(--green-ink); }
     .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
     .nav-links a {
       font-size: 14px; font-weight: 500; color: var(--text-muted);
@@ -149,11 +155,11 @@
     }
     .nav-links a:hover { color: var(--text); }
     .nav-links a.cta-link {
-      background: var(--green); color: var(--green-fg);
+      background: var(--green-btn); color: var(--green-fg);
       padding: 8px 16px; border-radius: var(--radius-md);
       font-weight: 600;
     }
-    .nav-links a.cta-link:hover { background: var(--green-hover); color: var(--green-fg); }
+    .nav-links a.cta-link:hover { background: var(--green-btn-hover); color: var(--green-fg); }
     @media (max-width: 720px) {
       .header-inner { padding: 14px 20px; }
       .nav-links { gap: 16px; }
@@ -222,23 +228,23 @@
       background: transparent; color: var(--text);
       font-family: inherit;
     }
-    .hero-cta-pill input::placeholder { color: #a8a29e; }
+    .hero-cta-pill input::placeholder { color: var(--placeholder); }
     .hero-cta-pill .btn-pill {
-      background: var(--green); color: var(--green-fg);
+      background: var(--green-btn); color: var(--green-fg);
       border: none; border-radius: var(--radius-pill);
       padding: 10px 22px; font-size: 14px; font-weight: 600;
       cursor: pointer; transition: background 0.15s ease;
       font-family: inherit; white-space: nowrap;
       display: inline-flex; align-items: center; gap: 6px;
     }
-    .hero-cta-pill .btn-pill:hover { background: var(--green-hover); }
+    .hero-cta-pill .btn-pill:hover { background: var(--green-btn-hover); }
 
     .hero-cta-meta {
       font-size: 13px; color: var(--text-muted);
       display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
     }
     .hero-cta-meta span { display: inline-flex; align-items: center; gap: 6px; }
-    .hero-cta-meta .check { color: var(--green); font-weight: 600; }
+    .hero-cta-meta .check { color: var(--green-ink); font-weight: 600; }
 
     /* ============== HERO VISUAL — Audit Scorecard Mockup ============== */
     .hero-visual {
@@ -273,7 +279,7 @@
       font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
       color: var(--text); margin-bottom: 14px; line-height: 1.4;
     }
-    .scorecard-headline .green { color: var(--green); font-weight: 700; }
+    .scorecard-headline .green { color: var(--green-ink); font-weight: 700; }
 
     /* Lens rows */
     .lens-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
@@ -360,7 +366,7 @@
     /* ============== SECTION HEADER ============== */
     .section-eyebrow {
       font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-      color: var(--green); margin-bottom: 14px;
+      color: var(--green-ink); margin-bottom: 14px;
     }
     .section-h2 {
       font-size: clamp(30px, 4vw, 48px);
@@ -392,7 +398,7 @@
       margin-top: 12px;
       transition: color 0.15s ease;
     }
-    .text-link:hover { color: var(--green); }
+    .text-link:hover { color: var(--green-ink); }
     .text-link .arr { transition: transform 0.2s ease; }
     .text-link:hover .arr { transform: translateX(3px); }
 
@@ -425,14 +431,14 @@
     }
     .offer-badge {
       position: absolute; top: -10px; right: 20px;
-      background: var(--green); color: var(--green-fg);
+      background: var(--green-btn); color: var(--green-fg);
       font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
       padding: 5px 12px; border-radius: var(--radius-pill);
       text-transform: uppercase;
     }
     .offer-name {
       font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-      color: var(--green); margin-bottom: 10px; text-transform: uppercase;
+      color: var(--green-ink); margin-bottom: 10px; text-transform: uppercase;
     }
     .offer-promise {
       font-size: 19px; font-weight: 600; letter-spacing: -0.015em;
@@ -489,8 +495,8 @@
       transition: all 0.15s ease; text-decoration: none;
       white-space: nowrap; line-height: 1;
     }
-    .btn-primary { background: var(--green); color: var(--green-fg); }
-    .btn-primary:hover { background: var(--green-hover); color: var(--green-fg); }
+    .btn-primary { background: var(--green-btn); color: var(--green-fg); }
+    .btn-primary:hover { background: var(--green-btn-hover); color: var(--green-fg); }
     .btn-secondary {
       background: var(--bg); color: var(--text);
       border-color: var(--border-strong);
@@ -536,7 +542,7 @@
     .system-card .proves { font-size: 12px; color: var(--text-warm); margin-bottom: 14px; }
     .system-card .proves strong { color: var(--text); font-weight: 600; }
     .system-link {
-      font-size: 13px; font-weight: 600; color: var(--green);
+      font-size: 13px; font-weight: 600; color: var(--green-ink);
       display: inline-flex; align-items: center; gap: 4px;
     }
 
@@ -568,7 +574,7 @@
       padding: 28px; background: var(--bg-alt); border-radius: var(--radius-lg);
     }
     .process-num {
-      font-size: 13px; font-weight: 700; color: var(--green);
+      font-size: 13px; font-weight: 700; color: var(--green-ink);
       letter-spacing: 0.02em; margin-bottom: 10px;
     }
     .process-step h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 8px; }
@@ -616,7 +622,7 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
     }
     .faq-item p { font-size: 15px; color: var(--text-muted); line-height: 1.65; margin-top: 16px; max-width: 680px; }
-    .faq-item p a { color: var(--green); font-weight: 500; }
+    .faq-item p a { color: var(--green-ink); font-weight: 500; }
     .faq-item p a:hover { text-decoration: underline; }
 
     /* ============== ABOUT ============== */
@@ -644,7 +650,7 @@
     .caps-section { margin-top: 40px; }
     .caps-title {
       font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
-      text-transform: uppercase; color: var(--green);
+      text-transform: uppercase; color: var(--green-ink);
       margin-bottom: 20px;
     }
     .caps-grid {
@@ -736,7 +742,10 @@
     .footer-tagline a { color: var(--text); font-weight: 500; }
 
     /* Utility */
-    .green { color: var(--green); }
+    .green { color: var(--green-ink); }
+    /* Large display figures keep the bright brand green (AA large-text 3:1). */
+    .hero h1 .green, .stat-num .green, .sc-annot-val .green { color: var(--green); }
+    .ship-label { color: var(--green-ink); font-weight: 600; }
     .center { text-align: center; }
   </style>
 </head>
@@ -874,17 +883,17 @@
         <div class="feature-card">
           <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Revenue leaks they can't see</h4>
           <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Slow lead follow-up, missed upsells, broken attribution, no post-purchase journey, refund patterns nobody reads, churn that compounds silently, AI use cases nobody owns, and abandoned customer touchpoints.</p>
-          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A 48-hour audit with a dollar figure next to every leak, ranked by speed-to-cash.</p>
+          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong class="ship-label">I ship →</strong> A 48-hour audit with a dollar figure next to every leak, ranked by speed-to-cash.</p>
         </div>
         <div class="feature-card">
           <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Operations stuck on manual mode</h4>
           <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Owners pasting between tools, VAs running ten checklists, ops people regenerating the same report every Monday.</p>
-          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A 5-day build that replaces one workflow end-to-end with a system the team actually uses.</p>
+          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong class="ship-label">I ship →</strong> A 5-day build that replaces one workflow end-to-end with a system the team actually uses.</p>
         </div>
         <div class="feature-card">
           <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Data the team can't act on</h4>
           <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Dashboards nobody opens, exports that don't match, KPIs that change definition every quarter.</p>
-          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A single source of truth — built on tools you already own — that surfaces decisions, not noise.</p>
+          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong class="ship-label">I ship →</strong> A single source of truth — built on tools you already own — that surfaces decisions, not noise.</p>
         </div>
       </div>
     </div>
@@ -926,7 +935,7 @@
           </div>
 
           <div class="offer-cta"><a href="intake/" class="btn btn-primary btn-block">Start the $497 audit →</a>
-            <p style="margin-top:10px; font-size:12.5px; text-align:center;"><a data-stripe-audit href="#" target="_blank" rel="noopener" style="color: var(--green); font-weight:500;">Already submitted intake? Pay the $497 by card →</a></p>
+            <p style="margin-top:10px; font-size:12.5px; text-align:center;"><a data-stripe-audit href="#" target="_blank" rel="noopener" style="color: var(--green-ink); font-weight:500;">Already submitted intake? Pay the $497 by card →</a></p>
           </div>
         </div>
 
