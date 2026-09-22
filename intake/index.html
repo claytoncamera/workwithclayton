@@ -164,6 +164,11 @@
     .step-label { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
     /* When a label must wrap, it breaks after a separator, never inside "24 hrs". */
     .step-label .nowrap { white-space: nowrap; }
+    /* Where the card's text box fits the longest label in Inter (150.3px), hold one
+       line so the metric-matched fallback (up to 4px wider) cannot wrap it and then
+       reflow the form when Inter arrives; any spill stays inside the 10px padding. */
+    .step { container-type: inline-size; }
+    @container (min-width: 151px) { .step-label { white-space: nowrap; } }
     @media (max-width: 640px) { .stepper { grid-template-columns: repeat(2, 1fr); } }
 
     /* Form */
