@@ -124,8 +124,11 @@
 
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
+    /* Metric-matched fallback so the Inter swap does not reflow the hero; the range mirrors Inter's latin subset so glyphs Inter lacks (arrows, check marks) still fall through to the system font (desktop CLS 0.033 -> 0). */
+    @font-face { font-family: "Inter Fallback"; src: local("Arial"); ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; size-adjust: 107.4%;
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg); color: var(--text);
       line-height: 1.55; font-size: 16px; font-weight: 400;
       overflow-x: hidden;
