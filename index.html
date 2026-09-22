@@ -14,6 +14,7 @@
   <meta name="twitter:title" content="Work With Clayton — AI Systems That Find Hidden Revenue">
   <meta name="twitter:description" content="48-hour AI audit · 5-day build sprint · operator retainer. Built by Clayton Camera — founder behind OrbitRoute, KnockFiber, and PeptiDex.">
   <link rel="canonical" href="https://workwithclayton.com/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
   <!-- ── Entity graph ─────────────────────────────────────────────────
        This site is a SEPARATE domain but the SAME person. It REFERENCES
@@ -75,6 +76,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>document.documentElement.classList.add('js');</script>
   <style>
     /* ============================================
        WORK WITH CLAYTON — Venturekit-style design
@@ -87,11 +89,18 @@
       --bg-alt:      #fbfaf8;
       --bg-alt2:     #f5f2ef;
       --text:        #141414;
-      --text-muted:  #737373;
-      --text-warm:   #78716c;
+      --text-muted:  #666666;
+      --text-warm:   #6f6964;
       --green:       #219f67;
       --green-bright:#0bbe86;
       --green-hover: #127c4c;
+      /* AA companions to the brand green: --green stays for large display
+         text, dots, bars and borders; small text and button fills use these. */
+      --green-ink:   #127c4c;
+      --green-btn:   #15804f;
+      --green-btn-hover: #0f6b41;
+      --placeholder: #78716c;
+      --fs-micro:    12px;  /* floor for uppercase labels; 13px on phones */
       --green-fg:    #fafafa;
       --green-soft:  #ecfdf5;
       --green-tint:  #d0fbe6;
@@ -109,20 +118,36 @@
       --shadow-card: 0 0 30px -10px rgba(0,0,0,0.10);
       --shadow-lg:   0 20px 48px -16px rgba(0,0,0,0.12);
     }
+    @media (max-width: 500px) { :root { --fs-micro: 13px; } }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
+    /* Metric-matched fallback so the Inter swap does not reflow the hero; the range mirrors Inter's latin subset so glyphs Inter lacks (arrows, check marks) still fall through to the system font (desktop CLS 0.033 -> 0). */
+    @font-face { font-family: "Inter Fallback"; src: local("Arial"); ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; size-adjust: 107.4%;
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg); color: var(--text);
       line-height: 1.55; font-size: 16px; font-weight: 400;
       overflow-x: hidden;
     }
 
     img { max-width: 100%; height: auto; display: block; }
+    p { text-wrap: pretty; }
     a { color: inherit; text-decoration: none; }
+
+    /* ============== ACCESSIBILITY ============== */
+    .skip-link {
+      position: absolute; left: 16px; top: -100px; z-index: 300;
+      background: var(--text); color: #fff; padding: 12px 16px;
+      border-radius: var(--radius-md); font-size: 15px; font-weight: 600;
+    }
+    .skip-link:focus { top: 12px; }
+    :focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+    main:focus { outline: none; }
+    section[id], main { scroll-margin-top: 84px; }
 
     /* ============== HEADER ============== */
     .header {
@@ -134,30 +159,75 @@
     }
     .header-inner {
       max-width: 1200px; margin: 0 auto;
-      padding: 16px 32px;
+      padding: 9px 32px;
       display: flex; align-items: center; justify-content: space-between;
+      gap: 32px;
     }
     .logo {
       font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
       color: var(--text);
     }
-    .logo span { color: var(--green); }
+    .logo span { color: var(--green-ink); }
+    .site-nav { margin-left: auto; }
     .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
     .nav-links a {
       font-size: 14px; font-weight: 500; color: var(--text-muted);
       transition: color 0.15s ease;
+      display: inline-flex; align-items: center; min-height: 40px;
     }
     .nav-links a:hover { color: var(--text); }
-    .nav-links a.cta-link {
-      background: var(--green); color: var(--green-fg);
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .header .cta-link {
+      display: inline-flex; align-items: center; min-height: 40px;
+      background: var(--green-btn); color: var(--green-fg);
+      font-size: 14px; font-weight: 600;
       padding: 8px 16px; border-radius: var(--radius-md);
-      font-weight: 600;
+      transition: background 0.15s ease;
     }
-    .nav-links a.cta-link:hover { background: var(--green-hover); color: var(--green-fg); }
+    .header .cta-link:hover { background: var(--green-btn-hover); color: var(--green-fg); }
+    .nav-toggle { display: none; }
+    .nav-toggle .i-close, .header.nav-open .nav-toggle .i-open { display: none; }
+    .header.nav-open .nav-toggle .i-close { display: block; }
     @media (max-width: 720px) {
-      .header-inner { padding: 14px 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a:not(.cta-link) { display: none; }
+      .header-inner { padding: 6px 20px; gap: 0 12px; flex-wrap: wrap; }
+      .logo { line-height: 44px; }  /* 44px tap height, same row height */
+      .header .cta-link { min-height: 44px; }
+      .nav-toggle {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 44px; height: 44px; padding: 0; cursor: pointer;
+        border: 1px solid var(--border-strong); border-radius: var(--radius-md);
+        background: var(--bg); color: var(--text);
+      }
+      /* Phone menu: a dropdown panel under the sticky header. */
+      .js .site-nav {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-lg); padding: 4px 20px 12px;
+      }
+      .js .header.nav-open .site-nav { display: block; }
+      .js .site-nav .nav-links { flex-direction: column; align-items: stretch; gap: 0; }
+      .js .site-nav .nav-links a {
+        display: flex; min-height: 48px; font-size: 16px; color: var(--text);
+        border-bottom: 1px solid var(--border);
+      }
+      .js .site-nav .nav-links li:last-child a { border-bottom: none; }
+      /* No JS: the links stay visible as one wrapping row under the logo. */
+      html:not(.js) .nav-toggle { display: none; }
+      html:not(.js) .site-nav { order: 3; flex-basis: 100%; margin-left: 0; }
+      html:not(.js) .site-nav .nav-links { flex-direction: row; flex-wrap: wrap; gap: 0 18px; }
+      html:not(.js) .site-nav .nav-links a { min-height: 44px; font-size: 15px; }
+    }
+    /* Keep logo + CTA + menu on one row down to 320px. */
+    @media (max-width: 400px) {
+      .header-inner { padding: 6px 16px; gap: 0 10px; }
+      .header-actions { gap: 6px; }
+    }
+    @media (max-width: 359px) {
+      .header-inner { padding: 6px 12px; gap: 0 8px; }
+      .logo { font-size: 15px; }
+      .header .cta-link { font-size: 13px; padding: 8px 12px; }
+      .nav-toggle { width: 40px; }
+      .header-actions { gap: 4px; }
     }
 
     /* ============== CONTAINER ============== */
@@ -169,12 +239,18 @@
     section.tight { padding: 64px 0; }
     section.beige { background: var(--bg-alt); }
     section.beige-dark { background: var(--bg-alt2); }
-    @media (max-width: 720px) { section { padding: 64px 0; } }
+    section.final-cta-section { padding-top: 0; }
+    @media (min-width: 721px) { section.tight + section { padding-top: 64px; } }
+    @media (max-width: 720px) {
+      section { padding: 56px 0; }
+      section.tight { padding: 40px 0; }
+    }
 
     /* ============== HERO ============== */
     .hero {
-      padding-top: 80px; padding-bottom: 80px;
+      padding-top: 40px; padding-bottom: 72px;
     }
+    @media (max-width: 720px) { .hero { padding: 32px 0 48px; } }
     .hero-grid {
       display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
       gap: 64px; align-items: center;
@@ -188,7 +264,7 @@
       background: var(--green-soft); color: var(--green-hover);
       font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
       padding: 6px 14px; border-radius: var(--radius-pill);
-      margin-bottom: 28px;
+      margin-bottom: 20px;
       border: 1px solid var(--green-tint);
     }
     .hero-badge .dot {
@@ -197,13 +273,20 @@
     }
 
     .hero h1 {
-      font-size: clamp(40px, 5.5vw, 64px);
-      font-weight: 700; letter-spacing: -0.025em; line-height: 1.05;
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 700; letter-spacing: -0.025em; line-height: 1.06;
       color: var(--text); margin-bottom: 24px;
+      text-wrap: balance;
     }
     .hero p.lead {
-      font-size: 19px; color: var(--text-muted); line-height: 1.55;
-      margin-bottom: 32px; max-width: 540px;
+      font-size: clamp(17px, 1.2vw + 12px, 19px); color: var(--text-muted); line-height: 1.55;
+      margin-bottom: 28px; max-width: 540px;
+    }
+    /* Short laptop screens (1280x720, 1536x730): keep the CTA above the fold. */
+    @media (min-width: 961px) and (max-height: 820px) {
+      .hero { padding-top: 24px; }
+      .hero h1 { font-size: clamp(34px, 4.4vw, 50px); margin-bottom: 20px; }
+      .hero p.lead { margin-bottom: 24px; }
     }
 
     /* Pill input + button combo */
@@ -218,27 +301,34 @@
     .hero-cta-pill input { min-width: 0; }
     .hero-cta-pill input {
       flex: 1; border: none; outline: none;
-      padding: 10px 18px; font-size: 15px;
+      padding: 10px 18px; font-size: 16px; min-height: 44px;
       background: transparent; color: var(--text);
       font-family: inherit;
     }
-    .hero-cta-pill input::placeholder { color: #a8a29e; }
+    .hero-cta-pill input::placeholder { color: var(--placeholder); }
+    .hero-cta-pill:focus-within { border-color: var(--green); box-shadow: 0 0 0 3px rgba(33,159,103,0.22); }
     .hero-cta-pill .btn-pill {
-      background: var(--green); color: var(--green-fg);
+      background: var(--green-btn); color: var(--green-fg);
       border: none; border-radius: var(--radius-pill);
-      padding: 10px 22px; font-size: 14px; font-weight: 600;
+      padding: 10px 22px; font-size: 15px; font-weight: 600; min-height: 44px;
       cursor: pointer; transition: background 0.15s ease;
       font-family: inherit; white-space: nowrap;
       display: inline-flex; align-items: center; gap: 6px;
     }
-    .hero-cta-pill .btn-pill:hover { background: var(--green-hover); }
+    .hero-cta-pill .btn-pill:hover { background: var(--green-btn-hover); }
+    @media (max-width: 480px) {
+      /* Stack the pill on phones so the email field is full width. */
+      .hero-cta-pill { flex-direction: column; align-items: stretch; border-radius: var(--radius-xl); gap: 6px; }
+      .hero-cta-pill input { padding: 12px 14px; }
+      .hero-cta-pill .btn-pill { justify-content: center; min-height: 48px; font-size: 16px; }
+    }
 
     .hero-cta-meta {
-      font-size: 13px; color: var(--text-muted);
-      display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
+      font-size: 14px; color: var(--text-muted);
+      display: flex; gap: 8px 18px; flex-wrap: wrap; align-items: center;
     }
     .hero-cta-meta span { display: inline-flex; align-items: center; gap: 6px; }
-    .hero-cta-meta .check { color: var(--green); font-weight: 600; }
+    .hero-cta-meta .check { color: var(--green-ink); font-weight: 600; }
 
     /* ============== HERO VISUAL — Audit Scorecard Mockup ============== */
     .hero-visual {
@@ -253,18 +343,19 @@
     }
     .scorecard-header {
       display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px 12px;
       padding-bottom: 14px; margin-bottom: 16px;
       border-bottom: 1px solid var(--border);
     }
     .scorecard-title {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      font-size: var(--fs-micro); font-weight: 700; letter-spacing: 0.06em;
       text-transform: uppercase; color: var(--text-muted);
     }
     .scorecard-status {
       display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 600; color: var(--green-hover);
+      font-size: var(--fs-micro); font-weight: 600; color: var(--green-hover);
       background: var(--green-soft); padding: 4px 10px;
-      border-radius: var(--radius-pill);
+      border-radius: var(--radius-pill); white-space: nowrap;
     }
     .scorecard-status .dot {
       width: 5px; height: 5px; border-radius: 50%; background: var(--green);
@@ -273,7 +364,7 @@
       font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
       color: var(--text); margin-bottom: 14px; line-height: 1.4;
     }
-    .scorecard-headline .green { color: var(--green); font-weight: 700; }
+    .scorecard-headline .green { color: var(--green-ink); font-weight: 700; }
 
     /* Lens rows */
     .lens-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
@@ -283,7 +374,7 @@
       padding: 10px 12px; background: var(--bg-alt);
       border-radius: var(--radius-md);
     }
-    .lens-name { font-size: 12px; font-weight: 500; color: var(--text); }
+    .lens-name { font-size: 13px; font-weight: 500; color: var(--text); }
     .lens-bar {
       width: 90px; height: 5px; background: var(--border);
       border-radius: 999px; overflow: hidden; position: relative;
@@ -293,7 +384,7 @@
       background: var(--green); border-radius: 999px;
     }
     .lens-score {
-      font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums;
+      font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;
       color: var(--text); min-width: 28px; text-align: right;
     }
     .lens-row.weak .lens-bar-fill { background: #f59e0b; }
@@ -302,7 +393,7 @@
     .scorecard-finding {
       background: var(--green-soft); border-left: 3px solid var(--green);
       border-radius: var(--radius-md); padding: 12px 14px;
-      font-size: 12px; line-height: 1.5; color: var(--text);
+      font-size: 13px; line-height: 1.5; color: var(--text);
     }
     .scorecard-finding strong { color: var(--green-hover); font-weight: 700; }
 
@@ -318,20 +409,29 @@
       box-shadow: var(--shadow-sm);
     }
     .sc-annot-val {
-      font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
-      color: var(--text); line-height: 1.1; margin-bottom: 4px;
+      font-size: 20px; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--text); line-height: 1.1; margin-bottom: 4px; white-space: nowrap;
     }
     .sc-annot-val .green { color: var(--green); }
     .sc-annot-lbl {
-      font-size: 11px; color: var(--text-muted); font-weight: 500;
+      font-size: var(--fs-micro); color: var(--text-muted); font-weight: 500;
       letter-spacing: 0.02em;
     }
     @media (max-width: 960px) {
       .hero-visual { margin: 0 auto; max-width: 500px; }
     }
+    @media (max-width: 720px) {
+      .lens-name, .lens-score, .scorecard-finding { font-size: 14px; }
+    }
     @media (max-width: 480px) {
-      .scorecard-annotations { grid-template-columns: 1fr 1fr; }
-      .sc-annot:nth-child(3) { grid-column: 1 / -1; }
+      .scorecard { padding: 18px; }
+      .lens-row { padding: 10px; }
+      .lens-bar { width: 64px; }
+      .scorecard-annotations { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .sc-annot { padding: 12px 6px; }
+    }
+    @media (max-width: 374px) {
+      .scorecard-annotations { grid-template-columns: 1fr; }
     }
 
     /* ============== LOGOS / PROOF STRIP ============== */
@@ -340,38 +440,44 @@
       background: var(--bg);
     }
     .proof-strip-label {
-      font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+      font-size: var(--fs-micro); font-weight: 600; letter-spacing: 0.08em;
       text-transform: uppercase; color: var(--text-muted);
       text-align: center; margin-bottom: 20px;
     }
     .proof-strip-items {
       display: flex; justify-content: center; align-items: center;
-      gap: 56px; flex-wrap: wrap;
+      gap: 56px; flex-wrap: wrap; list-style: none;
     }
-    .proof-strip-items span {
+    .proof-strip-items li {
       font-size: 15px; font-weight: 600; color: var(--text-warm);
       letter-spacing: -0.01em;
     }
     @media (max-width: 720px) {
-      .proof-strip-items { gap: 28px; }
-      .proof-strip-items span { font-size: 14px; }
+      .proof-strip { padding: 28px 0; }
+      .proof-strip-items { gap: 10px 22px; }
+      .proof-strip-items li { font-size: 14px; }
     }
 
     /* ============== SECTION HEADER ============== */
     .section-eyebrow {
       font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-      color: var(--green); margin-bottom: 14px;
+      color: var(--green-ink); margin-bottom: 14px;
     }
     .section-h2 {
       font-size: clamp(30px, 4vw, 48px);
       font-weight: 700; letter-spacing: -0.025em; line-height: 1.1;
       color: var(--text); margin-bottom: 20px; max-width: 720px;
+      text-wrap: balance;
     }
     .section-sub {
       font-size: 18px; color: var(--text-muted); line-height: 1.55;
       max-width: 640px;
     }
+    @media (max-width: 720px) { .section-sub { font-size: 17px; } }
     .section-header-center { text-align: center; }
+    .section-head { margin-bottom: 56px; }
+    .section-head--tight { margin-bottom: 48px; }
+    @media (max-width: 720px) { .section-head, .section-head--tight { margin-bottom: 36px; } }
     .section-header-center .section-h2,
     .section-header-center .section-sub { margin-left: auto; margin-right: auto; }
 
@@ -392,7 +498,7 @@
       margin-top: 12px;
       transition: color 0.15s ease;
     }
-    .text-link:hover { color: var(--green); }
+    .text-link:hover { color: var(--green-ink); }
     .text-link .arr { transition: transform 0.2s ease; }
     .text-link:hover .arr { transform: translateX(3px); }
 
@@ -402,6 +508,13 @@
       box-shadow: var(--shadow-card);
     }
     .feature-card.beige-on-white { background: var(--bg-alt); }
+    .gap-card h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px; }
+    .gap-card p { font-size: 15px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+    .gap-card p.ship { color: var(--text); margin-bottom: 0; }
+    @media (max-width: 720px) {
+      .feature-card { padding: 24px; }
+      .gap-card p { font-size: 16px; }
+    }
 
     /* ============== OFFER CARDS ============== */
     .offers-grid {
@@ -418,51 +531,54 @@
       position: relative;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .offer-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .offer-card:hover { box-shadow: var(--shadow-lg); }
     .offer-card.featured {
       border: 1px solid var(--green); background: var(--bg);
       box-shadow: 0 0 0 1px var(--green-tint), 0 24px 48px -16px rgba(33,159,103,0.18);
     }
     .offer-badge {
       position: absolute; top: -10px; right: 20px;
-      background: var(--green); color: var(--green-fg);
-      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      background: var(--green-btn); color: var(--green-fg);
+      font-size: var(--fs-micro); font-weight: 700; letter-spacing: 0.04em;
       padding: 5px 12px; border-radius: var(--radius-pill);
       text-transform: uppercase;
     }
     .offer-name {
       font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-      color: var(--green); margin-bottom: 10px; text-transform: uppercase;
+      color: var(--green-ink); margin-bottom: 10px; text-transform: uppercase;
     }
     .offer-promise {
       font-size: 19px; font-weight: 600; letter-spacing: -0.015em;
       line-height: 1.3; color: var(--text); margin-bottom: 20px;
     }
     .offer-price {
-      display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px;
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 6px; margin-bottom: 8px;
     }
     .offer-price .amount {
       font-size: 36px; font-weight: 700; letter-spacing: -0.025em;
-      color: var(--text); line-height: 1;
+      color: var(--text); line-height: 1; white-space: nowrap;
     }
     .offer-price .unit { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+    @media (max-width: 374px) { .offer-price .amount { font-size: 30px; } }
+    /* Narrow 3-up cards (961-1060px): a slightly smaller figure keeps "fixed" / "/ month" on the price line. */
+    @media (min-width: 961px) and (max-width: 1060px) { .offer-price .amount { font-size: 31px; } }
     .offer-timeline {
-      font-size: 13px; color: var(--text-muted);
+      font-size: 14px; color: var(--text-muted);
       padding-bottom: 20px; margin-bottom: 20px;
       border-bottom: 1px solid var(--border);
     }
     .offer-includes-label {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      font-size: var(--fs-micro); font-weight: 600; letter-spacing: 0.06em;
       text-transform: uppercase; color: var(--text-muted);
       margin-bottom: 12px;
     }
     .offer-includes { list-style: none; margin-bottom: 24px; }
     .offer-includes li {
-      font-size: 14px; color: var(--text); line-height: 1.55;
+      font-size: 15px; color: var(--text); line-height: 1.55;
       padding-left: 24px; position: relative; margin-bottom: 10px;
     }
     .offer-includes li::before {
-      content: ""; position: absolute; left: 0; top: 7px;
+      content: ""; position: absolute; left: 0; top: 0.38em;
       width: 14px; height: 14px;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23219f67' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-size: contain;
@@ -474,11 +590,30 @@
       margin-bottom: 24px;
     }
     .offer-fitfor strong {
-      display: block; font-size: 11px; font-weight: 600;
+      display: block; font-size: var(--fs-micro); font-weight: 600;
       letter-spacing: 0.06em; text-transform: uppercase;
       color: var(--text); margin-bottom: 4px;
     }
-    .offer-cta { margin-top: auto; }
+    .offer-cta { margin-top: auto; display: flex; flex-direction: column; }
+    .offer-paylink { margin-top: 8px; text-align: center; font-size: 14px; text-wrap: balance; }
+    .offer-paylink a {
+      display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+      color: var(--green-ink); font-weight: 500;
+      text-decoration: underline; text-underline-offset: 3px;
+    }
+    /* Desktop: one shared row grid across the three cards, so prices,
+       'Best fit for' panels and CTA buttons line up (flex layout is the fallback). */
+    @media (min-width: 961px) {
+      @supports (grid-template-rows: subgrid) {
+        .offer-card { display: grid; grid-row: span 8; grid-template-rows: subgrid; row-gap: 0; }
+        .offer-cta { margin-top: 0; align-self: start; }
+      }
+    }
+    @media (max-width: 720px) {
+      .offer-card { padding: 24px; }
+      .offer-includes li { font-size: 16px; }
+      .offer-fitfor { font-size: 15px; }
+    }
 
     /* Buttons */
     .btn {
@@ -487,17 +622,17 @@
       padding: 11px 22px; border-radius: var(--radius-md);
       border: 1px solid transparent; cursor: pointer;
       transition: all 0.15s ease; text-decoration: none;
-      white-space: nowrap; line-height: 1;
+      white-space: nowrap; line-height: 1; min-height: 44px;
     }
-    .btn-primary { background: var(--green); color: var(--green-fg); }
-    .btn-primary:hover { background: var(--green-hover); color: var(--green-fg); }
+    .btn-primary { background: var(--green-btn); color: var(--green-fg); }
+    .btn-primary:hover { background: var(--green-btn-hover); color: var(--green-fg); }
     .btn-secondary {
       background: var(--bg); color: var(--text);
       border-color: var(--border-strong);
     }
     .btn-secondary:hover { border-color: var(--text); }
     .btn-block { width: 100%; justify-content: center; }
-    .btn-lg { font-size: 16px; padding: 14px 28px; }
+    .btn-lg { font-size: 16px; padding: 14px 28px; min-height: 52px; }
 
     /* Rev-share mini card */
     .revshare {
@@ -506,9 +641,10 @@
       border-radius: var(--radius-xl); padding: 28px;
       display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
     }
-    @media (max-width: 720px) { .revshare { grid-template-columns: 1fr; gap: 16px; } }
-    .revshare h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--text); }
-    .revshare p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+    @media (max-width: 720px) { .revshare { grid-template-columns: 1fr; gap: 16px; padding: 22px; } }
+    .revshare h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 6px; color: var(--text); }
+    .revshare p { font-size: 15px; color: var(--text-muted); line-height: 1.55; }
+    @media (max-width: 720px) { .revshare p { font-size: 16px; } }
 
     /* ============== SYSTEMS GRID ============== */
     .systems-grid {
@@ -516,28 +652,61 @@
     }
     @media (max-width: 960px) { .systems-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 640px) { .systems-grid { grid-template-columns: 1fr; } }
+    /* A last card left alone on its row takes the full row. */
+    @media (min-width: 961px) { .systems-grid > :last-child:nth-child(3n+1) { grid-column: 1 / -1; } }
+    @media (min-width: 641px) and (max-width: 960px) { .systems-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
+    .systems-grid > * { min-width: 0; }  /* long words (e.g. a/b/c/d lists) wrap instead of widening the track */
+    .systems-grid > .system-card:last-child p,
+    .systems-grid > .system-card:last-child .proves { max-width: 72ch; }
+    /* Desktop: the full-row last card uses its width, the story on the left and
+       what it proves on the right, split by a hairline. */
+    @media (min-width: 961px) {
+      .systems-grid > .system-card:last-child:nth-child(3n+1) {
+        display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+        grid-template-areas: "tag tag" "title title" "body proves" "body link";
+        grid-template-rows: auto auto auto 1fr; column-gap: 40px;
+      }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .system-tag-row { grid-area: tag; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > h3 { grid-area: title; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > p { grid-area: body; max-width: none; margin-bottom: 0; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .proves,
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .system-link {
+        max-width: none; margin: 0; padding-left: 28px; border-left: 1px solid var(--border-strong);
+      }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .proves { grid-area: proves; padding-top: 2px; padding-bottom: 14px; }
+      .systems-grid > .system-card:last-child:nth-child(3n+1) > .system-link { grid-area: link; align-self: stretch; align-items: flex-end; }
+    }
     .system-card {
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 24px;
-      box-shadow: var(--shadow-sm); display: block;
+      box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
       transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
     }
     a.system-card:hover { box-shadow: var(--shadow-card); transform: translateY(-2px); border-color: var(--border-strong); }
     .system-tag-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
     .system-tag {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+      font-size: var(--fs-micro); font-weight: 600; letter-spacing: 0.06em;
       text-transform: uppercase; padding: 3px 9px; border-radius: var(--radius-pill);
     }
     .system-tag.live { background: var(--green-soft); color: var(--green-hover); }
     .system-tag.beta { background: #fef3c7; color: #b45309; }
     .system-tag.research { background: #ede9fe; color: #6d28d9; }
-    .system-card h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 8px; }
-    .system-card p { font-size: 14px; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; }
-    .system-card .proves { font-size: 12px; color: var(--text-warm); margin-bottom: 14px; }
+    .system-card h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 8px; }
+    .system-card p { font-size: 15px; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; overflow-wrap: break-word; }
+    .system-card p strong { color: var(--text); }
+    .system-card .proves { font-size: 13px; color: var(--text-warm); margin-bottom: 14px; }
     .system-card .proves strong { color: var(--text); font-weight: 600; }
     .system-link {
-      font-size: 13px; font-weight: 600; color: var(--green);
+      font-size: 13px; font-weight: 600; color: var(--green-ink);
       display: inline-flex; align-items: center; gap: 4px;
+      margin-top: auto; align-self: flex-start;
+    }
+    /* Cards without a public link: the note reads as text, not as a link. */
+    div.system-card .system-link { color: var(--text-warm); font-weight: 500; }
+    @media (max-width: 720px) {
+      .system-card { padding: 22px; }
+      .system-card p { font-size: 16px; }
+      .system-card .proves { font-size: 14px; }
     }
 
     /* ============== PATTERNS ============== */
@@ -549,14 +718,16 @@
       background: var(--bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 28px;
     }
+    @media (max-width: 720px) { .pattern-card { padding: 22px; } }
     .pattern-card .pattern-num {
       display: inline-flex; align-items: center; justify-content: center;
       width: 28px; height: 28px; border-radius: var(--radius-md);
       background: var(--green-soft); color: var(--green-hover);
       font-size: 13px; font-weight: 700; margin-bottom: 14px;
     }
-    .pattern-card h4 { font-size: 18px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 10px; }
-    .pattern-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .pattern-card h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 10px; }
+    .pattern-card p { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+    @media (max-width: 720px) { .pattern-card p { font-size: 16px; } }
 
     /* ============== PROCESS ============== */
     .process-grid {
@@ -567,12 +738,14 @@
     .process-step {
       padding: 28px; background: var(--bg-alt); border-radius: var(--radius-lg);
     }
+    @media (max-width: 720px) { .process-step { padding: 22px; } }
     .process-num {
-      font-size: 13px; font-weight: 700; color: var(--green);
+      font-size: 13px; font-weight: 700; color: var(--green-ink);
       letter-spacing: 0.02em; margin-bottom: 10px;
     }
-    .process-step h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 8px; }
-    .process-step p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+    .process-step h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); margin-bottom: 8px; }
+    .process-step p { font-size: 15px; color: var(--text-muted); line-height: 1.55; }
+    @media (max-width: 720px) { .process-step p { font-size: 16px; } }
 
     /* ============== STATS ============== */
     .stats-row {
@@ -590,6 +763,7 @@
       .stat-item:nth-child(1), .stat-item:nth-child(2) { border-bottom: 1px solid var(--border); }
     }
     .stat-num { font-size: 36px; font-weight: 700; letter-spacing: -0.025em; color: var(--text); line-height: 1; margin-bottom: 8px; }
+    @media (max-width: 374px) { .stat-item { padding: 24px 12px; } .stat-num { font-size: 32px; } }
     .stat-num .green { color: var(--green); }
     .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
@@ -597,26 +771,30 @@
     .faq { max-width: 760px; margin: 0 auto; }
     .faq-item {
       border-bottom: 1px solid var(--border);
-      padding: 24px 0;
+      padding: 0;
     }
     .faq-item summary {
       font-size: 17px; font-weight: 600; color: var(--text);
       cursor: pointer; list-style: none;
-      display: flex; justify-content: space-between; align-items: center;
-      letter-spacing: -0.01em;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding: 20px 0; min-height: 60px;
+      letter-spacing: -0.01em; transition: color 0.15s ease;
     }
+    .faq-item summary:hover { color: var(--green-ink); }
     .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary:focus-visible { outline-offset: 4px; }
     .faq-item summary::after {
       content: ""; width: 18px; height: 18px; flex-shrink: 0;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-size: contain;
-      transition: transform 0.2s ease; margin-left: 16px;
+      transition: transform 0.2s ease;
     }
     .faq-item[open] summary::after {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
     }
-    .faq-item p { font-size: 15px; color: var(--text-muted); line-height: 1.65; margin-top: 16px; max-width: 680px; }
-    .faq-item p a { color: var(--green); font-weight: 500; }
+    .faq-item p { font-size: 15px; color: var(--text-muted); line-height: 1.65; margin-top: 0; padding-bottom: 24px; max-width: 680px; }
+    @media (max-width: 720px) { .faq-item p { font-size: 16px; } }
+    .faq-item p a { color: var(--green-ink); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
     .faq-item p a:hover { text-decoration: underline; }
 
     /* ============== ABOUT ============== */
@@ -628,23 +806,25 @@
     @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; gap: 24px; } }
     .about-photo {
       width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-lg);
-      object-fit: cover; box-shadow: var(--shadow-card);
+      object-fit: cover; object-position: 50% 22%; box-shadow: var(--shadow-card);
     }
+    @media (min-width: 721px) { .about-photo { position: sticky; top: 96px; } }
     @media (max-width: 720px) {
       .about-photo { width: 120px; aspect-ratio: 1/1; border-radius: 50%; }
     }
     .about-content h3 {
       font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
-      color: var(--text); margin-bottom: 20px;
+      color: var(--text); margin-bottom: 20px; max-width: 38rem; text-wrap: pretty;
     }
-    .about-content p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+    @media (max-width: 720px) { .about-content h3 { font-size: 22px; line-height: 1.25; } }
+    .about-content p { font-size: 16px; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; max-width: 60ch; }
     .about-content p strong { color: var(--text); font-weight: 600; }
 
     /* About — capabilities matrix */
     .caps-section { margin-top: 40px; }
     .caps-title {
       font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
-      text-transform: uppercase; color: var(--green);
+      text-transform: uppercase; color: var(--green-ink);
       margin-bottom: 20px;
     }
     .caps-grid {
@@ -657,35 +837,42 @@
       border-radius: var(--radius-md); padding: 18px;
       box-shadow: var(--shadow-sm);
     }
-    .cap-card h5 {
+    .cap-card h4 {
       font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
       color: var(--text); margin-bottom: 6px;
       display: flex; align-items: center; gap: 8px;
     }
-    .cap-card h5::before {
+    .cap-card h4::before {
       content: ""; width: 6px; height: 6px; border-radius: 50%;
       background: var(--green); flex-shrink: 0;
     }
-    .cap-card p { font-size: 13px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+    .cap-card p { font-size: 14px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+    @media (max-width: 720px) { .cap-card p { font-size: 15px; } }
 
     /* About — receipts strip */
     .receipts {
       margin-top: 32px;
-      padding: 24px; background: var(--bg);
+      padding: 28px; background: var(--bg);
       border: 1px solid var(--border); border-radius: var(--radius-lg);
     }
     .receipts-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      font-size: var(--fs-micro); font-weight: 700; letter-spacing: 0.06em;
       text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px;
     }
     .receipts-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px 28px;
     }
+    @media (max-width: 880px) { .receipts-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { .receipts-grid { grid-template-columns: 1fr; } }
     .receipt-item {
-      font-size: 13px; color: var(--text-muted); line-height: 1.5;
+      font-size: 14px; color: var(--text-muted); line-height: 1.5;
     }
-    .receipt-item strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; font-size: 14px; letter-spacing: -0.01em; }
+    .receipt-item strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 4px; font-size: 15px; letter-spacing: -0.01em; }
+    @media (max-width: 720px) {
+      .receipts { padding: 20px; }
+      .receipt-item { font-size: 15px; }
+    }
 
     /* ============== FINAL CTA ============== */
     .final-cta {
@@ -697,7 +884,7 @@
     .final-cta h2 {
       font-size: clamp(32px, 4vw, 48px); font-weight: 700;
       letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 18px;
-      color: #fafafa;
+      color: #fafafa; text-wrap: balance;
     }
     .final-cta p {
       font-size: 18px; color: #a3a3a3; line-height: 1.55;
@@ -706,16 +893,23 @@
     .final-cta-buttons { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .final-cta-contact {
       margin-top: 20px; font-size: 14px; color: #a3a3a3;
-      display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+      display: flex; gap: 0 18px; justify-content: center; align-items: center; flex-wrap: wrap;
     }
-    .final-cta-contact a { color: #fafafa; font-weight: 500; }
+    .final-cta-contact a { color: #fafafa; font-weight: 500; display: inline-flex; align-items: center; min-height: 44px; }
     .final-cta-contact a:hover { color: #fff; text-decoration: underline; }
     .final-cta-contact .sep { color: #525252; }
     .final-cta .btn-secondary {
-      background: transparent; color: #fafafa; border-color: #404040;
+      background: transparent; color: #fafafa; border-color: #6b6b6b;
     }
     .final-cta .btn-secondary:hover { border-color: #fafafa; }
-    @media (max-width: 720px) { .final-cta { padding: 56px 24px; border-radius: var(--radius-lg); } }
+    .final-cta :focus-visible { outline-color: #fafafa; }
+    @media (max-width: 720px) {
+      .final-cta { padding: 48px 20px; border-radius: var(--radius-lg); }
+      .final-cta-buttons { display: flex; flex-direction: column; width: 100%; }
+      .final-cta-buttons .btn { width: 100%; justify-content: center; }
+      .final-cta-contact { flex-direction: column; gap: 0; }
+      .final-cta-contact .sep { display: none; }
+    }
 
     /* ============== FOOTER ============== */
     .footer {
@@ -726,36 +920,84 @@
       display: flex; justify-content: space-between; align-items: center;
       flex-wrap: wrap; gap: 24px;
     }
-    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 0 24px; flex-wrap: wrap; }
     .footer-links a {
       font-size: 14px; color: var(--text-muted);
       transition: color 0.15s ease;
+      display: inline-flex; align-items: center; min-height: 44px;
     }
     .footer-links a:hover { color: var(--text); }
     .footer-tagline { font-size: 13px; color: var(--text-muted); }
-    .footer-tagline a { color: var(--text); font-weight: 500; }
+    /* 44px hit area without changing the line box (the anchor markup is guard-asserted). */
+    .footer-tagline a { color: var(--text); font-weight: 500; display: inline-block; padding-block: 12px; margin-block: -12px; }
+    @media (max-width: 720px) {
+      .js .footer { padding-bottom: 88px; }  /* clears the back-to-top button */
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; width: 100%; }
+    }
+
+    /* Back to top: phones only (desktop keeps the sticky nav for wayfinding).
+       The 1px light ring keeps its edge visible on dark surfaces; the script
+       hides it while the dark final-CTA card passes under it. */
+    .to-top { display: none; }
+    @media (max-width: 720px) {
+      .to-top {
+        position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom));
+        width: 44px; height: 44px; border-radius: 50%; z-index: 90;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--text); color: #fff;
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.28), var(--shadow-lg);
+        visibility: hidden; opacity: 0; transition: opacity 0.2s ease, visibility 0.2s ease;
+      }
+      .to-top.is-visible { visibility: visible; opacity: 1; }
+      /* No JS: a plain link at the end of the footer instead of a floating button. */
+      html:not(.js) .to-top { position: static; visibility: visible; opacity: 1; margin-top: 16px; box-shadow: none; }
+    }
 
     /* Utility */
-    .green { color: var(--green); }
+    .green { color: var(--green-ink); }
+    /* Large display figures keep the bright brand green (AA large-text 3:1). */
+    .hero h1 .green, .stat-num .green, .sc-annot-val .green { color: var(--green); }
+    .ship-label { color: var(--green-ink); font-weight: 600; }
     .center { text-align: center; }
+    .nowrap { white-space: nowrap; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important; animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+      .offer-card:hover, a.system-card:hover { transform: none; }
+    }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- HEADER -->
   <header class="header">
     <div class="header-inner">
       <a href="/" class="logo">Work With <span>Clayton</span></a>
-      <ul class="nav-links">
-        <li><a href="#offers">Offers</a></li>
-        <li><a href="#systems">Proof</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="https://loopholemaxing.com/">Other Creations</a></li>
-        <li><a href="intake/" class="cta-link">Start audit →</a></li>
-      </ul>
+      <nav class="site-nav" id="primary-nav" aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#offers">Offers</a></li>
+          <li><a href="#systems">Proof</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="https://loopholemaxing.com/">Other Creations</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="intake/" class="cta-link">Start audit →</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <svg class="i-open" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg class="i-close" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
+  <main id="main" tabindex="-1">
   <!-- HERO -->
   <section class="hero">
     <div class="container">
@@ -769,14 +1011,14 @@
           <p class="lead">Most businesses have three to five figures of monthly revenue they can't see — leaking through slow lead follow-up, manual workflows, missing data, broken handoffs between tools, AI use cases nobody owns, and abandoned customer touchpoints. I find it in 48 hours and ship the fix in 5 days.</p>
 
           <form class="hero-cta-pill" onsubmit="event.preventDefault(); var e=this.querySelector('input').value; window.location.href='intake/'+(e?'?email='+encodeURIComponent(e):'');">
-            <input type="email" placeholder="Your business email" aria-label="Your business email">
+            <input type="email" placeholder="Your business email" aria-label="Your business email" autocomplete="email">
             <button type="submit" class="btn-pill">Start the $497 audit →</button>
           </form>
 
           <div class="hero-cta-meta">
-            <span><span class="check">✓</span> 48-hour delivery</span>
-            <span><span class="check">✓</span> Audit credit toward sprint</span>
-            <span><span class="check">✓</span> No retainer lock-in</span>
+            <span><span class="check" aria-hidden="true">✓</span> 48-hour delivery</span>
+            <span><span class="check" aria-hidden="true">✓</span> Audit credit toward sprint</span>
+            <span><span class="check" aria-hidden="true">✓</span> No retainer lock-in</span>
           </div>
         </div>
 
@@ -849,42 +1091,42 @@
   <div class="proof-strip">
     <div class="container">
       <div class="proof-strip-label">Systems I've built and shipped</div>
-      <div class="proof-strip-items">
-        <span>OrbitRoute</span>
-        <span>PeptiDex</span>
-        <span>KnockFiber</span>
-        <span>PNP</span>
-        <span>BTC Brain</span>
-        <span>Universal Analyst Engine</span>
-        <span>MMS Hub</span>
-      </div>
+      <ul class="proof-strip-items" role="list">
+        <li>OrbitRoute</li>
+        <li>PeptiDex</li>
+        <li>KnockFiber</li>
+        <li>PNP</li>
+        <li>BTC Brain</li>
+        <li>Universal Analyst Engine</li>
+        <li>MMS Hub</li>
+      </ul>
     </div>
   </div>
 
   <!-- THE GAP -->
   <section>
     <div class="container">
-      <div class="section-header-center" style="margin-bottom: 56px;">
+      <div class="section-header-center section-head">
         <div class="section-eyebrow">The Gap</div>
         <h2 class="section-h2">Most companies don't have an AI problem. They have a leverage problem.</h2>
         <p class="section-sub">Scattered tools, manual workflows, and data nobody acts on. The AI part is the easy fix once the leaks are mapped.</p>
       </div>
 
       <div class="systems-grid">
-        <div class="feature-card">
-          <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Revenue leaks they can't see</h4>
-          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Slow lead follow-up, missed upsells, broken attribution, no post-purchase journey, refund patterns nobody reads, churn that compounds silently, AI use cases nobody owns, and abandoned customer touchpoints.</p>
-          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A 48-hour audit with a dollar figure next to every leak, ranked by speed-to-cash.</p>
+        <div class="feature-card gap-card">
+          <h3>Revenue leaks they can't see</h3>
+          <p>Slow lead follow-up, missed upsells, broken attribution, no post-purchase journey, refund patterns nobody reads, churn that compounds silently, AI use cases nobody owns, and abandoned customer touchpoints.</p>
+          <p class="ship"><strong class="ship-label">I ship →</strong> A 48-hour audit with a dollar figure next to every leak, ranked by speed-to-cash.</p>
         </div>
-        <div class="feature-card">
-          <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Operations stuck on manual mode</h4>
-          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Owners pasting between tools, VAs running ten checklists, ops people regenerating the same report every Monday.</p>
-          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A 5-day build that replaces one workflow end-to-end with a system the team actually uses.</p>
+        <div class="feature-card gap-card">
+          <h3>Operations stuck on manual mode</h3>
+          <p>Owners pasting between tools, VAs running ten checklists, ops people regenerating the same report every Monday.</p>
+          <p class="ship"><strong class="ship-label">I ship →</strong> A 5-day build that replaces one workflow end-to-end with a system the team actually uses.</p>
         </div>
-        <div class="feature-card">
-          <h4 style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 12px;">Data the team can't act on</h4>
-          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">Dashboards nobody opens, exports that don't match, KPIs that change definition every quarter.</p>
-          <p style="font-size: 14px; color: var(--text); line-height: 1.6;"><strong style="color: var(--green); font-weight: 600;">I ship →</strong> A single source of truth — built on tools you already own — that surfaces decisions, not noise.</p>
+        <div class="feature-card gap-card">
+          <h3>Data the team can't act on</h3>
+          <p>Dashboards nobody opens, exports that don't match, KPIs that change definition every quarter.</p>
+          <p class="ship"><strong class="ship-label">I ship →</strong> A single source of truth — built on tools you already own — that surfaces decisions, not noise.</p>
         </div>
       </div>
     </div>
@@ -893,7 +1135,7 @@
   <!-- OFFERS -->
   <section id="offers" class="beige">
     <div class="container">
-      <div class="section-header-center" style="margin-bottom: 56px;">
+      <div class="section-header-center section-head">
         <div class="section-eyebrow">How We Work Together</div>
         <h2 class="section-h2">Three tiers. No retainers without proof first.</h2>
         <p class="section-sub">Every engagement starts with the audit. The audit cost credits toward the sprint if you decide to move forward — so the diagnosis costs you nothing if you build with me.</p>
@@ -903,7 +1145,7 @@
 
         <!-- AUDIT -->
         <div class="offer-card">
-          <div class="offer-name">Loophole Audit</div>
+          <h3 class="offer-name">Loophole Audit</h3>
           <div class="offer-promise">A 48-hour diagnosis with a dollar figure on every fix.</div>
           <div class="offer-price">
             <span class="amount">$497</span>
@@ -926,14 +1168,14 @@
           </div>
 
           <div class="offer-cta"><a href="intake/" class="btn btn-primary btn-block">Start the $497 audit →</a>
-            <p style="margin-top:10px; font-size:12.5px; text-align:center;"><a data-stripe-audit href="#" target="_blank" rel="noopener" style="color: var(--green); font-weight:500;">Already submitted intake? Pay the $497 by card →</a></p>
+            <p class="offer-paylink"><a data-stripe-audit href="#" target="_blank" rel="noopener">Already submitted intake? Pay the $497 by card →</a></p>
           </div>
         </div>
 
         <!-- SPRINT -->
         <div class="offer-card featured">
           <div class="offer-badge">Most signed</div>
-          <div class="offer-name">Build Sprint</div>
+          <h3 class="offer-name">Build Sprint</h3>
           <div class="offer-promise">One system, built in 5 days, replacing one specific leak.</div>
           <div class="offer-price">
             <span class="amount">$1.5k–$3.5k</span>
@@ -960,7 +1202,7 @@
 
         <!-- RETAINER -->
         <div class="offer-card">
-          <div class="offer-name">Operator Retainer</div>
+          <h3 class="offer-name">Operator Retainer</h3>
           <div class="offer-promise">An AI operator embedded with your business, shipping every week.</div>
           <div class="offer-price">
             <span class="amount">$3k–$7.5k</span>
@@ -988,7 +1230,7 @@
 
       <div class="revshare">
         <div>
-          <h4>Optional: revenue share addendum</h4>
+          <h3>Optional: revenue share addendum</h3>
           <p>For sprints or retainers tied to a measurable revenue outcome. 3–7% of incremental revenue above a locked baseline, capped, with audit rights. Only when reporting is clean and attribution is real. After the audit — not before.</p>
         </div>
         <div><a href="intake/?topic=revshare" class="btn btn-secondary">Ask about it</a></div>
@@ -1023,7 +1265,7 @@
   <!-- SYSTEMS / PROOF -->
   <section id="systems">
     <div class="container">
-      <div style="margin-bottom: 56px;">
+      <div class="section-head">
         <div class="section-eyebrow">Proof, Not Promises</div>
         <h2 class="section-h2">Systems I've built and shipped.</h2>
         <p class="section-sub">Every offer is built on top of patterns I've already proven in my own portfolio. These aren't slide-deck case studies — they're live URLs.</p>
@@ -1033,7 +1275,7 @@
 
         <a href="https://www.orbitroute.ai" class="system-card" target="_blank" rel="noopener">
           <div class="system-tag-row"><span class="system-tag live">Live · Founder</span></div>
-          <h4>OrbitRoute</h4>
+          <h3>OrbitRoute</h3>
           <p>Decision-support and orchestration for orbital GPU compute, on real orbital mechanics. <strong>11,000+ satellites tracked against the official 31,672-object catalog, 37 modeled ground stations, 23 autonomous engines, 5 USPTO filings, 2,300+ tests.</strong> Its own cost comparator prices orbital at roughly a 3× premium today and returns “use terrestrial” — the platform tells you when not to buy it.</p>
           <div class="proves"><strong>Proves:</strong> I can architect, file IP on, and ship deep-tech infrastructure SaaS as the founding operator — and publish the number that argues against my own product.</div>
           <span class="system-link">orbitroute.ai →</span>
@@ -1041,7 +1283,7 @@
 
         <a href="https://thepeptidex.net" class="system-card" target="_blank" rel="noopener">
           <div class="system-tag-row"><span class="system-tag live">Live</span></div>
-          <h4>PeptiDex</h4>
+          <h3>PeptiDex</h3>
           <p>Research-grade peptide knowledge engine. <strong>79 compound entries across 10 categories, 119 programmatic comparison pages, a reconstitution calculator, 264 crawlable URLs.</strong> Every compound illustration is generated from the entry's own fields, so a picture can't contradict the record it sits next to.</p>
           <div class="proves"><strong>Proves:</strong> I can build domain-specific knowledge engines — and the programmatic SEO surface that makes them findable.</div>
           <span class="system-link">thepeptidex.net →</span>
@@ -1049,7 +1291,7 @@
 
         <a href="https://www.moneymakingsolutionsai.com" class="system-card" target="_blank" rel="noopener">
           <div class="system-tag-row"><span class="system-tag beta">Paper Mode · Audited</span></div>
-          <h4>MMS Hub</h4>
+          <h3>MMS Hub</h3>
           <p>Multi-strategy autonomous trading research platform. Nine strategies, signal pipeline, paper-trading mode, hard risk caps. In August 2026 I put all nine through a <strong>22-agent audit where every claim had to survive a second agent trying to refute it</strong>. It concluded that <strong>none of them are investor-ready</strong> — best genuine win rate on the board ~60.5%, honest throughput about two trades a day. That's the published result.</p>
           <div class="proves"><strong>Proves:</strong> I audit my own work adversarially and report what it says — including when the answer kills the pitch.</div>
           <span class="system-link">moneymakingsolutionsai.com →</span>
@@ -1057,7 +1299,7 @@
 
         <div class="system-card">
           <div class="system-tag-row"><span class="system-tag live">Live · CTO &amp; Managing Partner</span></div>
-          <h4>Practically Natty Peptides</h4>
+          <h3>Practically Natty Peptides</h3>
           <p>E-commerce brand I built and operate as <strong>CTO &amp; Managing Partner</strong>. Designed and shipped the full stack: WooCommerce storefront, an ops plugin running shipping/payments/inventory/COGS, a 36-affiliate commission engine, a customer rewards ledger, and a promotion engine that arms and disarms tiered sales on schedule. Its first full run closed at <strong>$6,254.70 across 34 orders</strong> and turned itself off on time.</p>
           <div class="proves"><strong>Proves:</strong> I take brands from zero to operational using the same stack I'd build for you — including the money paths, which are tested in CI.</div>
           <span class="system-link">Link available on request</span>
@@ -1065,7 +1307,7 @@
 
         <div class="system-card">
           <div class="system-tag-row"><span class="system-tag live">Live</span></div>
-          <h4>Universal Analyst Engine</h4>
+          <h3>Universal Analyst Engine</h3>
           <p>Multi-domain intelligence engine scoring and ranking <strong>90 entities across 5 domains</strong> — sports, markets, brands, politics, entertainment. FastAPI + Postgres + Celery, narrative ingestion, market data, AI sentiment scoring. API up continuously for a month; the ingestion worker is currently idle rather than pulling new material.</p>
           <div class="proves"><strong>Proves:</strong> I design databases, APIs, and research pipelines that scale — and I'll tell you which parts are running right now.</div>
           <span class="system-link">Demo on request</span>
@@ -1073,7 +1315,7 @@
 
         <a href="https://www.knockfiber.com/" class="system-card" target="_blank" rel="noopener">
           <div class="system-tag-row"><span class="system-tag live">Live · Founder</span></div>
-          <h4>KnockFiber</h4>
+          <h3>KnockFiber</h3>
           <p>A recruiting platform for door-to-door fiber sales across three carriers. <strong>255 city pages, 44 state and metro hubs, English and Spanish lanes, a 30-second application.</strong> The August expansion came from one join — ranking markets by coverage <em>×</em> population instead of coverage alone, which surfaced the largest uncovered market in the country sitting near position 1,100 of the old list.</p>
           <div class="proves"><strong>Proves:</strong> I build programmatic SEO surfaces at scale, and I find the leak by questioning the metric everyone already agreed on.</div>
           <span class="system-link">knockfiber.com →</span>
@@ -1081,7 +1323,7 @@
 
         <a href="https://loopholemaxing.com/" class="system-card">
           <div class="system-tag-row"><span class="system-tag live">Live · Founder</span></div>
-          <h4>LoopholeMaxing Ecosystem</h4>
+          <h3>LoopholeMaxing Ecosystem</h3>
           <p>The umbrella that ties it all together — a portfolio site with <strong>15 live creations</strong>, plus a private operations dashboard (Next.js + FastAPI + Postgres) and the engines it fronts: BTC Brain, NBA Brain, PersonalVault, ULTRON, Agora, Studio, FORMIX. One control plane, many engines. The BTC forecast ledger publishes its own scorecard — <strong>1,856 resolved forecasts, still behind a naive baseline</strong>, and it says so on the page.</p>
           <div class="proves"><strong>Proves:</strong> I design and operate full ecosystems — not isolated projects — and I instrument them so they can report their own bad news.</div>
           <span class="system-link">See all creations →</span>
@@ -1094,30 +1336,30 @@
   <!-- PATTERNS -->
   <section class="beige">
     <div class="container">
-      <div style="margin-bottom: 56px;">
+      <div class="section-head">
         <div class="section-eyebrow">What I Actually Build</div>
-        <h2 class="section-h2">Four patterns I ship over and over.</h2>
+        <h2 class="section-h2">Four patterns <span class="nowrap">I ship</span> over and over.</h2>
         <p class="section-sub">Every sprint and retainer maps to one of these. Not invented — patterns I've shipped enough times to know what works and what doesn't.</p>
       </div>
       <div class="patterns-grid">
         <div class="pattern-card">
           <div class="pattern-num">01</div>
-          <h4>Audit → Sprint pattern</h4>
+          <h3>Audit → Sprint pattern</h3>
           <p>Find the leak, scope the smallest possible fix, ship it in 5 days. Used in every audit-to-sprint conversion. The discipline is saying no to the 4 other things that need fixing.</p>
         </div>
         <div class="pattern-card">
           <div class="pattern-num">02</div>
-          <h4>Static proof + live backend</h4>
+          <h3>Static proof + live backend</h3>
           <p>Fast, indexed marketing pages paired with a real backend doing the work. Cheap to host, fast to load, with serious infrastructure underneath. PeptiDex and OrbitRoute both use this.</p>
         </div>
         <div class="pattern-card">
           <div class="pattern-num">03</div>
-          <h4>Research brain pattern</h4>
+          <h3>Research brain pattern</h3>
           <p>Knowledge engines specific to a domain — peptides, BTC, NBA, companies, news. Database schema, ingestion pipeline, API, search layer. Works for any industry with deep but scattered data.</p>
         </div>
         <div class="pattern-card">
           <div class="pattern-num">04</div>
-          <h4>Founder control center</h4>
+          <h3>Founder control center</h3>
           <p>One dashboard that replaces 5 tools. For founders running multiple revenue streams who waste hours per week switching contexts. The LoopholeMaxing Hub is my own version.</p>
         </div>
       </div>
@@ -1127,29 +1369,29 @@
   <!-- PROCESS -->
   <section>
     <div class="container">
-      <div class="section-header-center" style="margin-bottom: 56px;">
+      <div class="section-header-center section-head">
         <div class="section-eyebrow">How It Works</div>
-        <h2 class="section-h2">Audit → Diagnose → Build → Operate.</h2>
+        <h2 class="section-h2"><span class="nowrap">Audit →</span> <span class="nowrap">Diagnose →</span> <span class="nowrap">Build →</span> Operate.</h2>
       </div>
       <div class="process-grid">
         <div class="process-step">
           <div class="process-num">Step 01</div>
-          <h4>Audit</h4>
+          <h3>Audit</h3>
           <p>Submit intake. I confirm payment. The 48-hour clock starts. I run the 5-lens audit on your real systems and data.</p>
         </div>
         <div class="process-step">
           <div class="process-num">Step 02</div>
-          <h4>Diagnose</h4>
+          <h3>Diagnose</h3>
           <p>You get the scorecard, dollar-impact estimates, recommended sprint, and a Loom walkthrough. You decide what's worth building.</p>
         </div>
         <div class="process-step">
           <div class="process-num">Step 03</div>
-          <h4>Build</h4>
+          <h3>Build</h3>
           <p>5-day sprint on one system. Audit cost credits toward sprint price. One revision included. Bug fixes for 14 days post-delivery.</p>
         </div>
         <div class="process-step">
           <div class="process-num">Step 04</div>
-          <h4>Operate</h4>
+          <h3>Operate</h3>
           <p>If we work well together, move to a retainer. I become your AI operator: weekly build queue you prioritize, I execute.</p>
         </div>
       </div>
@@ -1159,14 +1401,14 @@
   <!-- ABOUT -->
   <section id="about" class="beige">
     <div class="container">
-      <div style="margin-bottom: 48px;">
+      <div class="section-head section-head--tight">
         <div class="section-eyebrow">Who You're Hiring</div>
         <h2 class="section-h2">Clayton Camera.</h2>
       </div>
       <div class="about-grid">
-        <img src="assets/clayton.jpg" alt="Clayton Camera" class="about-photo" loading="lazy">
+        <img src="assets/clayton.jpg" alt="Clayton Camera" class="about-photo" loading="lazy" width="402" height="600" decoding="async">
         <div class="about-content">
-          <h3>Technical founder. Florida-based. Builds end-to-end across AI, software, e-commerce, automation, and operations.</h3>
+          <h3>Technical founder. Florida-based. Builds <span class="nowrap">end-to-end</span> across AI, software, <span class="nowrap">e-commerce</span>, automation, and operations.</h3>
           <p>I'm a technical founder running multiple businesses simultaneously — <strong>Founder</strong> of <strong>OrbitRoute</strong> (decision-support and orchestration for orbital GPU compute: 11,000+ satellites tracked against the official 31,672-object catalog, 37 modeled ground stations, 23 autonomous engines, 5 USPTO filings); <strong>CTO &amp; Managing Partner</strong> of an active peptide e-commerce brand; founder of <strong>KnockFiber</strong> (a three-carrier D2D recruiting platform, 255 city pages in English and Spanish); and operator of the <strong>LoopholeMaxing ecosystem</strong> — a control plane and portfolio that includes <strong>PeptiDex</strong> (79-compound research engine, 264 URLs), <strong>MMS Hub</strong> (multi-strategy trading research platform), <strong>Universal Analyst Engine</strong> (90 entities across 5 domains), <strong>BTC Intelligence Brain</strong> (a forecast ledger that scores itself against a naive baseline and reports losing to it), <strong>ULTRON</strong> (local-first agent with human-in-the-loop safety, 30/30 attack tests green), and <strong>Agora</strong> (public-domain knowledge library). I write the code, design the schemas, build the dashboards, ship the integrations, file the IP, and run the operations. I don't outsource the parts that matter.</p>
           <p>I work across the full stack: <strong>AI and agents</strong> (LLM-powered systems, prompt engineering, agentic workflows, RAG, custom GPTs, AI infrastructure), <strong>e-commerce and conversion</strong> (Shopify, WooCommerce, SliceWP, Klaviyo, Resend, post-purchase, affiliate engines), <strong>automation and integration</strong> (Zapier, Make, n8n, custom webhooks, API design, ETL), <strong>data and analytics</strong> (database schemas, dashboards, attribution, real-time monitoring), <strong>trading and quant systems</strong> (signal pipelines, backtesting, broker APIs, paper-to-live infrastructure), <strong>operations and dashboards</strong> (Next.js + FastAPI control planes, command centers, founder leverage tooling), and <strong>infrastructure</strong> (Railway, Vercel, AWS, Postgres, monitoring, deployment pipelines).</p>
           <p>I sell what I actually build. The audit framework is the same one I use on my own projects every quarter. The sprint pattern is how I ship features in my own products. The retainer is the model I'd want if I were on the buying side. The breadth matters because most businesses don't have one isolated problem — they have a stack of related ones, and someone has to be able to see the whole picture before scoping the fix.</p>
@@ -1175,61 +1417,61 @@
       </div>
 
       <div class="caps-section">
-        <div class="caps-title">What I can build for you</div>
+        <h3 class="caps-title">What I can build for you</h3>
         <div class="caps-grid">
           <div class="cap-card">
-            <h5>AI agents &amp; workflows</h5>
+            <h4>AI agents &amp; workflows</h4>
             <p>LLM-powered agents, prompt systems, RAG, custom GPTs, multi-step agentic workflows, AI infrastructure with human-in-the-loop guardrails.</p>
           </div>
           <div class="cap-card">
-            <h5>E-commerce systems</h5>
+            <h4>E-commerce systems</h4>
             <p>Shopify, WooCommerce, SliceWP affiliate engines, Klaviyo/Resend flows, cart recovery, post-purchase journeys, subscription mechanics.</p>
           </div>
           <div class="cap-card">
-            <h5>Automation &amp; integration</h5>
+            <h4>Automation &amp; integration</h4>
             <p>Zapier, Make, n8n, custom webhooks, idempotent job queues, ETL pipelines, API design, third-party integration glue.</p>
           </div>
           <div class="cap-card">
-            <h5>Dashboards &amp; control planes</h5>
+            <h4>Dashboards &amp; control planes</h4>
             <p>Next.js + FastAPI ops dashboards, command centers, founder leverage tooling, real-time monitoring, KPI surfaces.</p>
           </div>
           <div class="cap-card">
-            <h5>Data &amp; analytics</h5>
+            <h4>Data &amp; analytics</h4>
             <p>Database schema design, attribution systems, reporting, dashboards, data cleaning, structured ingestion pipelines.</p>
           </div>
           <div class="cap-card">
-            <h5>Trading &amp; quant infra</h5>
+            <h4>Trading &amp; quant infra</h4>
             <p>Signal pipelines, backtesting frameworks, broker API integrations (Schwab and others), paper-to-live infrastructure, risk controls.</p>
           </div>
           <div class="cap-card">
-            <h5>Knowledge engines &amp; research</h5>
+            <h4>Knowledge engines &amp; research</h4>
             <p>Domain-specific search engines, content ingestion, structured data extraction, research-grade APIs, RAG-backed Q&amp;A.</p>
           </div>
           <div class="cap-card">
-            <h5>Sales &amp; lead systems</h5>
+            <h4>Sales &amp; lead systems</h4>
             <p>Lead capture, qualification, follow-up automation, CRM cleanup, outbound sequences, response-time compression.</p>
           </div>
           <div class="cap-card">
-            <h5>Infrastructure &amp; DevOps</h5>
+            <h4>Infrastructure &amp; DevOps</h4>
             <p>Railway, Vercel, AWS, Postgres, Docker, deployment pipelines, monitoring, alerting, kill switches, log aggregation.</p>
           </div>
           <div class="cap-card">
-            <h5>Content &amp; ops automation</h5>
+            <h4>Content &amp; ops automation</h4>
             <p>Generation pipelines, scheduling, distribution, SEO tooling, internal SOPs converted to one-click workflows.</p>
           </div>
           <div class="cap-card">
-            <h5>Custom software</h5>
+            <h4>Custom software</h4>
             <p>Full-stack web apps, internal tools, APIs, mobile-responsive products, prototype-to-production with sane defaults.</p>
           </div>
           <div class="cap-card">
-            <h5>Strategy &amp; founder ops</h5>
+            <h4>Strategy &amp; founder ops</h4>
             <p>Audit frameworks, system design, scoping discipline, IP-aware methodology, founder-grade documentation that survives handoff.</p>
           </div>
         </div>
       </div>
 
       <div class="receipts">
-        <div class="receipts-label">Live receipts</div>
+        <h3 class="receipts-label">Live receipts</h3>
         <div class="receipts-grid">
           <div class="receipt-item"><strong>Founder · OrbitRoute</strong>5 USPTO filings · 11,000+ satellites · 23 engines · 2,300+ tests</div>
           <div class="receipt-item"><strong>CTO &amp; Managing Partner · e-commerce brand</strong>Storefront, affiliates, rewards, promotions, money paths tested in CI</div>
@@ -1245,7 +1487,7 @@
   <!-- FAQ -->
   <section id="faq">
     <div class="container">
-      <div class="section-header-center" style="margin-bottom: 56px;">
+      <div class="section-header-center section-head">
         <div class="section-eyebrow">Honest Answers</div>
         <h2 class="section-h2">Questions I get on every first call.</h2>
       </div>
@@ -1295,7 +1537,7 @@
   </section>
 
   <!-- FINAL CTA -->
-  <section>
+  <section class="final-cta-section">
     <div class="container">
       <div class="final-cta">
         <h2>Find the leaks. Plug the biggest one this week.</h2>
@@ -1307,12 +1549,13 @@
         <div class="final-cta-contact">
           <span>Or reach me directly:</span>
           <a href="tel:+14077668757">(407) 766-8757</a>
-          <span class="sep">·</span>
+          <span class="sep" aria-hidden="true">·</span>
           <a href="mailto:clayton.camera@icloud.com">clayton.camera@icloud.com</a>
         </div>
       </div>
     </div>
   </section>
+  </main>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -1322,23 +1565,81 @@
              person entity page — the strongest cross-domain signal this
              site can send. Do not soften it to "here" or "the portfolio". -->
         <div class="footer-tagline">Built by <a href="https://claytoncamera.com/">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
-        <div class="footer-links">
+        <nav class="footer-links" aria-label="Footer">
           <a href="https://claytoncamera.com/">About Clayton Camera</a>
           <a href="https://loopholemaxing.com/">All creations</a>
           <a href="./">Work with Clayton</a>
           <a href="intake/">Start audit</a>
           <a href="tel:+14077668757">(407) 766-8757</a>
           <a href="mailto:clayton.camera@icloud.com">Email</a>
-        </div>
+        </nav>
       </div>
+    <a href="#top" class="to-top" aria-label="Back to top"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
     </div>
   </footer>
+
 
   <script>
     // Stripe Payment Link for the $497 audit — ONE line to swap (same pattern
     // as WORK_WITH_URL on loopholemaxing.com).
     var STRIPE_AUDIT_URL = 'https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b';
     document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
+  </script>
+  <script>
+    // Page UI only (no data, no tracking). Kept BEFORE the analytics tag:
+    // track.js falls back to the last <script> on the page to read data-site.
+    (function () {
+      // Phone menu (<= 720px): the header links collapse behind a toggle.
+      var header = document.querySelector('.header');
+      var toggle = header && header.querySelector('.nav-toggle');
+      if (toggle) {
+        var setOpen = function (open) {
+          header.classList.toggle('nav-open', open);
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        };
+        toggle.addEventListener('click', function (e) {
+          var open = !header.classList.contains('nav-open');
+          setOpen(open);
+          // Keyboard activation (detail 0): move focus into the menu.
+          if (open && e.detail === 0) { var first = header.querySelector('.site-nav a'); if (first) first.focus(); }
+        });
+        header.querySelectorAll('.site-nav a').forEach(function (a) {
+          a.addEventListener('click', function () { setOpen(false); });
+        });
+        document.addEventListener('keydown', function (e) {
+          if ((e.key === 'Escape' || e.key === 'Esc') && header.classList.contains('nav-open')) { setOpen(false); toggle.focus(); }
+        });
+        document.addEventListener('click', function (e) {
+          if (header.classList.contains('nav-open') && !header.contains(e.target)) setOpen(false);
+        });
+        header.addEventListener('focusout', function (e) {
+          if (e.relatedTarget && !header.contains(e.relatedTarget)) setOpen(false);
+        });
+        var wide = window.matchMedia('(min-width: 721px)');
+        var onWide = function () { if (wide.matches) setOpen(false); };
+        if (wide.addEventListener) wide.addEventListener('change', onWide); else if (wide.addListener) wide.addListener(onWide);
+      }
+
+      // Back-to-top (phones): shown once the hero has scrolled out of view,
+      // hidden while the dark final-CTA card is in the bottom strip of the
+      // screen where the button sits, so it never covers the $497 CTA.
+      var toTop = document.querySelector('.to-top'), hero = document.querySelector('.hero');
+      var ctaCard = document.querySelector('.final-cta');
+      if (toTop && hero && 'IntersectionObserver' in window) {
+        var pastHero = false, overCta = false;
+        var sync = function () { toTop.classList.toggle('is-visible', pastHero && !overCta); };
+        new IntersectionObserver(function (entries) {
+          pastHero = !entries[entries.length - 1].isIntersecting; sync();
+        }).observe(hero);
+        // Root = the bottom 12% of the viewport (>= the 60px + safe-area band the button uses).
+        if (ctaCard) new IntersectionObserver(function (entries) {
+          overCta = entries[entries.length - 1].isIntersecting; sync();
+        }, { rootMargin: '-88% 0px 0px 0px' }).observe(ctaCard);
+      } else if (toTop) {
+        toTop.classList.add('is-visible');
+      }
+    })();
   </script>
   <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260715a" data-site="workwithclayton"></script>
 </body>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found — Work With Clayton</title>
+  <!-- GitHub Pages serves this file with a 404 status for any missing URL.
+       Deliberately: noindex, no canonical, no JSON-LD, no analytics tag
+       (a 404 hit is not a pageview). Absolute paths only — it can be served
+       at any depth. Not in sitemap.xml. -->
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Same tokens and header/footer styling as index.html. */
+    :root {
+      --bg:          #ffffff;
+      --bg-alt:      #fbfaf8;
+      --text:        #141414;
+      --text-muted:  #666666;
+      --green:       #219f67;
+      --green-hover: #127c4c;
+      --green-ink:   #127c4c;
+      --green-btn:   #15804f;
+      --green-btn-hover: #0f6b41;
+      --green-fg:    #fafafa;
+      --green-soft:  #ecfdf5;
+      --green-tint:  #d0fbe6;
+      --border:      #edeced;
+      --border-strong:#e5e5e5;
+      --radius-md:   8px;
+      --radius-pill: 9999px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    /* Metric-matched fallback so the Inter swap does not reflow the hero; the range mirrors Inter's latin subset so glyphs Inter lacks (arrows, check marks) still fall through to the system font. */
+    @font-face { font-family: "Inter Fallback"; src: local("Arial"); ascent-override: 90.2%; descent-override: 22.48%; line-gap-override: 0%; size-adjust: 107.4%;
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    body {
+      font-family: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.55; font-size: 16px;
+      min-height: 100vh; display: flex; flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    p { text-wrap: pretty; }
+
+    .skip-link {
+      position: absolute; left: 16px; top: -100px; z-index: 300;
+      background: var(--text); color: #fff; padding: 12px 16px;
+      border-radius: var(--radius-md); font-size: 15px; font-weight: 600;
+    }
+    .skip-link:focus { top: 12px; }
+    :focus-visible { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+    main:focus { outline: none; }
+
+    .header { border-bottom: 1px solid var(--border); background: var(--bg); }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 9px 32px;
+      display: flex; align-items: center; min-height: 58px;
+    }
+    .logo { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--text); line-height: 40px; }
+    .logo span { color: var(--green-ink); }
+
+    main { flex: 1; display: flex; align-items: center; }
+    .nf {
+      max-width: 640px; margin: 0 auto; padding: 96px 32px; text-align: center;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--green-soft); color: var(--green-hover);
+      font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+      padding: 6px 14px; border-radius: var(--radius-pill);
+      margin-bottom: 20px; border: 1px solid var(--green-tint);
+    }
+    .badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 0 4px rgba(33,159,103,0.15);
+    }
+    h1 {
+      font-size: clamp(34px, 5vw, 52px); font-weight: 700;
+      letter-spacing: -0.025em; line-height: 1.08; margin-bottom: 16px;
+    }
+    .nf p { font-size: 18px; color: var(--text-muted); margin: 0 auto 32px; max-width: 480px; }
+    .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: inherit; font-size: 16px; font-weight: 600;
+      padding: 14px 28px; min-height: 52px; border-radius: var(--radius-md);
+      border: 1px solid transparent; transition: background 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap; line-height: 1;
+    }
+    .btn-primary { background: var(--green-btn); color: var(--green-fg); }
+    .btn-primary:hover { background: var(--green-btn-hover); }
+    .btn-secondary { background: var(--bg); color: var(--text); border-color: var(--border-strong); }
+    .btn-secondary:hover { border-color: var(--text); }
+
+    .footer { padding: 32px 0; border-top: 1px solid var(--border); }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 32px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px 24px;
+    }
+    .footer-tagline { font-size: 13px; color: var(--text-muted); }
+    .footer-tagline a { color: var(--text); font-weight: 500; display: inline-block; padding-block: 12px; margin-block: -12px; }
+    .footer-links { display: flex; gap: 0 24px; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: 14px; color: var(--text-muted); transition: color 0.15s ease;
+      display: inline-flex; align-items: center; min-height: 44px;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    @media (max-width: 720px) {
+      .header-inner { padding: 10px 20px; min-height: 64px; }
+      .logo { line-height: 44px; }
+      .nf { padding: 64px 20px; }
+      .nf p { font-size: 17px; }
+      .actions { flex-direction: column; }
+      .actions .btn { width: 100%; }
+      .footer-inner { padding: 0 20px; flex-direction: column; align-items: flex-start; }
+      .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">Work With <span>Clayton</span></a>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="nf">
+      <div class="badge"><span class="dot" aria-hidden="true"></span><span>Error 404</span></div>
+      <h1>Page not found</h1>
+      <p>This link doesn't lead anywhere on the site. It may be old or mistyped.</p>
+      <div class="actions">
+        <a href="/intake/" class="btn btn-primary">Start the $497 audit →</a>
+        <a href="/" class="btn btn-secondary">Back to Work With Clayton</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-tagline">Built by <a href="https://claytoncamera.com/">Clayton Camera</a>. Florida-based. © 2026 Loopholemaxing.</div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="https://claytoncamera.com/">About Clayton Camera</a>
+        <a href="https://loopholemaxing.com/">All creations</a>
+        <a href="/">Work with Clayton</a>
+        <a href="/intake/">Start audit</a>
+        <a href="tel:+14077668757">(407) 766-8757</a>
+        <a href="mailto:clayton.camera@icloud.com">Email</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
