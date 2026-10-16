@@ -19,7 +19,7 @@
 # Until 2026-07-28 this repo was covered by no test at all and the runbook said
 # "hand-check it when editing" — which is not a control.
 #
-# Static-only: no network, no browser. Safe to run anywhere.
+# Static and mocked behavior checks: no network, no browser. Requires Node.js 18+ and Python 3.
 set -u
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
@@ -160,6 +160,10 @@ if grep -q 'Built by <a href="https://claytoncamera.com/" rel="author"' intake/i
 else
   fail "/intake/ byline no longer points at claytoncamera.com with rel=author"
 fi
+
+# Keep the intake's receipt/retry behavior covered by the existing CI entrypoint.
+echo "-- intake submission behavior (mocked HTTP) --"
+node --test tests/intake-submit.test.cjs || FAILED=1
 
 echo
 if [ "$FAILED" = "0" ]; then

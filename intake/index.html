@@ -221,7 +221,7 @@
       outline: none; border-color: var(--green);
       box-shadow: 0 0 0 3px rgba(33,159,103,0.28);
     }
-    /* Inline cue after the visitor has touched a field (the submit JS is unchanged).
+    /* Inline cue after the visitor has touched a field.
        URL fields are left out: the JS accepts 'example.com' while the browser does not. */
     .field input:not([type="url"]):user-invalid, .field select:user-invalid, .field textarea:user-invalid {
       border-color: var(--error); box-shadow: 0 0 0 3px rgba(220,38,38,0.12);
@@ -308,6 +308,15 @@
     }
     .submit-help { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 240px; line-height: 1.5; }
     .submit-row .btn-primary { min-height: 52px; font-size: 16px; padding: 14px 28px; }
+    .btn:disabled { opacity: 0.7; cursor: wait; }
+    .submit-status { margin-top: 16px; font-size: 15px; color: var(--text-muted); }
+    .submit-status:empty { margin-top: 0; }
+    .submit-status.is-error { color: #b91c1c; }
+    .submit-fallback { margin-top: 16px; padding: 16px; border: 1px solid var(--field-border); border-radius: var(--radius-md); }
+    .submit-fallback p { font-size: 15px; margin-bottom: 12px; }
+    .submit-fallback a { color: var(--green-ink); text-decoration: underline; text-underline-offset: 2px; }
+    .submit-fallback summary { cursor: pointer; min-height: 44px; padding: 10px 0; }
+    .submit-fallback textarea { width: 100%; min-height: 200px; padding: 12px; font: inherit; font-size: 14px; border: 1px solid var(--field-border); border-radius: var(--radius-md); }
     @media (max-width: 640px) { .submit-row .btn { width: 100%; justify-content: center; } }
 
     /* Consent */
@@ -741,12 +750,22 @@
         <div class="submit-help">Your info goes only to Clayton. No tracking pixels, no third-party email lists, no automated drip campaigns.</div>
         <button type="submit" class="btn btn-primary">Submit intake →</button>
       </div>
+      <p id="submit-status" class="submit-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <div id="submit-fallback" class="submit-fallback" hidden>
+        <p><a id="intake-email" href="mailto:clayton.camera@icloud.com">Email your completed intake to Clayton →</a></p>
+        <p>If your email app doesn't open, send your answers to <a href="mailto:clayton.camera@icloud.com">clayton.camera@icloud.com</a> with the subject “Loophole Audit Intake.”</p>
+        <details>
+          <summary>View or copy your intake summary</summary>
+          <label for="intake-summary">Select and copy this summary into your email:</label>
+          <textarea id="intake-summary" readonly></textarea>
+        </details>
+      </div>
     </form>
 
     <div class="success-banner" id="success" role="region" tabindex="-1" aria-labelledby="success-title">
       <div class="checkmark" aria-hidden="true">✓</div>
       <h2 id="success-title">Intake received.</h2>
-      <p>Your intake is in — it was sent to my CRM directly, and your email client should also have opened with a summary (send it if it did; belt and suspenders). I'll confirm scope within 24 hours.</p>
+      <p>Your intake is in. I'll confirm scope within 24 hours.</p>
 
       <div class="pay-methods">
         <div class="pay-amount">
@@ -774,7 +793,7 @@
         </div>
       </div>
 
-      <p>If your email client didn't open, email <a href="mailto:clayton.camera@icloud.com">clayton.camera@icloud.com</a> directly with the subject "Loophole Audit Intake."</p>
+      <p>Need to add context? Email <a href="mailto:clayton.camera@icloud.com">clayton.camera@icloud.com</a> with the subject "Loophole Audit Intake."</p>
       <p>Questions before paying? Text or call <a href="tel:+14077668757">(407) 766-8757</a>.</p>
     </div>
 
@@ -833,96 +852,118 @@
       }
     })();
 
-    document.getElementById('intake-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var form = e.target;
-      if (!form.consent.checked) {
-        alert('Please confirm the intake terms before submitting.');
-        return;
+    (function () {
+      var form = document.getElementById('intake-form');
+      var submitButton = form.querySelector('button[type="submit"]');
+      var status = document.getElementById('submit-status');
+      var fallback = document.getElementById('submit-fallback');
+      var isSubmitting = false;
+      var isSubmitted = false;
+
+      function fieldValue(name) {
+        var field = form.elements.namedItem(name);
+        return field ? field.value : '';
       }
-      // Validate required
-      var required = form.querySelectorAll('[required]');
-      for (var i = 0; i < required.length; i++) {
-        if (!required[i].value || (required[i].type === 'radio' && !form.querySelector('input[name="'+required[i].name+'"]:checked'))) {
-          required[i].focus();
-          alert('Please fill out all required fields.');
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (isSubmitting || isSubmitted) return;
+        if (!form.elements.namedItem('consent').checked) {
+          alert('Please confirm the intake terms before submitting.');
           return;
         }
-      }
-      var data = new FormData(form);
-      var lines = ['LOOPHOLE AUDIT INTAKE', '========================',
-                   'Submitted: ' + new Date().toISOString(), ''];
-      var checkboxGroups = {};
-      data.forEach(function (value, key) {
-        if (key === 'consent') return;
-        var elements = form.elements[key];
-        if (elements && elements.length && elements[0] && elements[0].type === 'checkbox') {
-          if (!checkboxGroups[key]) checkboxGroups[key] = [];
-          checkboxGroups[key].push(value);
-          return;
+        var required = form.querySelectorAll('[required]');
+        for (var i = 0; i < required.length; i++) {
+          if (!required[i].value.trim() || (required[i].type === 'radio' && !form.querySelector('input[name="'+required[i].name+'"]:checked'))) {
+            required[i].focus();
+            alert('Please fill out all required fields.');
+            return;
+          }
         }
-        if (value && value.toString().trim()) {
+        var data = new FormData(form);
+        var lines = ['LOOPHOLE AUDIT INTAKE', '========================',
+                     'Submitted: ' + new Date().toISOString(), ''];
+        var checkboxGroups = {};
+        data.forEach(function (value, key) {
+          if (key === 'consent') return;
+          var elements = form.elements[key];
+          if (elements && elements.length && elements[0] && elements[0].type === 'checkbox') {
+            if (!checkboxGroups[key]) checkboxGroups[key] = [];
+            checkboxGroups[key].push(value);
+            return;
+          }
+          if (value && value.toString().trim()) {
+            lines.push(key.toUpperCase().replace(/_/g, ' ') + ':');
+            lines.push('  ' + value);
+            lines.push('');
+          }
+        });
+        Object.keys(checkboxGroups).forEach(function (key) {
           lines.push(key.toUpperCase().replace(/_/g, ' ') + ':');
-          lines.push('  ' + value);
+          lines.push('  ' + checkboxGroups[key].join(', '));
           lines.push('');
+        });
+
+        var body = encodeURIComponent(lines.join('\n'));
+        var subj = encodeURIComponent('Loophole Audit Intake — ' + (fieldValue('company') || fieldValue('name') || 'New submission'));
+        document.getElementById('intake-email').href = 'mailto:clayton.camera@icloud.com?subject=' + subj + '&body=' + body;
+        document.getElementById('intake-summary').value = lines.join('\n');
+
+        isSubmitting = true;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending intake…';
+        form.setAttribute('aria-busy', 'true');
+        status.classList.remove('is-error');
+        status.textContent = 'Sending your intake. Please wait for confirmation.';
+        fallback.hidden = true;
+
+        // A successful HTTP response confirms receipt. If the response is lost,
+        // do not claim failure or success: keep the answers and offer email.
+        var controller = new AbortController();
+        var timeout = window.setTimeout(function () { controller.abort(); }, 20000);
+        try {
+          var response = await fetch('https://hubapi.loopholemaxing.com/api/v1/leads/intake', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal: controller.signal,
+            body: JSON.stringify({
+              business_name: fieldValue('company') || fieldValue('name') || 'Audit intake',
+              contact_name: fieldValue('name') || '',
+              email: fieldValue('email'),
+              phone: fieldValue('phone') || 'n/a',
+              current_website: fieldValue('website') || null,
+              notes: 'WWC AUDIT INTAKE\n' + lines.join('\n')
+            })
+          });
+          if (!response.ok) throw new Error('Intake request was not accepted');
+          isSubmitted = true;
+          status.textContent = 'Intake received.';
+          form.style.display = 'none';
+          var success = document.getElementById('success');
+          success.classList.add('show');
+          success.focus({ preventScroll: true });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          try {
+            if (window.lmx && window.lmx.track) window.lmx.track('wwc_intake_submit', { company: fieldValue('company') || '' });
+          } catch (err) { /* analytics is best-effort */ }
+        } catch (err) {
+          status.classList.add('is-error');
+          status.textContent = "We couldn't confirm receipt. Your answers are still here. Try again, or email your completed intake below. Please wait for confirmation before paying.";
+          fallback.hidden = false;
+        } finally {
+          window.clearTimeout(timeout);
+          isSubmitting = false;
+          form.removeAttribute('aria-busy');
+          submitButton.disabled = false;
+          submitButton.textContent = isSubmitted ? 'Intake received' : 'Submit intake →';
         }
       });
-      Object.keys(checkboxGroups).forEach(function (key) {
-        lines.push(key.toUpperCase().replace(/_/g, ' ') + ':');
-        lines.push('  ' + checkboxGroups[key].join(', '));
-        lines.push('');
-      });
-      // Durable capture: POST the intake to the HUB CRM first (fire-and-forget).
-      // The mailto below is the human-readable copy; this is the one that can't
-      // be lost to a missing mail client.
-      try {
-        fetch('https://hubapi.loopholemaxing.com/api/v1/leads/intake', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            business_name: form.company.value || form.name.value || 'Audit intake',
-            contact_name: form.name.value || '',
-            email: form.email.value,
-            phone: (form.phone && form.phone.value) || 'n/a',
-            current_website: (form.website && form.website.value) || null,
-            notes: 'WWC AUDIT INTAKE\n' + lines.join('\n')
-          })
-        }).catch(function () { /* mailto is the fallback */ });
-      } catch (err) { /* mailto is the fallback */ }
-
-      try {
-        if (window.lmx && window.lmx.track) window.lmx.track('wwc_intake_submit', { company: form.company.value || '' });
-      } catch (err) { /* analytics is best-effort */ }
-
-      var body = encodeURIComponent(lines.join('\n'));
-      var subj = encodeURIComponent('Loophole Audit Intake — ' + (form.company.value || form.name.value || 'New submission'));
-      var mailto = 'mailto:clayton.camera@icloud.com?subject=' + subj + '&body=' + body;
-      window.location.href = mailto;
-      form.style.display = 'none';
-      document.getElementById('success').classList.add('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    })();
 
     // ── Stripe Payment Link for the $497 audit. ONE line to swap (same
     //    pattern as WORK_WITH_URL on loopholemaxing.com).
     var STRIPE_AUDIT_URL = 'https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b';
     document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
-  </script>
-
-  <script>
-    // After a submit the handler above shows #success; move focus onto it so
-    // keyboard and screen-reader users land on the confirmation. Deliberately
-    // outside the submit handler, which stays byte-identical. Kept BEFORE the
-    // analytics tag (track.js falls back to the last <script> for data-site).
-    (function () {
-      var success = document.getElementById('success');
-      if (!success || !window.MutationObserver) return;
-      new MutationObserver(function () {
-        if (success.classList.contains('show')) {
-          try { success.focus({ preventScroll: true }); } catch (err) { /* focus is best-effort */ }
-        }
-      }).observe(success, { attributes: true, attributeFilter: ['class'] });
-    })();
   </script>
 
   <script async src="https://analytics-hub-production-9e6b.up.railway.app/track.js?v=20260715a" data-site="workwithclayton"></script>
