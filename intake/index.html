@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loophole Audit Intake — Work With Clayton</title>
-  <meta name="description" content="Start your $497 Loophole Audit. 48-hour delivery. Submit intake, get payment instructions, audit clock starts on payment confirmation.">
+  <meta name="description" content="Start your $497 Loophole Audit: the 48-hour clock starts once payment is confirmed and your intake is in.">
   <link rel="canonical" href="https://workwithclayton.com/intake/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <!-- The second indexable page on the domain carried no structured data
@@ -146,8 +146,9 @@
     /* Stepper */
     .stepper {
       display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 6px; margin-bottom: 32px; list-style: none;
+      gap: 6px; margin-bottom: 12px; list-style: none;
     }
+    #audit-clock { margin: 0 0 32px; }
     /* 10px sides + a 6px gap give each 13px label one line at 4-up (151px) and
        2-up on phones (154px at 390); narrower screens wrap after a separator. */
     .step {
@@ -312,6 +313,8 @@
     .submit-status { margin-top: 16px; font-size: 15px; color: var(--text-muted); }
     .submit-status:empty { margin-top: 0; }
     .submit-status.is-error { color: #b91c1c; }
+    .field-error { margin-top: 8px; font-size: 14px; color: #b91c1c; }
+    [aria-invalid="true"] { border-color: #b91c1c; }
     .submit-fallback { margin-top: 16px; padding: 16px; border: 1px solid var(--field-border); border-radius: var(--radius-md); }
     .submit-fallback p { font-size: 15px; margin-bottom: 12px; }
     .submit-fallback a { color: var(--green-ink); text-decoration: underline; text-underline-offset: 2px; }
@@ -481,20 +484,22 @@
 
     <div class="intake-header">
       <div class="intake-badge">
-        <span>Intake · Step 1 of 1</span>
+        <span>Intake · Step 1 of 4</span>
       </div>
       <h1>Start your <span class="green">$497 Loophole Audit</span></h1>
-      <p class="lead">Fill this out so I can scope the audit accurately. I review every intake personally within 24 hours. Pay by card right after submitting to start the 48-hour clock immediately — or wait for my reply if you prefer Zelle, wire, or Venmo.</p>
+      <p class="lead">Fill this out so I can scope the audit accurately. I review every intake personally within 24 hours. Pay by card right after submitting, or wait for my reply if you prefer Zelle, wire, or Venmo.</p>
     </div>
 
-    <ol class="stepper">
+    <ol class="stepper" aria-describedby="audit-clock">
       <li class="step"><div class="step-num">1</div><div class="step-label">Submit intake</div></li>
       <li class="step"><div class="step-num">2</div><div class="step-label">Clayton reviews · <span class="nowrap">24 hrs</span></div></li>
-      <li class="step"><div class="step-num">3</div><div class="step-label">Pay by card · <span class="nowrap">Zelle · wire</span></div></li>
+      <li class="step"><div class="step-num">3</div><div class="step-label">Payment confirmed</div></li>
       <li class="step"><div class="step-num">4</div><div class="step-label">Audit delivered · <span class="nowrap">48 hrs</span></div></li>
     </ol>
+    <p class="help" id="audit-clock">The 48-hour clock starts once payment is confirmed and your intake is in.</p>
 
     <form id="intake-form" autocomplete="on" novalidate>
+      <noscript><p class="submit-fallback">This form needs JavaScript to submit. Email your intake details directly to <a href="mailto:clayton.camera@icloud.com?subject=Loophole%20Audit%20Intake">clayton.camera@icloud.com</a> with the subject “Loophole Audit Intake.”</p></noscript>
 
       <!-- 1: BUSINESS BASICS -->
       <div class="form-section">
@@ -502,27 +507,31 @@
         <div class="field-grid-2">
           <div class="field">
             <label for="f-name">Your name <span class="req">*</span></label>
-            <input type="text" name="name" id="f-name" required autocomplete="name" placeholder="First Last">
+            <input type="text" name="name" id="f-name" aria-describedby="name-error" required autocomplete="name" placeholder="First Last">
+            <p id="name-error" class="field-error" hidden></p>
           </div>
           <div class="field">
             <label for="f-email">Best email <span class="req">*</span></label>
-            <input type="email" name="email" id="f-email" required autocomplete="email" placeholder="you@company.com">
+            <input type="email" name="email" id="f-email" aria-describedby="email-error" required autocomplete="email" placeholder="you@company.com">
+            <p id="email-error" class="field-error" hidden></p>
           </div>
         </div>
         <div class="field-grid-2">
           <div class="field">
             <label for="f-company">Company name <span class="req">*</span></label>
-            <input type="text" name="company" id="f-company" required autocomplete="organization" placeholder="Your business">
+            <input type="text" name="company" id="f-company" aria-describedby="company-error" required autocomplete="organization" placeholder="Your business">
+            <p id="company-error" class="field-error" hidden></p>
           </div>
           <div class="field">
             <label for="f-website">Company website <span class="req">*</span></label>
-            <input type="url" name="website" id="f-website" required autocomplete="url" placeholder="https://">
+            <input type="url" name="website" id="f-website" aria-describedby="website-error" required autocomplete="url" placeholder="https://">
+            <p id="website-error" class="field-error" hidden></p>
           </div>
         </div>
         <div class="field-grid-2">
           <div class="field">
             <label for="industry-select">Industry <span class="req">*</span></label>
-            <select name="industry" id="industry-select" required>
+            <select name="industry" id="industry-select" aria-describedby="industry-error" required>
               <option value="">Select one</option>
               <option value="ecommerce">E-commerce / DTC</option>
               <option value="services">Home services / contractors</option>
@@ -536,10 +545,11 @@
               <option value="insurance">Insurance agency</option>
               <option value="other">Other</option>
             </select>
+            <p id="industry-error" class="field-error" hidden></p>
           </div>
           <div class="field">
             <label for="f-revenue">Annual revenue range <span class="req">*</span></label>
-            <select name="revenue" id="f-revenue" required>
+            <select name="revenue" id="f-revenue" aria-describedby="revenue-error" required>
               <option value="">Select one</option>
               <option value="pre">Pre-revenue</option>
               <option value="0-250k">Under $250K</option>
@@ -548,17 +558,19 @@
               <option value="5m-25m">$5M–$25M</option>
               <option value="25m+">$25M+</option>
             </select>
+            <p id="revenue-error" class="field-error" hidden></p>
           </div>
         </div>
         <div class="field">
           <label id="lbl-team-size">Team size <span class="req">*</span></label>
           <div class="radio-row" role="radiogroup" aria-labelledby="lbl-team-size">
-            <label><input type="radio" name="team_size" value="1" required>Just me</label>
-            <label><input type="radio" name="team_size" value="2-5">2–5</label>
-            <label><input type="radio" name="team_size" value="6-15">6–15</label>
-            <label><input type="radio" name="team_size" value="16-50">16–50</label>
-            <label><input type="radio" name="team_size" value="50+">50+</label>
+            <label><input type="radio" name="team_size" value="1" aria-describedby="team_size-error" required>Just me</label>
+            <label><input type="radio" name="team_size" value="2-5" aria-describedby="team_size-error">2–5</label>
+            <label><input type="radio" name="team_size" value="6-15" aria-describedby="team_size-error">6–15</label>
+            <label><input type="radio" name="team_size" value="16-50" aria-describedby="team_size-error">16–50</label>
+            <label><input type="radio" name="team_size" value="50+" aria-describedby="team_size-error">50+</label>
           </div>
+          <p id="team_size-error" class="field-error" hidden></p>
         </div>
       </div>
 
@@ -567,31 +579,32 @@
         <h2 class="form-section-title"><span class="num">2</span> Your stack</h2>
         <div class="field">
           <label id="lbl-stack">What tools and platforms do you use? <span class="req">*</span></label>
-          <p class="help" style="margin-bottom: 12px;">Check anything you actively use.</p>
-          <div class="checkbox-group" role="group" aria-labelledby="lbl-stack">
-            <label><input type="checkbox" name="stack" value="shopify"> Shopify</label>
-            <label><input type="checkbox" name="stack" value="woocommerce"> WooCommerce</label>
-            <label><input type="checkbox" name="stack" value="wordpress"> WordPress</label>
-            <label><input type="checkbox" name="stack" value="klaviyo"> Klaviyo</label>
-            <label><input type="checkbox" name="stack" value="mailchimp"> Mailchimp</label>
-            <label><input type="checkbox" name="stack" value="resend"> Resend / Postmark</label>
-            <label><input type="checkbox" name="stack" value="hubspot"> HubSpot</label>
-            <label><input type="checkbox" name="stack" value="salesforce"> Salesforce</label>
-            <label><input type="checkbox" name="stack" value="pipedrive"> Pipedrive</label>
-            <label><input type="checkbox" name="stack" value="gohighlevel"> GoHighLevel</label>
-            <label><input type="checkbox" name="stack" value="zapier"> Zapier</label>
-            <label><input type="checkbox" name="stack" value="make"> Make.com</label>
-            <label><input type="checkbox" name="stack" value="n8n"> n8n</label>
-            <label><input type="checkbox" name="stack" value="airtable"> Airtable</label>
-            <label><input type="checkbox" name="stack" value="notion"> Notion</label>
-            <label><input type="checkbox" name="stack" value="ga"> Google Analytics</label>
-            <label><input type="checkbox" name="stack" value="meta_ads"> Meta Ads</label>
-            <label><input type="checkbox" name="stack" value="google_ads"> Google Ads</label>
-            <label><input type="checkbox" name="stack" value="tiktok_ads"> TikTok Ads</label>
-            <label><input type="checkbox" name="stack" value="quickbooks"> QuickBooks</label>
-            <label><input type="checkbox" name="stack" value="stripe"> Stripe</label>
-            <label><input type="checkbox" name="stack" value="custom"> Custom / internal</label>
+          <p class="help" style="margin-bottom: 12px;">Select at least one tool or platform you actively use.</p>
+          <div class="checkbox-group" role="group" aria-labelledby="lbl-stack" aria-describedby="stack-error">
+            <label><input type="checkbox" name="stack" value="shopify" aria-describedby="stack-error"> Shopify</label>
+            <label><input type="checkbox" name="stack" value="woocommerce" aria-describedby="stack-error"> WooCommerce</label>
+            <label><input type="checkbox" name="stack" value="wordpress" aria-describedby="stack-error"> WordPress</label>
+            <label><input type="checkbox" name="stack" value="klaviyo" aria-describedby="stack-error"> Klaviyo</label>
+            <label><input type="checkbox" name="stack" value="mailchimp" aria-describedby="stack-error"> Mailchimp</label>
+            <label><input type="checkbox" name="stack" value="resend" aria-describedby="stack-error"> Resend / Postmark</label>
+            <label><input type="checkbox" name="stack" value="hubspot" aria-describedby="stack-error"> HubSpot</label>
+            <label><input type="checkbox" name="stack" value="salesforce" aria-describedby="stack-error"> Salesforce</label>
+            <label><input type="checkbox" name="stack" value="pipedrive" aria-describedby="stack-error"> Pipedrive</label>
+            <label><input type="checkbox" name="stack" value="gohighlevel" aria-describedby="stack-error"> GoHighLevel</label>
+            <label><input type="checkbox" name="stack" value="zapier" aria-describedby="stack-error"> Zapier</label>
+            <label><input type="checkbox" name="stack" value="make" aria-describedby="stack-error"> Make.com</label>
+            <label><input type="checkbox" name="stack" value="n8n" aria-describedby="stack-error"> n8n</label>
+            <label><input type="checkbox" name="stack" value="airtable" aria-describedby="stack-error"> Airtable</label>
+            <label><input type="checkbox" name="stack" value="notion" aria-describedby="stack-error"> Notion</label>
+            <label><input type="checkbox" name="stack" value="ga" aria-describedby="stack-error"> Google Analytics</label>
+            <label><input type="checkbox" name="stack" value="meta_ads" aria-describedby="stack-error"> Meta Ads</label>
+            <label><input type="checkbox" name="stack" value="google_ads" aria-describedby="stack-error"> Google Ads</label>
+            <label><input type="checkbox" name="stack" value="tiktok_ads" aria-describedby="stack-error"> TikTok Ads</label>
+            <label><input type="checkbox" name="stack" value="quickbooks" aria-describedby="stack-error"> QuickBooks</label>
+            <label><input type="checkbox" name="stack" value="stripe" aria-describedby="stack-error"> Stripe</label>
+            <label><input type="checkbox" name="stack" value="custom" aria-describedby="stack-error"> Custom / internal</label>
           </div>
+          <p id="stack-error" class="field-error" hidden></p>
         </div>
         <div class="field">
           <label for="f-stack-other">Anything else in your stack? <span class="opt">Optional</span></label>
@@ -605,7 +618,8 @@
         <div class="field">
           <label for="f-problem-1">3 biggest problems you want solved <span class="req">*</span></label>
           <p class="help" style="margin-bottom: 8px;">Be specific. "Slow lead follow-up" beats "marketing is hard."</p>
-          <textarea name="problem_1" id="f-problem-1" required placeholder="Problem #1 — the one keeping you up at night"></textarea>
+          <textarea name="problem_1" id="f-problem-1" aria-describedby="problem_1-error" required placeholder="Problem #1 — the one keeping you up at night"></textarea>
+          <p id="problem_1-error" class="field-error" hidden></p>
         </div>
         <div class="field">
           <textarea name="problem_2" aria-label="Problem #2" placeholder="Problem #2 — the recurring time sink"></textarea>
@@ -615,15 +629,18 @@
         </div>
         <div class="field">
           <label for="f-revenue-goal">Your #1 revenue goal in the next 90 days <span class="req">*</span></label>
-          <textarea name="revenue_goal" id="f-revenue-goal" required placeholder="e.g. Add $25K/month from cart recovery; cut support response time in half; launch new product line"></textarea>
+          <textarea name="revenue_goal" id="f-revenue-goal" aria-describedby="revenue_goal-error" required placeholder="e.g. Add $25K/month from cart recovery; cut support response time in half; launch new product line"></textarea>
+          <p id="revenue_goal-error" class="field-error" hidden></p>
         </div>
         <div class="field">
           <label for="f-lead-sources">Where do your leads come from? <span class="req">*</span></label>
-          <textarea name="lead_sources" id="f-lead-sources" required placeholder="Top 3 channels and rough mix (e.g. paid Meta 50%, organic SEO 30%, referrals 20%)"></textarea>
+          <textarea name="lead_sources" id="f-lead-sources" aria-describedby="lead_sources-error" required placeholder="Top 3 channels and rough mix (e.g. paid Meta 50%, organic SEO 30%, referrals 20%)"></textarea>
+          <p id="lead_sources-error" class="field-error" hidden></p>
         </div>
         <div class="field">
           <label for="f-time-sink">Biggest manual time-sink in your week <span class="req">*</span></label>
-          <textarea name="time_sink" id="f-time-sink" required placeholder="The recurring task that feels like it should be automated"></textarea>
+          <textarea name="time_sink" id="f-time-sink" aria-describedby="time_sink-error" required placeholder="The recurring task that feels like it should be automated"></textarea>
+          <p id="time_sink-error" class="field-error" hidden></p>
         </div>
         <div class="field">
           <label for="f-failed-attempts">What have you already tried that didn't work? <span class="opt">Optional</span></label>
@@ -711,8 +728,9 @@
         <h2 class="form-section-title"><span class="num">6</span> Wrap up</h2>
         <div class="field">
           <label for="f-loom">Loom video URL <span class="opt">Optional but encouraged</span></label>
-          <input type="url" name="loom" id="f-loom" aria-describedby="f-loom-help" placeholder="https://www.loom.com/share/...">
+          <input type="url" name="loom" id="f-loom" aria-describedby="f-loom-help loom-error" placeholder="https://www.loom.com/share/...">
           <p class="help" id="f-loom-help">A 3–5 min walkthrough of your business and what you want fixed. I record one back. Loom is free at <a href="https://loom.com" target="_blank" rel="noopener" style="color: var(--green-ink);">loom.com</a>.</p>
+          <p id="loom-error" class="field-error" hidden></p>
         </div>
         <div class="field-grid-2">
           <div class="field">
@@ -740,9 +758,10 @@
         </div>
         <div class="field">
           <label class="consent-label">
-            <input type="checkbox" name="consent" required>
-            <span>I understand this is an intake submission, not a purchase. Clayton reviews every intake within 24 hours. The 48-hour audit clock starts when payment is confirmed — instantly if I pay by card after submitting, or on confirmation for Zelle, wire, or Venmo.</span>
+            <input type="checkbox" name="consent" aria-describedby="consent-error" required>
+            <span>I understand this is an intake submission, not a purchase. Clayton reviews every intake within 24 hours. The 48-hour clock starts once payment is confirmed and your intake is in.</span>
           </label>
+          <p id="consent-error" class="field-error" hidden></p>
         </div>
       </div>
 
@@ -765,7 +784,7 @@
     <div class="success-banner" id="success" role="region" tabindex="-1" aria-labelledby="success-title">
       <div class="checkmark" aria-hidden="true">✓</div>
       <h2 id="success-title">Intake received.</h2>
-      <p>Your intake is in. I'll confirm scope within 24 hours.</p>
+      <p>Your intake is in. I'll confirm scope within 24 hours. The 48-hour clock starts once payment is confirmed and your intake is in.</p>
 
       <div class="pay-methods">
         <div class="pay-amount">
@@ -773,8 +792,8 @@
           <span class="pa-val"><span class="green">$497</span></span>
         </div>
 
-        <a data-stripe-audit href="#" target="_blank" rel="noopener" class="btn btn-primary btn-block" style="margin-bottom:16px; text-align:center;">Pay $497 by card → starts the clock now</a>
-        <div class="pay-methods-label">Prefer no-fee transfers? These work too (clock starts when I confirm receipt):</div>
+        <a data-stripe-audit href="https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b" target="_blank" rel="noopener" class="btn btn-primary btn-block" style="margin-bottom:16px; text-align:center;">Pay $497 by card →</a>
+        <div class="pay-methods-label">Prefer no-fee transfers? These work too; payment must be confirmed:</div>
 
         <div class="pay-methods-row">
           <span class="pm-label">Zelle</span>
@@ -865,21 +884,60 @@
         return field ? field.value : '';
       }
 
+      function validateFields() {
+        var website = form.elements.namedItem('website');
+        website.value = website.value.trim();
+        if (website.value && !/^[a-z][a-z\d+.-]*:\/\//i.test(website.value)) {
+          website.value = 'https://' + website.value;
+        }
+
+        var controls = form.querySelectorAll('input, select, textarea');
+        var checkedNames = {};
+        var firstInvalid = null;
+        var errorCount = 0;
+        controls.forEach(function (field) {
+          if (!field.name || checkedNames[field.name]) return;
+          checkedNames[field.name] = true;
+          var message = '';
+          var group = field.type === 'radio' || field.type === 'checkbox';
+          var members = group ? form.querySelectorAll('[name="' + field.name + '"]') : [field];
+          if (field.name === 'stack') {
+            if (!form.querySelector('input[name="stack"]:checked')) message = 'Select at least one tool or platform.';
+          } else if (!field.checkValidity() || (field.required && !group && !field.value.trim())) {
+            if (field.type === 'email') message = 'Enter a valid email address, such as you@company.com.';
+            else if (field.type === 'url') message = 'Enter a valid website URL, such as https://example.com.';
+            else if (field.type === 'radio') message = 'Choose your team size.';
+            else if (field.name === 'consent') message = 'Please confirm the intake terms before submitting.';
+            else message = 'Please complete this required field.';
+          }
+          var error = document.getElementById(field.name + '-error');
+          if (error) {
+            error.textContent = message;
+            error.hidden = !message;
+          }
+          members.forEach(function (member) {
+            if (message) member.setAttribute('aria-invalid', 'true');
+            else member.removeAttribute('aria-invalid');
+          });
+          if (message) {
+            errorCount++;
+            if (!firstInvalid) firstInvalid = field;
+          }
+        });
+        if (firstInvalid) {
+          status.classList.add('is-error');
+          status.textContent = 'Please correct ' + errorCount + (errorCount === 1 ? ' field' : ' fields') + ' before submitting. Each error is shown beside its field.';
+          fallback.hidden = true;
+          firstInvalid.focus();
+          return false;
+        }
+        return true;
+      }
+
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
         if (isSubmitting || isSubmitted) return;
-        if (!form.elements.namedItem('consent').checked) {
-          alert('Please confirm the intake terms before submitting.');
-          return;
-        }
-        var required = form.querySelectorAll('[required]');
-        for (var i = 0; i < required.length; i++) {
-          if (!required[i].value.trim() || (required[i].type === 'radio' && !form.querySelector('input[name="'+required[i].name+'"]:checked'))) {
-            required[i].focus();
-            alert('Please fill out all required fields.');
-            return;
-          }
-        }
+        if (!validateFields()) return;
         var data = new FormData(form);
         var lines = ['LOOPHOLE AUDIT INTAKE', '========================',
                      'Submitted: ' + new Date().toISOString(), ''];
@@ -960,8 +1018,8 @@
       });
     })();
 
-    // ── Stripe Payment Link for the $497 audit. ONE line to swap (same
-    //    pattern as WORK_WITH_URL on loopholemaxing.com).
+    // ── Stripe Payment Link for the $497 audit. Keep this and the static
+    //    data-stripe-audit hrefs on both pages in sync.
     var STRIPE_AUDIT_URL = 'https://buy.stripe.com/3cI3cuaqh6rE8xy4xqdnW0b';
     document.querySelectorAll('[data-stripe-audit]').forEach(function (a) { a.href = STRIPE_AUDIT_URL; });
   </script>

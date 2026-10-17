@@ -24,35 +24,63 @@ function node() {
 }
 function harness(fetchMock) {
   const fields = {
-    name: { value: 'Jane Customer', type: 'text' },
-    email: { value: 'jane@example.test', type: 'email' },
-    company: { value: 'Example Company', type: 'text' },
-    website: { value: 'https://example.test', type: 'url' },
-    phone: { value: '', type: 'tel' },
-    consent: { value: 'on', type: 'checkbox', checked: true },
-    team_size: { value: '2-5', type: 'radio', checked: true },
-    notes: { value: 'Please help with follow-up.', type: 'textarea' },
+    name: { value: 'Jane Customer', type: 'text', required: true },
+    email: { value: 'jane@example.test', type: 'email', required: true },
+    company: { value: 'Example Company', type: 'text', required: true },
+    website: { value: 'https://example.test', type: 'url', required: true },
+    industry: { value: 'ecommerce', type: 'select-one', required: true },
+    revenue: { value: '250k-1m', type: 'select-one', required: true },
+    team_size: { value: '2-5', type: 'radio', required: true, checked: true },
     stack: [{ value: 'shopify', type: 'checkbox', checked: true }, { value: 'stripe', type: 'checkbox', checked: true }],
+    problem_1: { value: 'Slow lead follow-up.', type: 'textarea', required: true },
+    revenue_goal: { value: 'Improve lead conversion.', type: 'textarea', required: true },
+    lead_sources: { value: 'Referrals.', type: 'textarea', required: true },
+    time_sink: { value: 'Manual follow-up.', type: 'textarea', required: true },
+    loom: { value: '', type: 'url' },
+    phone: { value: '', type: 'tel' },
+    notes: { value: 'Please help with follow-up.', type: 'textarea' },
+    consent: { value: 'on', type: 'checkbox', required: true, checked: true },
   };
   for (const [name, field] of Object.entries(fields)) {
-    if (!Array.isArray(field)) Object.assign(field, { name, focus() { this.focused = true; } });
+    for (const item of Array.isArray(field) ? field : [field]) {
+      Object.assign(item, { ...node(), ...item, name });
+      // Model the native constraint API used by the shipped handler. The
+      // markup assertions below also guard the actual browser input types.
+      item.checkValidity = function () {
+        this.validityChecks = (this.validityChecks || 0) + 1;
+        if (this.required && (this.type === 'checkbox' || this.type === 'radio')) return this.checked;
+        if (!this.value) return !this.required;
+        if (this.type === 'email') return /^[^\s@]+@[^\s@]+$/.test(this.value);
+        if (this.type === 'url') {
+          try { new URL(this.value); return true; } catch { return false; }
+        }
+        return true;
+      };
+    }
   }
   const button = node();
   const form = node();
-  const required = ['name', 'email', 'company', 'website', 'team_size', 'consent'].map(name => fields[name]);
+  const controls = Object.values(fields).flat();
   Object.assign(form, {
     // HTMLFormElement.name is a string, so the handler must use elements.
     name: '',
     elements: Object.assign({}, fields, { namedItem: name => fields[name] }),
     addEventListener(type, handler) { assert.equal(type, 'submit'); this.submit = handler; },
-    querySelectorAll(selector) { assert.equal(selector, '[required]'); return required; },
+    querySelectorAll(selector) {
+      if (selector === 'input, select, textarea') return controls;
+      const match = selector.match(/^\[name="([^"]+)"\]$/);
+      if (match) return controls.filter(field => field.name === match[1]);
+      throw new Error('Unexpected selector ' + selector);
+    },
     querySelector(selector) {
       if (selector === 'button[type="submit"]') return button;
-      if (selector === 'input[name="team_size"]:checked') return fields.team_size;
+      const match = selector.match(/^input\[name="([^"]+)"\]:checked$/);
+      if (match) return controls.find(field => field.name === match[1] && field.checked) || null;
       throw new Error('Unexpected selector ' + selector);
     },
   });
-  const nodes = Object.fromEntries(['submit-status', 'submit-fallback', 'intake-email', 'intake-summary', 'success'].map(id => [id, node()]));
+  const errorIDs = [...html.matchAll(/id="([^"]+-error)"/g)].map(match => match[1]);
+  const nodes = Object.fromEntries(['submit-status', 'submit-fallback', 'intake-email', 'intake-summary', 'success', ...errorIDs].map(id => [id, node()]));
   const calls = [], tracking = [], timers = new Map();
   let timerID = 0;
   const window = {
@@ -188,10 +216,122 @@ test('a stalled request times out and restores the email fallback', async () => 
   assertRetryable(h);
 });
 
+function assertInvalid(h, name, message) {
+  const field = Array.isArray(h.fields[name]) ? h.fields[name][0] : h.fields[name];
+  assert.equal(h.calls.length, 0, 'invalid answers are never sent');
+  assert.equal(field.attrs['aria-invalid'], 'true');
+  assert.equal(field.focused, true, 'focus moves to the first invalid field');
+  assert.equal(h.nodes[name + '-error'].hidden, false);
+  assert.match(h.nodes[name + '-error'].textContent, message);
+  assert.match(h.nodes['submit-status'].textContent, /Please correct 1 field before submitting/);
+  assert.equal(h.nodes['submit-status'].classList.contains('is-error'), true);
+  assert.equal(h.nodes.success.classList.contains('show'), false);
+  assert.equal(h.button.disabled, false);
+  assert.equal(h.timers.size, 0);
+}
+
+test('an invalid email exposes an inline error and prevents submission', async () => {
+  const h = harness(async () => ({ ok: true }));
+  h.fields.email.value = 'not-an-email';
+  await h.submit();
+  assertInvalid(h, 'email', /valid email address/);
+  assert.ok(h.fields.email.validityChecks, 'uses native email constraint validation');
+});
+
+test('an invalid website URL exposes an inline error and prevents submission', async () => {
+  const h = harness(async () => ({ ok: true }));
+  h.fields.website.value = 'not a website';
+  await h.submit();
+  assertInvalid(h, 'website', /valid website URL/);
+  assert.ok(h.fields.website.validityChecks, 'uses native URL constraint validation');
+});
+
+test('a website without a scheme is normalized before validation and submission', async () => {
+  const h = harness(async () => ({ ok: true }));
+  h.fields.website.value = ' example.test:8080/about ';
+  await h.submit();
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.fields.website.value, 'https://example.test:8080/about');
+  const payload = JSON.parse(h.calls[0].options.body);
+  assert.equal(payload.current_website, 'https://example.test:8080/about');
+  assert.match(payload.notes, /https:\/\/example.test:8080\/about/);
+});
+
+test('missing stack selection marks every checkbox and focuses the first', async () => {
+  const h = harness(async () => ({ ok: true }));
+  h.fields.stack.forEach(field => { field.checked = false; });
+  await h.submit();
+  assertInvalid(h, 'stack', /Select at least one/);
+  assert.ok(h.fields.stack.every(field => field.attrs['aria-invalid'] === 'true'));
+});
+
+test('missing required text, radio and consent answers prevent submission', async () => {
+  for (const name of ['name', 'company', 'industry', 'revenue', 'team_size', 'problem_1', 'revenue_goal', 'lead_sources', 'time_sink', 'consent']) {
+    const h = harness(async () => ({ ok: true }));
+    if (['team_size', 'consent'].includes(name)) h.fields[name].checked = false;
+    else h.fields[name].value = '';
+    await h.submit();
+    assertInvalid(h, name, /required field|team size|intake terms/);
+  }
+});
+
+test('whitespace-only required text is rejected', async () => {
+  const h = harness(async () => ({ ok: true }));
+  h.fields.company.value = '   ';
+  await h.submit();
+  assertInvalid(h, 'company', /required field/);
+});
+
+test('all errors are reported together, first field gets focus, and corrected answers can be sent', async () => {
+  const h = harness(async () => ({ ok: true }));
+  h.fields.email.value = 'bad-email';
+  h.fields.website.value = 'https://';
+  h.fields.stack.forEach(field => { field.checked = false; });
+  await h.submit();
+  assert.equal(h.calls.length, 0);
+  assert.equal(h.fields.email.focused, true);
+  assert.equal(h.fields.website.focused, undefined);
+  assert.equal(h.fields.stack[0].focused, undefined);
+  assert.match(h.nodes['submit-status'].textContent, /Please correct 3 fields/);
+  for (const name of ['email', 'website', 'stack']) assert.equal(h.nodes[name + '-error'].hidden, false);
+  h.fields.email.value = 'jane@example.test';
+  h.fields.website.value = 'https://example.test';
+  h.fields.stack[1].checked = true;
+  await h.submit();
+  assert.equal(h.calls.length, 1);
+  for (const name of ['email', 'website', 'stack']) {
+    assert.equal(h.nodes[name + '-error'].hidden, true);
+    assert.equal(h.nodes[name + '-error'].textContent, '');
+    for (const field of [h.fields[name]].flat()) assert.equal(field.attrs['aria-invalid'], undefined);
+  }
+  assert.equal(h.nodes['submit-status'].classList.contains('is-error'), false);
+});
+
+test('an optional Loom URL is validated when supplied', async () => {
+  const h = harness(async () => ({ ok: true }));
+  h.fields.loom.value = 'not a URL';
+  await h.submit();
+  assertInvalid(h, 'loom', /valid website URL/);
+});
+
 test('feedback markup is live, and the copyable fallback is read-only', () => {
+  const h = harness(async () => ({ ok: true }));
   assert.match(html, /id="submit-status"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/);
   assert.match(html, /id="submit-fallback"[^>]*hidden/);
   assert.match(html, /<label for="intake-summary">/);
   assert.match(html, /<textarea id="intake-summary" readonly>/);
   assert.match(html, /id="success"[^>]*tabindex="-1"[^>]*aria-labelledby="success-title"/);
+  for (const match of html.matchAll(/<(?:input|select|textarea)\b[^>]*\brequired\b[^>]*>/g)) {
+    const name = match[0].match(/name="([^"]+)"/)[1];
+    assert.ok(h.fields[name], 'required field is covered by the adapter: ' + name);
+    assert.ok(match[0].includes('aria-describedby="' + name + '-error"'), 'required field describes its inline error: ' + name);
+    assert.ok(html.includes('id="' + name + '-error" class="field-error" hidden'), 'inline error container exists: ' + name);
+  }
+  for (const match of html.matchAll(/<input\b[^>]*\bname="stack"[^>]*>/g)) {
+    assert.ok(match[0].includes('aria-describedby="stack-error"'));
+  }
+  assert.match(html, /type="email" name="email"/);
+  assert.match(html, /type="url" name="website"/);
+  assert.match(html, /<noscript>[\s\S]*?href="mailto:clayton.camera@icloud.com[^"]*"[\s\S]*?<\/noscript>/);
+  assert.match(html, /data-stripe-audit href="https:\/\/buy.stripe.com\/3cI3cuaqh6rE8xy4xqdnW0b"/);
 });
